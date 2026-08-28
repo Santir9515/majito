@@ -24,10 +24,10 @@ Digitalizar el circuito de pedidos mediante un sistema de tickets con estados, t
 
 ## Estructura del repositorio
 
-Majito/
----frontend/#Aplicacion React
----backend/# API NestJS
----docs/# Informes y entregas
+majito/
+├── frontend/ # Aplicación React
+├── backend/ # API NestJS
+└── docs/ # Informes y entregas
 
 ## Instalación
 
