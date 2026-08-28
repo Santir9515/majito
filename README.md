@@ -23,3 +23,28 @@ Digitalizar el circuito de pedidos mediante un sistema de tickets con estados, t
 - **Despliegue:** Vercel (frontend) · Render (backend) · MongoDB Atlas (DB)
 
 ## Estructura del repositorio
+
+Majito/
+---frontend/#Aplicacion React
+---backend/# API NestJS
+---docs/# Informes y entregas
+
+## Instalación
+
+### Backend
+\`\`\`bash
+cd backend
+npm install
+npm run start:dev
+\`\`\`
+
+### Frontend
+\`\`\`bash
+cd frontend
+npm install
+npm run dev
+\`\`\`
+
+## Estado del proyecto
+
+🚧 En desarrollo — Trabajo Final, 1.ª entrega (Propuesta de Proyecto)
