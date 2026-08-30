@@ -59,10 +59,10 @@ Desde el punto de vista técnico, el proyecto adopta un stack moderno que equili
 Ambos integrantes participan en la definición conjunta del modelo de datos y las decisiones de arquitectura antes de la 2.ª entrega (esquema de base de datos y listado de módulos, con vencimiento 27/09).
 
 ## Estructura del repositorio
-/Majito
-|----frontend/ #Aplicacion React
-|----backend/ #API NestJS
-|----docs/ #Informes y entregas
+| /Majito |
+| |----frontend/ #Aplicacion React |
+| |----backend/ #API NestJS |
+| |----docs/ #Informes y entregas |
 
 
 ## Instalación
