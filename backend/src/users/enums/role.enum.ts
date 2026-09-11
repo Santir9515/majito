@@ -1,7 +1,5 @@
-export enum Role{
-    RECEPCION = 'recepcion',
-    DEPOSITO = 'deposito',
-    FACTURACION = 'facturacion',
-    LOGISTICA = 'logistica',
-    ADMIN = 'admin',
+export enum Role {
+  VENDEDOR = 'vendedor',
+  ADMINISTRACION = 'administracion',
+  DEPOSITO = 'deposito',
 }
