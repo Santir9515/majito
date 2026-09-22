@@ -11,8 +11,8 @@ import {
 
 class ItemPedidoDto {
   @IsNotEmpty()
-  @IsString()
-  material: string;
+  @IsMongoId()
+  productoId: string;
 
   @Min(1)
   cantidad: number;
