@@ -83,7 +83,7 @@ Registra cada cambio en el stock de un producto, para poder auditar quién lo mo
 ## 6. Flujo de estados
 
 ```mermaid
-DiagramaFlujo-v2
+stateDiagram-v2
     [*] --> creado
     creado --> en_revision
     en_revision --> en_preparacion
@@ -114,7 +114,7 @@ Dos estados de excepción:
 ## 7. Relaciones entre colecciones
 
 ```mermaid
-erDiagrama
+erDiagram
     usuarios ||--o{ tickets : "creadoPor"
     usuarios ||--o{ tickets : "historial.usuario"
     productos ||--o{ tickets : "items.productoId"
