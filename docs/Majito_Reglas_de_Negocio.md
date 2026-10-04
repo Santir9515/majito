@@ -7,7 +7,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 
 | Estado | Quién lo dispara | Descripción |
 |---|---|---|
-| Recibido | Vendedor / Administración | Pedido cargado con cliente, material y cantidad. |
+| Creado | Vendedor / Administración | Pedido cargado con cliente, material y cantidad. |
 | En Revisión | Administración | Se confirma stock, precio y cantidades. Si el stock no alcanza se rechaza. |
 | En preparación | Depósito | Depósito arma físicamente el pedido. |
 | Listo para facturar | Depósito | Pedido armado y listo para facturación. |
@@ -17,11 +17,25 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 | Anulado | Administración | Excepción — ver sección 3. |
 | Rechazado | Administración / Depósito | Excepción por falta de stock o diferencia detectada. El ticket de reemplazo queda vinculado al rechazado. |
 
+## Tabla de equivalencias.
+Estado (nombre visible) |	Valor en el sistema |
+|---|---|
+Creado | creado |
+En Revisión | en_revision |
+En preparación | en_preparacion |
+Listo para facturar | listo_para_facturar |
+Facturado | facturado |
+Entregado | entregado |
+Cerrado	| cerrado |
+Anulado	| anulado |
+Rechazado | rechazado |
+
+
 ## 2. Reglas por rol
 
 ### 2.1 Vendedor
 - Crea pedidos: cliente, material y cantidad son obligatorios; notas libres opcionales (ej.: "pago por adelantado").
-- Puede editar el pedido mientras esté en estado "Recibido".
+- Puede editar el pedido mientras esté en estado "Creado".
 - No puede modificarlo una vez que pasó a "En preparación".
 
 ### 2.2 Depósito
