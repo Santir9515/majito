@@ -42,7 +42,7 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
  
 - Alta de pedido, con canal de ingreso (vendedor viajante o consulta directa del cliente)
 - Consulta de stock contra el Módulo de Inventario al momento de crear/revisar el pedido
-- Transición por los 9 estados del pedido, incluyendo rechazo (por falta de stock o diferencia detectada en depósito, con el ticket de reemplazo vinculado al original) y anulación (disponible hasta el estado facturado inclusive, con motivo obligatorio)
+- Transición por los 9 estados del pedido, incluyendo rechazo (por falta de stock o diferencia detectada en depósito, con el ticket de reemplazo vinculado al original) y anulación (disponible antes de facturar, con motivo obligatorio).
 - Notas libres asociadas al pedido (ej. "pago por adelantado", "embalar en pallet")
 - El seguimiento de cambios de estado del pedido se registra mediante la capacidad transversal de Historial (ver sección 4)
 ### 3.5 Módulo de Administración/Excepciones

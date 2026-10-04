@@ -30,7 +30,7 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
   - facturado → entregado
   - entregado → cerrado
   Las transiciones hacia "anulado" (RF-07) y "rechazado" (RF-08) no forman parte de este flujo lineal y se rigen por las condiciones propias de cada una.
-- **RF-07:** El sistema debe permitir anular un ticket en cualquier estado hasta "facturado" inclusive, con motivo obligatorio.
+- **RF-07:** El sistema debe permitir anular un ticket en cualquier estado anterior a "facturado", con motivo obligatorio.
 - **RF-08:** El sistema debe permitir rechazar un ticket en cualquier estado anterior a "facturado" (por falta de stock o diferencia detectada en depósito), con motivo obligatorio, y vincular el ticket de reemplazo al original.
 - **RF-09:** El sistema debe registrar un historial de cada cambio de estado, indicando quién lo hizo y cuándo.
 - **RF-10:** El sistema no debe permitir facturar un ticket que no llegó al estado "listo para facturar".
