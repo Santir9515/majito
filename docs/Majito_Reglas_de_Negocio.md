@@ -14,7 +14,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 | Facturado | Administración | Se generan factura y remito. |
 | Entregado | Depósito | Pedido entregado al cliente. |
 | Cerrado | Administración | Ciclo del pedido finalizado. |
-| Anulado | Admin | Excepción — ver sección 3. |
+| Anulado | Administración | Excepción — ver sección 3. |
 | Rechazado | Administración / Depósito | Excepción por falta de stock o diferencia detectada. El ticket de reemplazo queda vinculado al rechazado. |
 
 ## 2. Reglas por rol
@@ -25,7 +25,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 - No puede modificarlo una vez que pasó a "En preparación".
 
 ### 2.2 Depósito
-- Mueve el pedido entre los estados En Revisión → En preparación → Listo para facturar.
+- Mueve el pedido entre los estados En preparación → Listo para facturar.
 - Agrega comentarios de avance.
 - No modifica cliente, material ni cantidad.
 - Puede rechazar el pedido si detecta una diferencia física respecto a lo cargado (ver sección 3).
@@ -33,7 +33,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 ### 2.3 Administración
 - Opera el día a día como cualquier otro rol.
 - Además, maneja las excepciones detalladas en la sección 3.
-- Solo ve pedidos en estado "Listo para facturar".
+- Su bandeja de facturación muestra los pedidos en estado "Listo para facturar".
 - Genera factura y remito, lo cual dispara el estado "Facturado".
 - No puede facturar un pedido que no llegó a "Listo para facturar".
 
