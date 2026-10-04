@@ -69,5 +69,30 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 - Un pedido no puede volver a facturarse si ya está "Facturado", "Anulado" o "Rechazado".
 - Todo cambio de estado queda registrado con quién lo hizo y cuándo (trazabilidad).
 
+## 5. Matriz de permisos por rol
+
+| Acción | Vendedor | Depósito | Administración |
+|---|---|---|---|
+| Crear pedido (estado Creado) | ✔ | — | ✔ |
+| Editar cliente, material o cantidad | ✔ solo en Creado | — | ✔ |
+| Pasar Creado → En Revisión | — | — | ✔ |
+| Pasar En Revisión → En preparación | — | ✔ | ✔ |
+| Pasar En preparación → Listo para facturar | — | ✔ | ✔ |
+| Pasar Listo para facturar → Facturado | — | — | ✔ |
+| Pasar Facturado → Entregado | — | ✔ | ✔ |
+| Pasar Entregado → Cerrado | — | — | ✔ |
+| Agregar comentarios de avance | — | ✔ | ✔ |
+| Rechazar pedido (antes de facturar, con motivo) | — | ✔ | ✔ |
+| Anular pedido (antes de facturar, con motivo) | — | — | ✔ |
+| Consultar catálogo y stock | ✔ | ✔ | ✔ |
+| Ver movimientos de stock | — | — | ✔ |
+| Ajuste manual de stock | — | — | ✔ |
+| Alta e inactivación de usuarios | — | — | ✔ |
+| Cargar o editar precios | — | — | ✔ |
+
+Notas:
+- Administración puede realizar cualquier acción de los otros roles, ya que opera el día a día como cualquier rol. La anulación es exclusiva de este rol.
+- Depósito nunca modifica cliente, material ni cantidad.
+- Un pedido ya facturado no se anula ni se rechaza: pasa a Manejo de Devoluciones (extensión a futuro).
 ---
 *Trabajo Final Integrador — Tecnicatura Universitaria en Programación (UTN)*
