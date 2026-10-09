@@ -29,9 +29,10 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
 ### 3.2 Módulo de Catálogo de Productos
  
 - Consulta y búsqueda de productos (por nombre, material, categoría)
-- Detalle de producto: material, unidad de medida, precio
+- Detalle de producto: material, unidad de medida y precio de catálogo
 - Alta de producto: expuesta a nivel de backend (usada por el script de migración inicial desde Tango y para pruebas); no forma parte de la interfaz de usuario en esta entrega, que se limita a consulta
-- Alcance de esta entrega: baja y modificación de productos quedan fuera de alcance (posible extensión futura, dependiendo de si la carga de catálogo sigue centralizada en Tango o pasa a gestionarse desde Majito)
+- Modificación del precio de catálogo: disponible solo para Administración
+- Alcance de esta entrega: la baja de productos y la modificación de otros datos (distintos del precio) quedan fuera de alcance (posible extensión futura, dependiendo de si la carga de catálogo sigue centralizada en Tango o pasa a gestionarse desde Majito)
 ### 3.3 Módulo de Inventario
  
 - Consulta de stock disponible por producto
@@ -41,6 +42,7 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
 ### 3.4 Módulo de Gestión de Pedidos (núcleo del sistema)
  
 - Alta de pedido, con canal de ingreso (vendedor viajante o consulta directa del cliente)
+- Precio unitario por ítem: lo carga manualmente quien crea el pedido (Vendedor o Administración, por ejemplo para aplicar una promoción) y queda fijo una vez creado. La carga automática del precio queda para un módulo de facturación futuro
 - Consulta de stock contra el Módulo de Inventario al momento de crear/revisar el pedido
 - Transición por los 9 estados del pedido, incluyendo rechazo (por falta de stock o diferencia detectada en depósito, con el ticket de reemplazo vinculado al original) y anulación (disponible antes de facturar, con motivo obligatorio).
 - Notas libres asociadas al pedido (ej. "pago por adelantado", "embalar en pallet")
