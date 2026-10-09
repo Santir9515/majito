@@ -21,7 +21,7 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 - **RF-03:** Las contraseñas deben almacenarse hasheadas, nunca en texto plano ni expuestas por la API.
 - **RF-04:** El sistema debe permitir inactivar un usuario (campo `activo = false`) en lugar de eliminarlo, impidiendo su login pero preservando el historial de acciones que ya haya registrado.
 ### Gestión de pedidos (tickets)
-- **RF-05:** El sistema debe permitir crear un ticket con cliente, uno o más ítems (producto y cantidad) y notas opcionales.
+- **RF-05:** El sistema debe permitir crear un ticket con cliente, uno o más ítems (producto, cantidad y precio unitario) y notas opcionales.
 - **RF-06:** El sistema debe permitir hacer avanzar un ticket únicamente por las siguientes transiciones, respetando qué rol puede disparar cada una:
   - creado → en_revision
   - en_revision → en_preparacion
@@ -39,6 +39,11 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 - **RF-12:** El sistema debe cargar el stock inicial mediante una migración desde una planilla exportada de Tango Gestión.
 - **RF-13:** A partir de la migración, el stock debe gestionarse exclusivamente desde Majito.
 - **RF-14:** El sistema debe registrar cada movimiento de stock (producto, cantidad, tipo de movimiento — `migracion_inicial`, `descuento_facturacion` o `ajuste_manual` —, usuario que lo generó, ticket asociado cuando corresponda, y fecha), de forma que sea posible reconstruir la trazabilidad del stock de un producto.
+### Precios
+- **RF-15:** El sistema debe registrar un precio unitario en cada ítem del ticket, ingresado manualmente por el rol que crea el ticket (Vendedor o Administración), por ejemplo para aplicar una promoción. Ese precio queda fijo al momento de crear el ticket, aunque el precio del producto cambie después. La carga automática del precio queda para el módulo de facturación.da fijo al momento de crear el ticket, aunque el precio del producto cambie después. La carga automática del precio queda para el módulo de facturación.
+- **RF-16:** El sistema debe permitir que únicamente el rol Administración defina y modifique los precios de los productos.
+
+
 ## 2. Requerimientos no funcionales
  
 ### Usabilidad
