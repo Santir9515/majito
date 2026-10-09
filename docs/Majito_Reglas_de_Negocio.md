@@ -89,6 +89,8 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 | Ajuste manual de stock | — | — | ✔ |
 | Alta e inactivación de usuarios | — | — | ✔ |
 | Cargar o editar precios | — | — | ✔ |
+| Definir/modificar precio de un producto | — | — | ✔ |
+| Cargar precio unitario en un ítem al crear un ticket | ✔ | — | ✔ |
 
 Notas:
 - Administración puede realizar cualquier acción de los otros roles, ya que opera el día a día como cualquier rol. La anulación es exclusiva de este rol.
