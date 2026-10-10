@@ -45,11 +45,10 @@ Rechazado | rechazado |
 - Puede rechazar el pedido si detecta una diferencia física respecto a lo cargado (ver sección 3).
 
 ### 2.3 Administración
-- Opera el día a día como cualquier otro rol.
+- Opera el día a día como cualquier otro rol: puede crear pedidos, moverlos entre estados y agregar comentarios, según el detalle de la matriz de permisos (sección 5).
+- Es quien genera la factura y el remito, lo cual dispara el paso a "Facturado".
+- No puede facturar un pedido que no llegó al estado "Listo para facturar".
 - Además, maneja las excepciones detalladas en la sección 3.
-- Su bandeja de facturación muestra los pedidos en estado "Listo para facturar".
-- Genera factura y remito, lo cual dispara el estado "Facturado".
-- No puede facturar un pedido que no llegó a "Listo para facturar".
 
 ## 3. Rol de Admin (detalle)
 
