@@ -31,6 +31,7 @@ Nota general: las colecciones `usuarios`, `productos` y `tickets` incluyen autom
 | `codigo` | String (único) | Identificador del producto en Tango Gestión; clave de la migración |
 | `nombre` | String | Nombre del material |
 | `categoria` | String (opcional) | Agrupación del producto |
+| `precio` | Number (mínimo 0) | Precio de catálogo del producto. Es fijo y único por producto (no varía por ticket); solo Administración puede definirlo o modificarlo |
 | `stockActual` | Number (mínimo 0) | Cantidad disponible; Majito es la fuente de verdad a partir de la migración inicial. El esquema valida explícitamente que no pueda quedar en negativo |
 | `activo` | Boolean | Permite dar de baja un producto sin borrarlo |
 
