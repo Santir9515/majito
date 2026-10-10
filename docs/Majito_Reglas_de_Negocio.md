@@ -82,8 +82,8 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 | Pasar Facturado → Entregado | — | ✔ | ✔ |
 | Pasar Entregado → Cerrado | — | — | ✔ |
 | Agregar comentarios de avance | — | ✔ | ✔ |
-| Rechazar pedido (antes de facturar, con motivo) | — | ✔ | ✔ |
-| Anular pedido (antes de facturar, con motivo) | — | — | ✔ |
+| Rechazar pedido (hasta Listo para facturar inclusive, con motivo) | — | ✔ | ✔ |
+| Anular pedido (hasta Facturado inclusive, con motivo) | — | — | ✔ |
 | Consultar catálogo y stock | ✔ | ✔ | ✔ |
 | Ver movimientos de stock | — | — | ✔ |
 | Ajuste manual de stock | — | — | ✔ |
@@ -93,6 +93,4 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 Notas:
 - Administración puede realizar cualquier acción de los otros roles, ya que opera el día a día como cualquier rol. La anulación es exclusiva de este rol.
 - Depósito nunca modifica cliente, material ni cantidad.
-- Un pedido ya facturado no se anula ni se rechaza: pasa a Manejo de Devoluciones (extensión a futuro).
----
-*Trabajo Final Integrador — Tecnicatura Universitaria en Programación (UTN)*
+- Un pedido ya facturado todavía puede anularse (hasta ese estado inclusive). Una vez entregado o cerrado, ya no se anula ni se rechaza: a partir de ahí, cualquier problema se maneja vía Manejo de Devoluciones (extensión a futuro).
