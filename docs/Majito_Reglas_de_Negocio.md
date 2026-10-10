@@ -17,15 +17,29 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 | Anulado | Administración | Excepción — ver sección 3. |
 | Rechazado | Administración / Depósito | Excepción por falta de stock o diferencia detectada. El ticket de reemplazo queda vinculado al rechazado. |
 
+## Tabla de equivalencias.
+Estado (nombre visible) |	Valor en el sistema |
+|---|---|
+Creado | creado |
+En Revisión | en_revision |
+En preparación | en_preparacion |
+Listo para facturar | listo_para_facturar |
+Facturado | facturado |
+Entregado | entregado |
+Cerrado	| cerrado |
+Anulado	| anulado |
+Rechazado | rechazado |
+
+
 ## 2. Reglas por rol
 
 ### 2.1 Vendedor
 - Crea pedidos: cliente, material y cantidad son obligatorios; notas libres opcionales (ej.: "pago por adelantado").
-- Puede editar el pedido mientras esté en estado "Recibido".
+- Puede editar el pedido mientras esté en estado "Creado".
 - No puede modificarlo una vez que pasó a "En preparación".
 
 ### 2.2 Depósito
-- Mueve el pedido entre los estados En Revisión → En preparación → Listo para facturar.
+- Mueve el pedido entre los estados En preparación → Listo para facturar.
 - Agrega comentarios de avance.
 - No modifica cliente, material ni cantidad.
 - Puede rechazar el pedido si detecta una diferencia física respecto a lo cargado (ver sección 3).
@@ -54,5 +68,28 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 - Un pedido no puede volver a facturarse si ya está "Facturado", "Anulado" o "Rechazado".
 - Todo cambio de estado queda registrado con quién lo hizo y cuándo (trazabilidad).
 
----
-*Trabajo Final Integrador — Tecnicatura Universitaria en Programación (UTN)*
+## 5. Matriz de permisos por rol
+
+| Acción | Vendedor | Depósito | Administración |
+|---|---|---|---|
+| Crear pedido (estado Creado) | ✔ | — | ✔ |
+| Editar cliente, material o cantidad | ✔ solo en Creado | — | ✔ |
+| Pasar Creado → En Revisión | — | — | ✔ |
+| Pasar En Revisión → En preparación | — | ✔ | ✔ |
+| Pasar En preparación → Listo para facturar | — | ✔ | ✔ |
+| Pasar Listo para facturar → Facturado | — | — | ✔ |
+| Pasar Facturado → Entregado | — | ✔ | ✔ |
+| Pasar Entregado → Cerrado | — | — | ✔ |
+| Agregar comentarios de avance | — | ✔ | ✔ |
+| Rechazar pedido (hasta Listo para facturar inclusive, con motivo) | — | ✔ | ✔ |
+| Anular pedido (hasta Facturado inclusive, con motivo) | — | — | ✔ |
+| Consultar catálogo y stock | ✔ | ✔ | ✔ |
+| Ver movimientos de stock | — | — | ✔ |
+| Ajuste manual de stock | — | — | ✔ |
+| Alta e inactivación de usuarios | — | — | ✔ |
+| Cargar o editar precios | — | — | ✔ |
+
+Notas:
+- Administración puede realizar cualquier acción de los otros roles, ya que opera el día a día como cualquier rol. La anulación es exclusiva de este rol.
+- Depósito nunca modifica cliente, material ni cantidad.
+- Un pedido ya facturado todavía puede anularse (hasta ese estado inclusive). Una vez entregado o cerrado, ya no se anula ni se rechaza: a partir de ahí, cualquier problema se maneja vía Manejo de Devoluciones (extensión a futuro).

@@ -27,11 +27,12 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
 - 3 roles: Vendedor, Administración, Depósito
 - Permisos y acciones habilitadas según rol
 ### 3.2 Módulo de Catálogo de Productos
- 
+
 - Consulta y búsqueda de productos (por nombre, material, categoría)
-- Detalle de producto: material, unidad de medida, precio
+- Detalle de producto: material, unidad de medida y precio de catálogo
+- Modificación del precio de catálogo: disponible solo para Administración
 - Alta de producto: expuesta a nivel de backend (usada por el script de migración inicial desde Tango y para pruebas); no forma parte de la interfaz de usuario en esta entrega, que se limita a consulta
-- Alcance de esta entrega: baja y modificación de productos quedan fuera de alcance (posible extensión futura, dependiendo de si la carga de catálogo sigue centralizada en Tango o pasa a gestionarse desde Majito)
+- Alcance de esta entrega: la baja de productos y la modificación de otros datos (distintos del precio) quedan fuera de alcance (posible extensión futura, dependiendo de si la carga de catálogo sigue centralizada en Tango o pasa a gestionarse desde Majito)
 ### 3.3 Módulo de Inventario
  
 - Consulta de stock disponible por producto
@@ -42,7 +43,7 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
  
 - Alta de pedido, con canal de ingreso (vendedor viajante o consulta directa del cliente)
 - Consulta de stock contra el Módulo de Inventario al momento de crear/revisar el pedido
-- Transición por los 9 estados del pedido, incluyendo rechazo (por falta de stock o diferencia detectada en depósito, con el ticket de reemplazo vinculado al original) y anulación (disponible hasta el estado facturado inclusive, con motivo obligatorio)
+- Transición por los 9 estados del pedido, incluyendo rechazo (por falta de stock o diferencia detectada en depósito, con el ticket de reemplazo vinculado al original) y anulación (disponible antes de facturar, con motivo obligatorio).
 - Notas libres asociadas al pedido (ej. "pago por adelantado", "embalar en pallet")
 - El seguimiento de cambios de estado del pedido se registra mediante la capacidad transversal de Historial (ver sección 4)
 ### 3.5 Módulo de Administración/Excepciones
