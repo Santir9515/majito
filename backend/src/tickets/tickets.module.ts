@@ -3,10 +3,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TicketsService } from './tickets.service';
 import { TicketsController } from './tickets.controller';
 import { Ticket, TicketSchema } from './schemas/ticket.schema';
+import { UsersModule } from '../users/users.module';
+import { ProductosModule } from '../productos/productos.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Ticket.name, schema: TicketSchema }]),
+    ProductosModule,
+    UsersModule,
   ],
   controllers: [TicketsController],
   providers: [TicketsService],

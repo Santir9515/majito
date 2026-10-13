@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
+import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
 
 @Controller('tickets')
 export class TicketsController {
@@ -20,4 +21,9 @@ export class TicketsController {
   findOne(@Param('id') id: string) {
     return this.ticketsService.findOne(id);
   }
+
+  @Patch(':id/avanzar')
+  avanzar(@Param('id') id: string, @Body() dto: AvanzarTicketDto) {
+  return this.ticketsService.avanzar(id, dto);
+}
 }
