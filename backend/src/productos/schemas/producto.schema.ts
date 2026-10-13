@@ -14,6 +14,9 @@ export class Producto {
   @Prop()
   categoria?: string;
 
+  @Prop({ required: true, min: 0 })
+  precio: number;
+
   @Prop({ required: true, default: 0, min: 0 })
   stockActual: number;
 
