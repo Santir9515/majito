@@ -48,7 +48,7 @@ Nota general: las colecciones `usuarios`, `productos` y `tickets` incluyen autom
 | `motivoAnulacion` | String (opcional) | Obligatorio en la práctica cuando `estado = anulado` |
 | `motivoRechazo` | String (opcional) | Obligatorio en la práctica cuando `estado = rechazado` |
 | `ticketOrigenId` | ObjectId → `tickets` (opcional) | En un ticket de reemplazo, referencia al ticket rechazado que le dio origen |
-| `ticketReemplazoId` | ObjectId → `tickets` (opcional) | En un ticket rechazado, referencia al ticket de reemplazo creado a partir de él (relación bidireccional con `ticketOrigenId`) |
+| `ticketsReemplazoIds` | Array de ObjectId → `tickets` (opcional) | En un ticket rechazado, referencias a los tickets de reemplazo creados a partir de él. Puede haber más de uno (por ejemplo, si el pedido se desglosa en un pedido con los ítems con stock y otro con el ítem pendiente). Relación bidireccional con `ticketOrigenId` |
 
 ### 4.1 Sub-documento `items[]`
 | Campo | Tipo | Descripción |
@@ -98,6 +98,8 @@ stateDiagram-v2
     en_revision --> anulado
     en_preparacion --> anulado
     listo_para_facturar --> anulado
+    facturado --> anulado
+    rechazado --> anulado
     anulado --> [*]
 
     creado --> rechazado
@@ -118,7 +120,7 @@ erDiagram
     usuarios ||--o{ tickets : "creadoPor"
     usuarios ||--o{ tickets : "historial.usuario"
     productos ||--o{ tickets : "items.productoId"
-    tickets ||--o| tickets : "ticketOrigenId / ticketReemplazoId"
+    tickets ||--o{ tickets : "ticketOrigenId / ticketsReemplazoIds"
     productos ||--o{ movimientos_stock : "productoId"
     usuarios ||--o{ movimientos_stock : "usuarioId"
     tickets ||--o| movimientos_stock : "ticketId"
@@ -145,7 +147,7 @@ erDiagram
         objectId creadoPor
         array historial
         objectId ticketOrigenId
-        objectId ticketReemplazoId
+        array ticketsReemplazoIds
     }
     movimientos_stock {
         objectId productoId
