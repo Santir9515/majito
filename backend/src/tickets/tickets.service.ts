@@ -63,16 +63,21 @@ export class TicketsService {
     return this.ticketModel.findById(id).exec();
   }
 
+  private async obtenerUsuarioActivo(usuarioId: string) {
+    const usuario = await this.userModel.findById(usuarioId);
+    if (!usuario || !usuario.activo) {
+      throw new ForbiddenException('Usuario inexistente o inactivo');
+    }
+    return usuario;
+  }
+
   async avanzar(id: string, dto: AvanzarTicketDto) {
     const ticket = await this.ticketModel.findById(id);
     if (!ticket) {
       throw new NotFoundException(`Ticket ${id} no encontrado`);
     }
 
-    const usuario = await this.userModel.findById(dto.usuarioId);
-    if (!usuario || !usuario.activo) {
-      throw new ForbiddenException('Usuario inexistente o inactivo');
-    }
+    const usuario = await this.obtenerUsuarioActivo(dto.usuarioId);
 
     const transicion = TRANSICIONES[ticket.estado];
     if (!transicion) {
