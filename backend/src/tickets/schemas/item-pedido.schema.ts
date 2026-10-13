@@ -6,6 +6,12 @@ export class ItemPedido {
   @Prop({ type: Types.ObjectId, ref: 'Producto', required: true })
   productoId: Types.ObjectId;
 
+  @Prop({ required: true })
+  productoNombre: string;
+
+  @Prop({ required: true })
+  productoCodigo: string;
+
   @Prop({ required: true, min: 1 })
   cantidad: number;
 }
