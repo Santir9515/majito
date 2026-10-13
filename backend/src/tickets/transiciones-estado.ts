@@ -34,3 +34,13 @@ export const TRANSICIONES: Partial<Record<EstadoTicket, Transicion>> = {
     roles: [Role.ADMINISTRACION],
   },
 };
+
+export const ESTADOS_ANULABLES: EstadoTicket[] = [
+  EstadoTicket.CREADO,
+  EstadoTicket.EN_REVISION,
+  EstadoTicket.EN_PREPARACION,
+  EstadoTicket.LISTO_PARA_FACTURAR,
+  EstadoTicket.FACTURADO,
+];
+
+export const ROLES_ANULAR: Role[] = [Role.ADMINISTRACION];

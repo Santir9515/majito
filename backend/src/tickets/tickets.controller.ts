@@ -2,6 +2,8 @@ import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
+import { AnularTicketDto } from './dto/anular-ticket.dto';
+
 
 @Controller('tickets')
 export class TicketsController {
@@ -25,5 +27,10 @@ export class TicketsController {
   @Patch(':id/avanzar')
   avanzar(@Param('id') id: string, @Body() dto: AvanzarTicketDto) {
   return this.ticketsService.avanzar(id, dto);
-}
+  }
+
+  @Patch(':id/anular')
+  anular(@Param('id') id: string, @Body() dto: AnularTicketDto) {
+    return this.ticketsService.anular(id, dto);
+  }
 }
