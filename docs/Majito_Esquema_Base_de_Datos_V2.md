@@ -136,6 +136,7 @@ erDiagram
         string codigo
         string nombre
         string categoria
+        number precio
         number stockActual
         boolean activo
     }
