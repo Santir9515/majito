@@ -11,8 +11,10 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 import { EstadoTicket } from './enums/estado-ticket.enum';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
-import { TRANSICIONES } from './transiciones-estado';
+import { ROLES_ANULAR, TRANSICIONES } from './transiciones-estado';
 import { Producto, ProductoDocument } from '../productos/schemas/producto.schema';
+import { AnularTicketDto } from './dto/anular-ticket.dto';
+import { ESTADOS_ANULABLES } from './transiciones-estado';
 
 @Injectable()
 export class TicketsService {
@@ -63,16 +65,21 @@ export class TicketsService {
     return this.ticketModel.findById(id).exec();
   }
 
+  private async obtenerUsuarioActivo(usuarioId: string) {
+    const usuario = await this.userModel.findById(usuarioId);
+    if (!usuario || !usuario.activo) {
+      throw new ForbiddenException('Usuario inexistente o inactivo');
+    }
+    return usuario;
+  }
+
   async avanzar(id: string, dto: AvanzarTicketDto) {
     const ticket = await this.ticketModel.findById(id);
     if (!ticket) {
       throw new NotFoundException(`Ticket ${id} no encontrado`);
     }
 
-    const usuario = await this.userModel.findById(dto.usuarioId);
-    if (!usuario || !usuario.activo) {
-      throw new ForbiddenException('Usuario inexistente o inactivo');
-    }
+    const usuario = await this.obtenerUsuarioActivo(dto.usuarioId);
 
     const transicion = TRANSICIONES[ticket.estado];
     if (!transicion) {
@@ -94,4 +101,35 @@ export class TicketsService {
     });
     return ticket.save();
   }
+
+  async anular(id: string, dto: AnularTicketDto) {
+  const ticket = await this.ticketModel.findById(id);
+  if (!ticket) {
+    throw new NotFoundException(`Ticket ${id} no encontrado`);
+  }
+
+  const usuario = await this.obtenerUsuarioActivo(dto.usuarioId);
+  if (!ROLES_ANULAR.includes(usuario.rol)) {
+    throw new ForbiddenException(
+      `El rol "${usuario.rol}" no puede anular tickets`,
+    );
+  }
+
+  if (!ESTADOS_ANULABLES.includes(ticket.estado)) {
+    throw new BadRequestException(
+      `Un ticket en estado "${ticket.estado}" no puede anularse`,
+    );
+  }
+
+  ticket.estado = EstadoTicket.ANULADO;
+  ticket.motivoAnulacion = dto.motivo;
+  ticket.historial.push({
+    estado: EstadoTicket.ANULADO,
+    usuario: usuario._id,
+    fecha: new Date(),
+    motivo: dto.motivo,
+  });
+  return ticket.save();
 }
+}
+
