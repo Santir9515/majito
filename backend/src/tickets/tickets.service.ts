@@ -12,18 +12,40 @@ import { EstadoTicket } from './enums/estado-ticket.enum';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
 import { TRANSICIONES } from './transiciones-estado';
+import { Producto, ProductoDocument } from '../productos/schemas/producto.schema';
 
 @Injectable()
 export class TicketsService {
   constructor(
     @InjectModel(Ticket.name) private ticketModel: Model<TicketDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Producto.name) private productoModel: Model<ProductoDocument>,
   ) {}
 
-  create(createTicketDto: CreateTicketDto) {
-    const { creadoPor, ...rest } = createTicketDto;
+  async create(createTicketDto: CreateTicketDto) {
+    const { creadoPor, items, ...rest } = createTicketDto;
+
+    // Snapshot: nombre y código se copian del catálogo, nunca los manda el cliente
+    const itemsConSnapshot = await Promise.all(
+      items.map(async (item) => {
+        const producto = await this.productoModel.findById(item.productoId);
+        if (!producto) {
+          throw new NotFoundException(
+            `Producto ${item.productoId} no encontrado`,
+          );
+        }
+        return {
+          productoId: producto._id,
+          productoNombre: producto.nombre,
+          productoCodigo: producto.codigo,
+          cantidad: item.cantidad,
+        };
+      }),
+    );
+
     const ticket = new this.ticketModel({
       ...rest,
+      items: itemsConSnapshot,
       creadoPor,
       estado: EstadoTicket.CREADO,
       historial: [
