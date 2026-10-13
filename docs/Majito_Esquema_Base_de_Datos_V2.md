@@ -110,8 +110,8 @@ stateDiagram-v2
 ```
 
 Dos estados de excepción:
-- **`anulado`**: disponible desde cualquier estado anterior a `facturado`. Iniciado por el cliente o por decisión interna (arrepentimiento, error de pago). Requiere motivo.
-- **`rechazado`**: disponible desde cualquier estado anterior a `facturado`. Iniciado por falta de stock o diferencia detectada en depósito. Requiere motivo. El ticket de reemplazo se crea con `ticketOringId` apuntando a este, y este a su vez queda con `ticketReemplazoId` apuntando al nuevo.
+- **`anulado`**: disponible desde cualquier estado hasta `facturado` inclusive, y también desde `rechazado` cuando el cliente no acepta la alternativa y el ticket no tiene reemplazos. Iniciado por el cliente o por decisión interna (arrepentimiento, error de pago, falta de acuerdo tras un rechazo). Requiere motivo.
+- **`rechazado`**: disponible desde cualquier estado anterior a `facturado`. Iniciado por falta de stock o diferencia detectada en depósito. Requiere motivo. Los tickets de reemplazo se crean con `ticketOrigenId` apuntando a este, y este queda con sus ids en `ticketsReemplazoIds`. Un mismo rechazado puede tener más de un reemplazo.
 
 ## 7. Relaciones entre colecciones
 
