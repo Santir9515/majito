@@ -44,3 +44,13 @@ export const ESTADOS_ANULABLES: EstadoTicket[] = [
 ];
 
 export const ROLES_ANULAR: Role[] = [Role.ADMINISTRACION];
+
+// Rechazo (RF-08): hasta "listo para facturar" inclusive.
+export const ESTADOS_RECHAZABLES: EstadoTicket[] = [
+  EstadoTicket.CREADO,
+  EstadoTicket.EN_REVISION,
+  EstadoTicket.EN_PREPARACION,
+  EstadoTicket.LISTO_PARA_FACTURAR,
+];
+
+export const ROLES_RECHAZAR: Role[] = [Role.DEPOSITO, Role.ADMINISTRACION];

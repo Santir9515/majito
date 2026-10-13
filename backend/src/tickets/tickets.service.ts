@@ -11,10 +11,11 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 import { EstadoTicket } from './enums/estado-ticket.enum';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
-import { ROLES_ANULAR, TRANSICIONES } from './transiciones-estado';
+import { ESTADOS_RECHAZABLES, ROLES_ANULAR, ROLES_RECHAZAR, TRANSICIONES } from './transiciones-estado';
 import { Producto, ProductoDocument } from '../productos/schemas/producto.schema';
 import { AnularTicketDto } from './dto/anular-ticket.dto';
 import { ESTADOS_ANULABLES } from './transiciones-estado';
+import { RechazarTicketDto } from './dto/rechazar-ticket.dto';
 
 @Injectable()
 export class TicketsService {
@@ -125,6 +126,36 @@ export class TicketsService {
   ticket.motivoAnulacion = dto.motivo;
   ticket.historial.push({
     estado: EstadoTicket.ANULADO,
+    usuario: usuario._id,
+    fecha: new Date(),
+    motivo: dto.motivo,
+  });
+  return ticket.save();
+}
+
+async rechazar(id: string, dto: RechazarTicketDto) {
+  const ticket = await this.ticketModel.findById(id);
+  if (!ticket) {
+    throw new NotFoundException(`Ticket ${id} no encontrado`);
+  }
+
+  const usuario = await this.obtenerUsuarioActivo(dto.usuarioId);
+  if (!ROLES_RECHAZAR.includes(usuario.rol)) {
+    throw new ForbiddenException(
+      `El rol "${usuario.rol}" no puede rechazar tickets`,
+    );
+  }
+
+  if (!ESTADOS_RECHAZABLES.includes(ticket.estado)) {
+    throw new BadRequestException(
+      `Un ticket en estado "${ticket.estado}" no puede rechazarse`,
+    );
+  }
+
+  ticket.estado = EstadoTicket.RECHAZADO;
+  ticket.motivoRechazo = dto.motivo;
+  ticket.historial.push({
+    estado: EstadoTicket.RECHAZADO,
     usuario: usuario._id,
     fecha: new Date(),
     motivo: dto.motivo,

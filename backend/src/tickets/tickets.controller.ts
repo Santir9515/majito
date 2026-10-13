@@ -3,6 +3,7 @@ import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
 import { AnularTicketDto } from './dto/anular-ticket.dto';
+import { RechazarTicketDto } from './dto/rechazar-ticket.dto';
 
 
 @Controller('tickets')
@@ -32,5 +33,10 @@ export class TicketsController {
   @Patch(':id/anular')
   anular(@Param('id') id: string, @Body() dto: AnularTicketDto) {
     return this.ticketsService.anular(id, dto);
+  }
+
+  @Patch(':id/rechazar')
+  rechazar(@Param('id') id: string, @Body() dto: RechazarTicketDto) {
+    return this.ticketsService.rechazar(id, dto);
   }
 }
