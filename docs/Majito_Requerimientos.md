@@ -12,6 +12,8 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 | RF-04 a RF-09 | RF-05 a RF-10 |
 | RF-10 a RF-12 | RF-11 a RF-13 |
 | — | RF-14 (nuevo: auditoría de movimientos de stock) |
+
+Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración.
  
 ## 1. Requerimientos funcionales
  
@@ -30,15 +32,15 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
   - facturado → entregado
   - entregado → cerrado
   Las transiciones hacia "anulado" (RF-07) y "rechazado" (RF-08) no forman parte de este flujo lineal y se rigen por las condiciones propias de cada una.
-- **RF-07:** El sistema debe permitir anular un ticket en cualquier estado anterior a "facturado", con motivo obligatorio.
-- **RF-08:** El sistema debe permitir rechazar un ticket en cualquier estado anterior a "facturado" (por falta de stock o diferencia detectada en depósito), con motivo obligatorio, y vincular el ticket de reemplazo al original.
+- **RF-07:** El sistema debe permitir anular un ticket desde el estado "creado" hasta "facturado" inclusive, o un ticket "rechazado" que no tenga tickets de reemplazo, con motivo obligatorio. La anulación es exclusiva del rol Administración. Si el ticket anulado estaba "facturado", el sistema debe reintegrar automáticamente el stock descontado.
+- **RF-08:** El sistema debe permitir rechazar un ticket desde el estado "creado" hasta "listo_para_facturar" inclusive (por falta de stock o diferencia detectada en depósito), con motivo obligatorio. Un ticket rechazado puede tener uno o más tickets de reemplazo (por ejemplo, cuando el pedido se desglosa), creados por Vendedor o Administración y vinculados al original en ambos sentidos.
 - **RF-09:** El sistema debe registrar un historial de cada cambio de estado, indicando quién lo hizo y cuándo.
 - **RF-10:** El sistema no debe permitir facturar un ticket que no llegó al estado "listo para facturar".
 ### Stock
 - **RF-11:** El sistema debe permitir consultar el stock disponible de un producto al momento de crear o revisar un ticket.
 - **RF-12:** El sistema debe cargar el stock inicial mediante una migración desde una planilla exportada de Tango Gestión.
 - **RF-13:** A partir de la migración, el stock debe gestionarse exclusivamente desde Majito.
-- **RF-14:** El sistema debe registrar cada movimiento de stock (producto, cantidad, tipo de movimiento — `migracion_inicial`, `descuento_facturacion` o `ajuste_manual` —, usuario que lo generó, ticket asociado cuando corresponda, y fecha), de forma que sea posible reconstruir la trazabilidad del stock de un producto.
+- **RF-14:** El sistema debe registrar cada movimiento de stock (producto, cantidad, tipo de movimiento — `migracion_inicial`, `descuento_facturacion`, `reintegro_anulacion` o `ajuste_manual` —, usuario que lo generó, ticket asociado cuando corresponda, y fecha), de forma que sea posible reconstruir la trazabilidad del stock de un producto.
 ## 2. Requerimientos no funcionales
  
 ### Usabilidad
