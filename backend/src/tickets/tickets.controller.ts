@@ -6,7 +6,6 @@ import { AnularTicketDto } from './dto/anular-ticket.dto';
 import { RechazarTicketDto } from './dto/rechazar-ticket.dto';
 import { CrearReemplazoDto } from './dto/crear-reemplazo.dto';
 
-
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
@@ -28,7 +27,7 @@ export class TicketsController {
 
   @Patch(':id/avanzar')
   avanzar(@Param('id') id: string, @Body() dto: AvanzarTicketDto) {
-  return this.ticketsService.avanzar(id, dto);
+    return this.ticketsService.avanzar(id, dto);
   }
 
   @Patch(':id/anular')

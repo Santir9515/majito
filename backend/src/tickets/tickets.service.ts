@@ -27,6 +27,8 @@ import {
 
 import { CrearReemplazoDto } from './dto/crear-reemplazo.dto';
 import { ROLES_CREAR_REEMPLAZO } from './transiciones-estado';
+import { MovimientosStockService } from '../movimientos-stock/movimientos-stock.service';
+import { TipoMovimiento } from '../movimientos-stock/enums/tipo-movimiento.enum';
 
 @Injectable()
 export class TicketsService {
@@ -34,9 +36,10 @@ export class TicketsService {
     @InjectModel(Ticket.name) private ticketModel: Model<TicketDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Producto.name) private productoModel: Model<ProductoDocument>,
+    private movimientosStockService: MovimientosStockService,
   ) {}
 
-  // Snapshot: nombre y código se copian del catálogo, nunca los manda el cliente
+  // Snapshot: nombre y código se copian del catálogo, nunca los manda el client
   private async construirItemsConSnapshot(items: ItemPedidoDto[]) {
     return Promise.all(
       items.map(async (item) => {
@@ -108,13 +111,35 @@ export class TicketsService {
       );
     }
 
+    // Al facturar se descuenta el stock; si algún ítem no alcanza, no se factura
+    const descuentaStock = transicion.siguiente === EstadoTicket.FACTURADO;
+    if (descuentaStock) {
+      await this.movimientosStockService.aplicarPorTicket(
+        ticket._id,
+        ticket.items,
+        TipoMovimiento.DESCUENTO_FACTURACION,
+        usuario._id,
+      );
+    }
+
     ticket.estado = transicion.siguiente;
     ticket.historial.push({
       estado: transicion.siguiente,
       usuario: usuario._id,
       fecha: new Date(),
     });
-    return ticket.save();
+
+    try {
+      return await ticket.save();
+    } catch (error) {
+      if (descuentaStock) {
+        await this.movimientosStockService.deshacerPorTicket(
+          ticket._id,
+          TipoMovimiento.DESCUENTO_FACTURACION,
+        );
+      }
+      throw error;
+    }
   }
 
   async anular(id: string, dto: AnularTicketDto) {
@@ -144,6 +169,17 @@ export class TicketsService {
       );
     }
 
+    // Anular un ticket facturado devuelve el stock, como una nota de crédito
+    const reintegraStock = ticket.estado === EstadoTicket.FACTURADO;
+    if (reintegraStock) {
+      await this.movimientosStockService.aplicarPorTicket(
+        ticket._id,
+        ticket.items,
+        TipoMovimiento.REINTEGRO_ANULACION,
+        usuario._id,
+      );
+    }
+
     ticket.estado = EstadoTicket.ANULADO;
     ticket.motivoAnulacion = dto.motivo;
     ticket.historial.push({
@@ -152,7 +188,18 @@ export class TicketsService {
       fecha: new Date(),
       motivo: dto.motivo,
     });
-    return ticket.save();
+
+    try {
+      return await ticket.save();
+    } catch (error) {
+      if (reintegraStock) {
+        await this.movimientosStockService.deshacerPorTicket(
+          ticket._id,
+          TipoMovimiento.REINTEGRO_ANULACION,
+        );
+      }
+      throw error;
+    }
   }
 
   async rechazar(id: string, dto: RechazarTicketDto) {

@@ -17,4 +17,5 @@ export class HistorialEntry {
   motivo?: string;
 }
 
-export const HistorialEntrySchema = SchemaFactory.createForClass(HistorialEntry);
+export const HistorialEntrySchema =
+  SchemaFactory.createForClass(HistorialEntry);
