@@ -15,7 +15,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 | Entregado | Depósito | Pedido entregado al cliente. |
 | Cerrado | Administración | Ciclo del pedido finalizado. |
 | Anulado | Administración | Excepción — ver sección 3. |
-| Rechazado | Administración / Depósito | Excepción por falta de stock o diferencia detectada. El ticket de reemplazo queda vinculado al rechazado. |
+| Rechazado | Administración / Depósito | Excepción por falta de stock o diferencia detectada. Puede tener uno o más tickets de reemplazo vinculados (desglose del pedido original). |
 
 ## Tabla de equivalencias.
 Estado (nombre visible) |	Valor en el sistema |
@@ -56,8 +56,8 @@ Ocupado por un encargado o responsable autorizado por gerencia (no necesariament
 
 | Acción | Cuándo aplica | Qué dispara |
 |---|---|---|
-| Anular pedido | Antes de facturar. | Requiere motivo obligatorio. |
-| Rechazar pedido | Antes de facturar, por falta de stock o diferencia física. | Requiere motivo obligatorio. El pedido rechazado queda como registro final, y el ticket de reemplazo (si se crea) queda vinculado a él en ambos sentidos. |
+| Anular pedido | Desde Creado hasta Facturado inclusive, o un pedido Rechazado que no tiene reemplazos. | Requiere motivo obligatorio. Si el pedido estaba Facturado, el stock se reintegra automáticamente (ver sección 6). |
+| Rechazar pedido | Hasta Listo para facturar inclusive, por falta de stock o diferencia física. | Requiere motivo obligatorio. El pedido rechazado queda como registro final. Los tickets de reemplazo (uno o varios) quedan vinculados a él en ambos sentidos. |
 | Manejo de Devoluciones (extensión a futuro) | Pedido ya facturado (posterior a la factura). | No anula el pedido original: registra la devolución como hecho separado, sin borrar el historial. |
 
 El sistema debe distinguir automáticamente cuál de las acciones ofrecer, según el estado en que se encuentre el pedido.
@@ -82,7 +82,8 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 | Pasar Entregado → Cerrado | — | — | ✔ |
 | Agregar comentarios de avance | — | ✔ | ✔ |
 | Rechazar pedido (hasta Listo para facturar inclusive, con motivo) | — | ✔ | ✔ |
-| Anular pedido (hasta Facturado inclusive, con motivo) | — | — | ✔ |
+| Crear ticket de reemplazo de un pedido Rechazado | ✔ | — | ✔ |
+| Anular pedido (hasta Facturado inclusive, o Rechazado sin reemplazos, con motivo) | — | — | ✔ |
 | Consultar catálogo y stock | ✔ | ✔ | ✔ |
 | Ver movimientos de stock | — | — | ✔ |
 | Ajuste manual de stock | — | — | ✔ |
@@ -93,3 +94,13 @@ Notas:
 - Administración puede realizar cualquier acción de los otros roles, ya que opera el día a día como cualquier rol. La anulación es exclusiva de este rol.
 - Depósito nunca modifica cliente, material ni cantidad.
 - Un pedido ya facturado todavía puede anularse (hasta ese estado inclusive). Una vez entregado o cerrado, ya no se anula ni se rechaza: a partir de ahí, cualquier problema se maneja vía Manejo de Devoluciones (extensión a futuro).
+- Un pedido Rechazado puede dar origen a uno o más tickets de reemplazo (por ejemplo, si se desglosa el pedido). Si no se acuerda ningún reemplazo con el cliente, el pedido Rechazado puede anularse; si ya tiene reemplazos, no.
+
+## 6. Stock y precios
+
+- Majito es la única fuente de verdad del stock una vez migrado desde Tango.
+- El stock se descuenta automáticamente al pasar un pedido a Facturado.
+- Al anular un pedido Facturado, el stock se reintegra automáticamente, de forma equivalente a una nota de crédito en Tango. Queda registrado como movimiento de tipo `reintegro_anulacion`.
+- Anular o rechazar un pedido que todavía no fue facturado no modifica el stock.
+- El precio de cada ítem es siempre el de catálogo al momento de crear el pedido. Solo Administración puede modificar el precio de catálogo.
+- Los descuentos y las modificaciones de precio por operación se aplican en el módulo de facturación, que está fuera del alcance de Majito.
