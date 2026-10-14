@@ -169,6 +169,17 @@ export class TicketsService {
       );
     }
 
+    // Anular un ticket facturado devuelve el stock, como una nota de crédito
+    const reintegraStock = ticket.estado === EstadoTicket.FACTURADO;
+    if (reintegraStock) {
+      await this.movimientosStockService.aplicarPorTicket(
+        ticket._id,
+        ticket.items,
+        TipoMovimiento.REINTEGRO_ANULACION,
+        usuario._id,
+      );
+    }
+
     ticket.estado = EstadoTicket.ANULADO;
     ticket.motivoAnulacion = dto.motivo;
     ticket.historial.push({
@@ -177,7 +188,18 @@ export class TicketsService {
       fecha: new Date(),
       motivo: dto.motivo,
     });
-    return ticket.save();
+
+    try {
+      return await ticket.save();
+    } catch (error) {
+      if (reintegraStock) {
+        await this.movimientosStockService.deshacerPorTicket(
+          ticket._id,
+          TipoMovimiento.REINTEGRO_ANULACION,
+        );
+      }
+      throw error;
+    }
   }
 
   async rechazar(id: string, dto: RechazarTicketDto) {
