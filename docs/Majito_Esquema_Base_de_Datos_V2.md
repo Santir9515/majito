@@ -80,6 +80,7 @@ Registra cada cambio en el stock de un producto, para poder auditar quién lo mo
 | `usuarioId` | ObjectId → `usuarios` | Quién generó el movimiento |
 | `fecha` | Date | Cuándo ocurrió (automático) |
 | `ticketId` | ObjectId → `tickets` (opcional) | Solo se completa cuando `tipoMovimiento = descuento_facturacion`, vinculando el movimiento al ticket que lo originó |
+| `reintegro_anulacion` | `movimiento_stock` | Se completa en los movimientos generados por facturado (egreso) y por anulacion de un facturado (reintegro) |
 
 ## 6. Flujo de estados
 
