@@ -23,7 +23,9 @@ export class CrearMovimientoDto {
   @IsMongoId()
   usuarioId: string;
 
-  @ValidateIf((o: CrearMovimientoDto) => o.tipo === TipoMovimiento.AJUSTE_MANUAL)
+  @ValidateIf(
+    (o: CrearMovimientoDto) => o.tipo === TipoMovimiento.AJUSTE_MANUAL,
+  )
   @IsString()
   @IsNotEmpty()
   motivo?: string;

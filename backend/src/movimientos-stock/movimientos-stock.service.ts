@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
   MovimientoStock,
   MovimientoStockDocument,
@@ -121,5 +121,77 @@ export class MovimientosStockService {
       .find({ productoId: producto._id })
       .sort({ fecha: -1 })
       .exec();
+  }
+
+  // Aplica el stock de todos los ítems de un ticket (descuento al facturar o reintegro al anular).
+  // Es todo o nada: si un ítem falla, se deshacen los ya aplicados.
+  async aplicarPorTicket(
+    ticketId: Types.ObjectId,
+    items: {
+      productoId: Types.ObjectId;
+      productoNombre: string;
+      cantidad: number;
+    }[],
+    tipo:
+      TipoMovimiento.DESCUENTO_FACTURACION | TipoMovimiento.REINTEGRO_ANULACION,
+    usuarioId: Types.ObjectId,
+  ) {
+    const signo = tipo === TipoMovimiento.DESCUENTO_FACTURACION ? -1 : 1;
+    const aplicados: typeof items = [];
+
+    try {
+      for (const item of items) {
+        const delta = signo * item.cantidad;
+        const filtro =
+          delta < 0
+            ? { _id: item.productoId, stockActual: { $gte: -delta } }
+            : { _id: item.productoId };
+        const actualizado = await this.productoModel.findOneAndUpdate(filtro, {
+          $inc: { stockActual: delta },
+        });
+        if (!actualizado) {
+          throw new BadRequestException(
+            `Stock insuficiente para "${item.productoNombre}" (se necesitan ${item.cantidad})`,
+          );
+        }
+        aplicados.push(item);
+      }
+
+      await this.movimientoModel.insertMany(
+        items.map((item) => ({
+          productoId: item.productoId,
+          tipo,
+          cantidad: signo * item.cantidad,
+          usuarioId,
+          ticketId,
+          fecha: new Date(),
+        })),
+      );
+    } catch (error) {
+      // Se deshacen los ítems que ya se habían aplicado
+      await Promise.all(
+        aplicados.map((item) =>
+          this.productoModel.updateOne(
+            { _id: item.productoId },
+            { $inc: { stockActual: -signo * item.cantidad } },
+          ),
+        ),
+      );
+      throw error;
+    }
+  }
+
+  // Compensación: deshace los movimientos de un ticket si algo falló después de aplicarlos
+  async deshacerPorTicket(ticketId: Types.ObjectId, tipo: TipoMovimiento) {
+    const movimientos = await this.movimientoModel.find({ ticketId, tipo });
+    await Promise.all(
+      movimientos.map((m) =>
+        this.productoModel.updateOne(
+          { _id: m.productoId },
+          { $inc: { stockActual: -m.cantidad } },
+        ),
+      ),
+    );
+    await this.movimientoModel.deleteMany({ ticketId, tipo });
   }
 }
