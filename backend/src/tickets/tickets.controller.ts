@@ -4,6 +4,7 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
 import { AnularTicketDto } from './dto/anular-ticket.dto';
 import { RechazarTicketDto } from './dto/rechazar-ticket.dto';
+import { CrearReemplazoDto } from './dto/crear-reemplazo.dto';
 
 
 @Controller('tickets')
@@ -38,5 +39,10 @@ export class TicketsController {
   @Patch(':id/rechazar')
   rechazar(@Param('id') id: string, @Body() dto: RechazarTicketDto) {
     return this.ticketsService.rechazar(id, dto);
+  }
+
+  @Post(':id/reemplazo')
+  crearReemplazo(@Param('id') id: string, @Body() dto: CrearReemplazoDto) {
+    return this.ticketsService.crearReemplazo(id, dto);
   }
 }

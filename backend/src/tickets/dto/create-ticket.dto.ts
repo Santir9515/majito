@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-class ItemPedidoDto {
+export class ItemPedidoDto {
   @IsNotEmpty()
   @IsMongoId()
   productoId: string;

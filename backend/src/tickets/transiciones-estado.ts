@@ -54,3 +54,8 @@ export const ESTADOS_RECHAZABLES: EstadoTicket[] = [
 ];
 
 export const ROLES_RECHAZAR: Role[] = [Role.DEPOSITO, Role.ADMINISTRACION];
+
+export const ROLES_CREAR_REEMPLAZO: Role[] = [
+  Role.VENDEDOR,
+  Role.ADMINISTRACION,
+];

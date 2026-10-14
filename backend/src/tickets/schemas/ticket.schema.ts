@@ -35,8 +35,8 @@ export class Ticket {
   @Prop({ type: Types.ObjectId, ref: 'Ticket' })
   ticketOrigenId?: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Ticket' })
-  ticketReemplazoId?: Types.ObjectId;
-}
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Ticket' }], default: [] })
+  ticketsReemplazoIds: Types.ObjectId[];
+  }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);
