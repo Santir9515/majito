@@ -25,6 +25,9 @@ import {
   ProductoDocument,
 } from '../productos/schemas/producto.schema';
 
+import { CrearReemplazoDto } from './dto/crear-reemplazo.dto';
+import { ROLES_CREAR_REEMPLAZO } from './transiciones-estado';
+
 @Injectable()
 export class TicketsService {
   constructor(
@@ -173,4 +176,43 @@ export class TicketsService {
     });
     return ticket.save();
   }
+
+  async crearReemplazo(id: string, dto: CrearReemplazoDto) {
+  const origen = await this.ticketModel.findById(id);
+  if (!origen) {
+    throw new NotFoundException(`Ticket ${id} no encontrado`);
+  }
+
+  const usuario = await this.obtenerUsuarioActivo(dto.creadoPor);
+  if (!ROLES_CREAR_REEMPLAZO.includes(usuario.rol)) {
+    throw new ForbiddenException(
+      `El rol "${usuario.rol}" no puede crear tickets de reemplazo`,
+    );
+  }
+
+  if (origen.estado !== EstadoTicket.RECHAZADO) {
+    throw new BadRequestException(
+      'Solo se puede crear un reemplazo de un ticket rechazado',
+    );
+  }
+
+  const items = await this.construirItemsConSnapshot(dto.items);
+
+  const reemplazo = await new this.ticketModel({
+    cliente: origen.cliente,
+    items,
+    notas: dto.notas,
+    creadoPor: usuario._id,
+    estado: EstadoTicket.CREADO,
+    historial: [
+      { estado: EstadoTicket.CREADO, usuario: usuario._id, fecha: new Date() },
+    ],
+    ticketOrigenId: origen._id,
+  }).save();
+
+  origen.ticketsReemplazoIds.push(reemplazo._id);
+  await origen.save();
+
+  return reemplazo;
+}
 }
