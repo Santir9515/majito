@@ -66,7 +66,6 @@ export class MovimientosStockService {
     }
 
     // Una sola operación atómica: si es un egreso, solo se aplica si alcanza el stock
-        // Si es un egreso, solo se aplica si alcanza el stock
     const filtro =
       dto.cantidad < 0
         ? { _id: producto._id, stockActual: { $gte: -dto.cantidad } }
@@ -100,5 +99,27 @@ export class MovimientosStockService {
       );
       throw error;
     }
+  }
+
+  async listarPorProducto(productoId: string, usuarioId: string) {
+    const usuario = await this.userModel.findById(usuarioId);
+    if (!usuario || !usuario.activo) {
+      throw new ForbiddenException('Usuario inexistente o inactivo');
+    }
+    if (!ROLES_MOVIMIENTO_MANUAL.includes(usuario.rol)) {
+      throw new ForbiddenException(
+        `El rol "${usuario.rol}" no puede ver movimientos de stock`,
+      );
+    }
+
+    const producto = await this.productoModel.findById(productoId);
+    if (!producto) {
+      throw new NotFoundException(`Producto ${productoId} no encontrado`);
+    }
+
+    return this.movimientoModel
+      .find({ productoId: producto._id })
+      .sort({ fecha: -1 })
+      .exec();
   }
 }
