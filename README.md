@@ -56,7 +56,7 @@ Desde el punto de vista técnico, el proyecto adopta un stack moderno que equili
 | Santiago Rodríguez | Arquitectura backend (NestJS), modelado de la base en MongoDB, desarrollo de la API y de la lógica de negocio (flujo de estados del ticket, validaciones de stock). |
 | Maximiliano Yamil Rojas | Desarrollo del frontend en React, relevamiento y validación de reglas de negocio con Cerámica Maja SRL (estados del ticket, permisos por rol, casos particulares del proceso). |
 
-Ambos integrantes participan en la definición conjunta del modelo de datos y las decisiones de arquitectura antes de la 2.ª entrega (esquema de base de datos y listado de módulos, con vencimiento 27/09).
+Ambos integrantes participan en la definición conjunta del modelo de datos y las decisiones de arquitectura antes de la 2.ª entrega.
 
 ## Estructura del repositorio
 
@@ -70,15 +70,15 @@ majito/
 ## Instalación
 
 ### Backend
-\`\`\`bash
+```bash
 cd backend
 npm install
 npm run start:dev
-\`\`\`
+```
 
 ### Frontend
-\`\`\`bash
+```bash
 cd frontend
 npm install
 npm run dev
-\`\`\`
+```
