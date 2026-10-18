@@ -36,17 +36,18 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 
 ### 2.1 Vendedor
 - Crea pedidos: cliente, material y cantidad son obligatorios; notas libres opcionales (ej.: "pago por adelantado").
-- Puede editar el pedido mientras esté en estado "Creado".
-- No puede modificarlo una vez que pasó a "En preparación".
+- Puede editar el pedido únicamente mientras esté en estado "Creado".
+- Puede crear tickets de reemplazo de un pedido Rechazado (ver sección 3.1).
 
 ### 2.2 Depósito
-- Mueve el pedido entre los estados En preparación → Listo para facturar.
+- Mueve el pedido de En Revisión a En preparación, de En preparación a Listo para facturar, y de Facturado a Entregado.
 - Agrega comentarios de avance.
 - No modifica cliente, material ni cantidad.
 - Puede rechazar el pedido si detecta una diferencia física respecto a lo cargado (ver sección 3).
 
 ### 2.3 Administración
 - Opera el día a día como cualquier otro rol: puede crear pedidos, moverlos entre estados y agregar comentarios, según el detalle de la matriz de permisos (sección 5).
+- Puede editar pedidos hasta Listo para facturar inclusive.
 - Es quien genera la factura y el remito, lo cual dispara el paso a "Facturado".
 - No puede facturar un pedido que no llegó al estado "Listo para facturar".
 - Además, maneja las excepciones detalladas en la sección 3.
@@ -74,7 +75,7 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 | Acción | Vendedor | Depósito | Administración |
 |---|---|---|---|
 | Crear pedido (estado Creado) | ✔ | — | ✔ |
-| Editar cliente, material o cantidad | ✔ solo en Creado | — | ✔ |
+| Editar cliente, producto o cantidad | ✔ solo en Creado | — | ✔ hasta Listo para facturar |
 | Pasar Creado → En Revisión | — | — | ✔ |
 | Pasar En Revisión → En preparación | — | ✔ | ✔ |
 | Pasar En preparación → Listo para facturar | — | ✔ | ✔ |
