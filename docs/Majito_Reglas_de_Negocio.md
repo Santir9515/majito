@@ -7,7 +7,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 
 | Estado | Quién lo dispara | Descripción |
 |---|---|---|
-| Creado | Vendedor / Administración | Pedido cargado con cliente, material y cantidad. |
+| Creado | Vendedor / Administración | Pedido cargado con cliente, producto y cantidad. |
 | En Revisión | Administración | Se confirma stock, precio y cantidades. Si el stock no alcanza se rechaza. |
 | En preparación | Depósito | Depósito arma físicamente el pedido. |
 | Listo para facturar | Depósito | Pedido armado y listo para facturación. |
@@ -35,14 +35,14 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 ## 2. Reglas por rol
 
 ### 2.1 Vendedor
-- Crea pedidos: cliente, material y cantidad son obligatorios; notas libres opcionales (ej.: "pago por adelantado").
+- Crea pedidos: cliente, producto y cantidad son obligatorios; notas libres opcionales (ej.: "pago por adelantado").
 - Puede editar el pedido únicamente mientras esté en estado "Creado".
 - Puede crear tickets de reemplazo de un pedido Rechazado (ver sección 3.1).
 
 ### 2.2 Depósito
 - Mueve el pedido de En Revisión a En preparación, de En preparación a Listo para facturar, y de Facturado a Entregado.
 - Agrega comentarios de avance.
-- No modifica cliente, material ni cantidad.
+- No modifica cliente, producto ni cantidad.
 - Puede rechazar el pedido si detecta una diferencia física respecto a lo cargado (ver sección 3).
 
 ### 2.3 Administración
@@ -78,7 +78,7 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 
 ## 4. Validaciones generales
 
-- Cliente, material y cantidad son obligatorios para crear un pedido.
+- Cliente, producto y cantidad son obligatorios para crear un pedido.
 - Un pedido no puede volver a facturarse si ya está "Facturado", "Anulado" o "Rechazado".
 - Todo cambio de estado queda registrado con quién lo hizo y cuándo (trazabilidad).
 
@@ -106,7 +106,7 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 
 Notas:
 - Administración puede realizar cualquier acción de los otros roles, ya que opera el día a día como cualquier rol. La anulación es exclusiva de este rol.
-- Depósito nunca modifica cliente, material ni cantidad.
+- Depósito nunca modifica cliente, producto ni cantidad.
 - Un pedido ya facturado todavía puede anularse (hasta ese estado inclusive). Una vez entregado o cerrado, ya no se anula ni se rechaza: a partir de ahí, cualquier problema se maneja vía Manejo de Devoluciones (extensión a futuro).
 - Un pedido Rechazado puede dar origen a uno o más tickets de reemplazo (por ejemplo, si se desglosa el pedido). Si no se acuerda ningún reemplazo con el cliente, el pedido Rechazado puede anularse; si ya tiene reemplazos, no.
 
