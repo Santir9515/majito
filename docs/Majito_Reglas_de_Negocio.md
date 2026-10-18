@@ -17,18 +17,19 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 | Anulado | Administración | Excepción — ver sección 3. |
 | Rechazado | Administración / Depósito | Excepción por falta de stock o diferencia detectada. Puede tener uno o más tickets de reemplazo vinculados (desglose del pedido original). |
 
-## Tabla de equivalencias.
-Estado (nombre visible) |	Valor en el sistema |
+### Tabla de equivalencias
+
+| Estado (nombre visible) | Valor en el sistema |
 |---|---|
-Creado | creado |
-En Revisión | en_revision |
-En preparación | en_preparacion |
-Listo para facturar | listo_para_facturar |
-Facturado | facturado |
-Entregado | entregado |
-Cerrado	| cerrado |
-Anulado	| anulado |
-Rechazado | rechazado |
+| Creado | creado |
+| En Revisión | en_revision |
+| En preparación | en_preparacion |
+| Listo para facturar | listo_para_facturar |
+| Facturado | facturado |
+| Entregado | entregado |
+| Cerrado | cerrado |
+| Anulado | anulado |
+| Rechazado | rechazado |
 
 
 ## 2. Reglas por rol
