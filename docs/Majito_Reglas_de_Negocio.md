@@ -59,7 +59,7 @@ Ocupado por un encargado o responsable autorizado por gerencia (no necesariament
 | Acción | Cuándo aplica | Qué dispara |
 |---|---|---|
 | Anular pedido | Desde Creado hasta Facturado inclusive, o un pedido Rechazado que no tiene reemplazos. | Requiere motivo obligatorio. Si el pedido estaba Facturado, el stock se reintegra automáticamente (ver sección 6). |
-| Rechazar pedido | Hasta Listo para facturar inclusive, por falta de stock o diferencia física. | Requiere motivo obligatorio. El pedido rechazado queda como registro final. Los tickets de reemplazo (uno o varios) quedan vinculados a él en ambos sentidos. |
+| Rechazar pedido | Hasta Listo para facturar inclusive, por falta de stock o diferencia física. | Requiere motivo obligatorio. El pedido rechazado queda como registro; solo puede anularse si no tiene reemplazos. Los tickets de reemplazo (uno o varios) quedan vinculados a él en ambos sentidos. |
 | Manejo de Devoluciones (extensión a futuro) | Pedido ya facturado (posterior a la factura). | No anula el pedido original: registra la devolución como hecho separado, sin borrar el historial. |
 
 El sistema debe distinguir automáticamente cuál de las acciones ofrecer, según el estado en que se encuentre el pedido.
