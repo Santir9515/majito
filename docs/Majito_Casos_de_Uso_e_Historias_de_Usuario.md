@@ -19,7 +19,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 |---|---|---|
 | CU-01 | Iniciar sesión | Todos |
 | CU-02 | Crear pedido | Vendedor, Administración |
-| CU-03 | Editar pedido | Vendedor (solo en Creado), Administración |
+| CU-03 | Editar pedido | Vendedor (solo en Creado), Administración (hasta Listo para facturar) |
 | CU-04 | Revisar pedido (Creado → En Revisión) | Administración |
 | CU-05 | Iniciar preparación (En Revisión → En preparación) | Depósito, Administración |
 | CU-06 | Marcar pedido listo para facturar | Depósito, Administración |
@@ -34,8 +34,9 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 | CU-15 | Ver movimientos de stock | Administración |
 | CU-16 | Ajustar stock manualmente | Administración |
 | CU-17 | Gestionar usuarios | Administración |
-| CU-18 | Gestionar lista de precios | Administración |
+| CU-18 | Gestionar precios de catálogo | Administración |
 | CU-19 | Consultar pedido e historial | Todos (ver nota en sección 5) |
+| CU-20 | Cargar stock inicial | Administración |
 
 ## 3. Detalle de casos de uso
 
@@ -47,15 +48,16 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 ### CU-02 – Crear pedido
 - **Actor:** Vendedor, Administración.
 - **Precondición:** sesión iniciada.
-- **Flujo principal:** el actor ingresa cliente, uno o más ítems (producto y cantidad) y, opcionalmente, notas libres (ej.: "pago por adelantado") → el sistema completa por defecto el precio unitario de cada ítem con el **precio de lista** vigente → el actor puede modificarlo si corresponde (ej.: precio promocional) → el sistema valida los datos obligatorios → crea el pedido en estado **Creado** y registra en el historial quién lo creó y cuándo.
-- **Regla:** el precio unitario queda fijo en el ítem al crear el pedido; un cambio posterior en la lista de precios no lo afecta.
+- **Flujo principal:** el actor ingresa cliente, uno o más ítems (producto y cantidad) y, opcionalmente, notas libres (ej.: "pago por adelantado") → el sistema valida los datos obligatorios → copia nombre y código de cada producto desde el catálogo → crea el pedido en estado **Creado** y registra en el historial quién lo creó y cuándo.
+- **Regla:** el nombre y el código del producto quedan fijos en el ítem; si el catálogo cambia después, el pedido conserva los datos originales. El pedido no maneja precios por ítem: el precio de referencia es el de catálogo, y los descuentos o precios especiales se aplican en la facturación, fuera del alcance de Majito.
 - **Alternativo:** falta cliente, producto o cantidad → el sistema no crea el pedido e indica qué falta.
 - **Postcondición:** pedido en estado Creado.
 
 ### CU-03 – Editar pedido
-- **Actor:** Vendedor (solo mientras está en Creado), Administración.
-- **Flujo principal:** el actor modifica cliente, ítems, cantidades, precio unitario (ej.: por una promoción) o notas → el sistema valida y guarda.
+- **Actor:** Vendedor (solo mientras está en Creado), Administración (hasta Listo para facturar inclusive).
+- **Flujo principal:** el actor modifica cliente, ítems, cantidades o notas → el sistema valida y guarda.
 - **Alternativo:** un Vendedor intenta editar un pedido que ya no está en Creado → el sistema lo impide.
+- **Alternativo:** Administración intenta editar un pedido que ya pasó de Listo para facturar → el sistema lo impide; la corrección se hace anulando el pedido (que reintegra el stock si estaba Facturado) y creando uno nuevo.
 - **Regla:** Depósito nunca modifica cliente, material ni cantidad.
 
 ### CU-04 – Revisar pedido (Creado → En Revisión)
@@ -68,7 +70,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 - **Actor:** Depósito, Administración.
 - **Precondición:** pedido en En Revisión.
 - **Flujo principal:** el actor pasa el pedido a **En preparación** y el sistema registra el cambio.
-- **Regla:** desde acá el Vendedor ya no puede modificarlo.
+- **Regla:** desde que el pedido sale de Creado, el Vendedor ya no puede modificarlo.
 
 ### CU-06 – Marcar pedido listo para facturar
 - **Actor:** Depósito, Administración.
@@ -81,6 +83,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 - **Precondición:** pedido en Listo para facturar.
 - **Flujo principal:** Administración genera la factura y el remito (en el software externo de facturación) y marca el pedido como **Facturado** → el sistema **descuenta el stock automáticamente** y registra los movimientos de stock.
 - **Alternativo:** el pedido no está en Listo para facturar, o ya está Facturado, Anulado o Rechazado → el sistema no permite facturar.
+- **Alternativo:** algún producto no tiene stock suficiente → el sistema no factura, informa cuál falta y el pedido queda en Listo para facturar.
 
 ### CU-08 – Registrar entrega
 - **Actor:** Depósito, Administración.
@@ -100,7 +103,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 ### CU-11 – Rechazar pedido
 - **Actor:** Depósito, Administración.
 - **Precondición:** pedido en cualquier estado hasta Listo para facturar inclusive.
-- **Flujo principal:** el actor indica el **motivo** (falta de stock o diferencia física) → el sistema pasa el pedido a **Rechazado**, que queda como registro final.
+- **Flujo principal:** el actor indica el **motivo** (falta de stock o diferencia física) → el sistema pasa el pedido a **Rechazado**, que queda como registro y solo puede pasar a Anulado si no tiene reemplazos.
 - **Alternativo:** no se ingresa motivo → el sistema no permite rechazar.
 - **Postcondición:** el pedido puede tener uno o más tickets de reemplazo vinculados (CU-12). El stock no se modifica.
 
@@ -123,25 +126,32 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 
 ### CU-15 – Ver movimientos de stock
 - **Actor:** Administración.
-- **Flujo principal:** Administración lista los movimientos de stock (descuentos por facturación, reintegros por anulación, ajustes manuales) con fecha y responsable.
+- **Flujo principal:** Administración lista los movimientos de stock (migración inicial, ajustes manuales, descuentos por facturación y reintegros por anulación) con fecha, responsable y, cuando corresponde, el pedido asociado.
 
 ### CU-16 – Ajustar stock manualmente
 - **Actor:** Administración.
 - **Flujo principal:** Administración ingresa el ajuste y su motivo → el sistema actualiza el stock y registra el movimiento.
+- **Alternativo:** el ajuste dejaría el stock negativo → el sistema no lo permite.
 
 ### CU-17 – Gestionar usuarios
 - **Actor:** Administración.
 - **Flujo principal:** Administración da de alta un usuario con su rol (Vendedor, Depósito o Administración) o lo inactiva.
 - **Regla:** un usuario inactivo no puede iniciar sesión.
 
-### CU-18 – Gestionar lista de precios
+### CU-18 – Gestionar precios de catálogo
 - **Actor:** Administración.
-- **Flujo principal:** Administración carga o edita el precio de lista de un producto.
-- **Regla:** solo Administración puede modificar la lista de precios general. Los cambios no afectan a los pedidos ya creados, porque el precio queda fijo en cada ítem.
+- **Flujo principal:** Administración carga o edita el precio de catálogo de un producto.
+- **Regla:** solo Administración puede modificar precios de catálogo. El precio final de cada operación, con descuentos o promociones, lo define la facturación, fuera de Majito.
 
 ### CU-19 – Consultar pedido e historial
 - **Actor:** todos los roles.
 - **Flujo principal:** el actor abre un pedido y ve sus datos, su estado actual y el historial completo de cambios (quién, cuándo, qué, y motivo cuando corresponde).
+
+### CU-20 – Cargar stock inicial
+- **Actor:** Administración.
+- **Precondición:** el producto existe en el catálogo y no tiene una carga inicial previa.
+- **Flujo principal:** Administración ingresa la cantidad inicial de un producto, tomada de la planilla exportada de Tango → el sistema suma esa cantidad al stock y registra un movimiento de tipo `migracion_inicial`.
+- **Alternativo:** la cantidad no es positiva, o el producto ya tiene una carga inicial → el sistema no lo permite.
 
 ## 4. Historias de usuario
 
@@ -151,8 +161,7 @@ Formato: **Como** [rol] **quiero** [acción] **para** [beneficio]. Cada historia
 
 **HU-01 – Cargar un pedido** (CU-02)
 Como **vendedor** quiero cargar un pedido desde mi tablet durante la visita para que no se pierdan detalles en papel o WhatsApp.
-- Cliente, producto y cantidad son obligatorios.
-- El precio de cada ítem se completa por defecto con el precio de lista, y puedo modificarlo si hay un precio promocional u otra condición.
+- El nombre y el código del producto se toman del catálogo al crear el pedido.
 - Puedo agregar una nota libre.
 - El pedido queda en estado Creado con mi usuario y la fecha en el historial.
 
@@ -181,6 +190,7 @@ Como **depósito** quiero rechazar un pedido cuando lo que hay no coincide con l
 Como **administración** quiero marcar un pedido como Facturado para que el stock se descuente solo.
 - Solo puedo facturar pedidos en Listo para facturar.
 - Al facturar, el stock se descuenta automáticamente y queda un movimiento registrado.
+- Si algún producto no tiene stock suficiente, el sistema no factura e indica cuál falta.
 
 **HU-07 – Seguir el pedido hasta el final** (CU-08, CU-09)
 Como **depósito** quiero registrar la entrega, y como **administración** quiero cerrar el pedido, para dejar completo el ciclo.
@@ -209,15 +219,16 @@ Como **usuario del sistema** quiero ver el historial completo de un pedido para 
 Como **vendedor** quiero consultar el catálogo y el stock desde la tablet para saber qué puedo ofrecer al cliente.
 - Veo los productos y su stock disponible.
 
-**HU-12 – Controlar los movimientos de stock** (CU-15, CU-16)
+**HU-12 – Controlar los movimientos de stock** (CU-15, CU-16, CU-20)
 Como **administración** quiero ver los movimientos y hacer ajustes manuales para mantener el stock correcto.
 - Veo cada movimiento con fecha y responsable.
 - Un ajuste manual requiere motivo y queda registrado.
+- Puedo cargar el stock inicial de un producto una sola vez.
 
-**HU-13 – Mantener la lista de precios** (CU-18)
-Como **administración** quiero cargar y editar la lista de precios para que los pedidos nuevos usen valores actualizados.
-- Solo administración puede modificar la lista de precios general.
-- Un cambio en la lista no altera los pedidos ya creados.
+**HU-13 – Mantener los precios de catálogo** (CU-18)
+Como **administración** quiero cargar y editar los precios de catálogo para tener un precio de referencia actualizado.
+- Solo administración puede modificar el precio de catálogo.
+- Los descuentos y promociones no se cargan en Majito: se aplican en la facturación.
 
 **HU-14 – Administrar usuarios** (CU-17)
 Como **administración** quiero dar de alta e inactivar usuarios con su rol para controlar quién accede al sistema.
@@ -226,10 +237,12 @@ Como **administración** quiero dar de alta e inactivar usuarios con su rol para
 
 **HU-15 – Entrar al sistema** (CU-01)
 Como **usuario** quiero iniciar sesión para ver solo lo que corresponde a mi rol.
+- Con credenciales válidas ingreso y veo solo las pantallas y acciones de mi rol.
+- Con credenciales inválidas, o si mi usuario está inactivo, el sistema no me deja entrar y me muestra un mensaje.
 
 ## 5. Decisiones de diseño
 
-1. **Precio de los ítems.** Por defecto se usa el precio de la lista vigente; después puede modificarse (ej.: promoción o descuento) y queda fijo en el ítem. La lista de precios general solo la modifica Administración. El catálogo es el conjunto de productos y no maneja precios.
+1. **Precio.** El precio es el de catálogo (campo `precio` del producto) y solo Administración lo modifica. El pedido no guarda ni permite modificar precios por ítem. Los descuentos y precios promocionales se aplican en la facturación, fuera del alcance de Majito.
 2. **Edición del Vendedor.** El Vendedor solo puede modificar un pedido mientras está en "Creado".
 3. **Consulta de pedidos (CU-19).** Todos los roles pueden consultar pedidos e historial.
-4. **Modificación del precio unitario de un ítem.** Pueden hacerlo el Vendedor (solo mientras el pedido está en Creado) y Administración. Depósito no puede.
+4. **Edición de Administración.** Administración puede modificar un pedido hasta Listo para facturar inclusive; una vez facturado, la corrección es anular y crear un pedido nuevo.
