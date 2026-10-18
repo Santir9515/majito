@@ -28,8 +28,8 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
 - Permisos y acciones habilitadas según rol
 ### 3.2 Módulo de Catálogo de Productos
 
-- Consulta y búsqueda de productos (por nombre, material, categoría)
-- Detalle de producto: material, unidad de medida y precio de catálogo
+- Consulta y búsqueda de productos (por nombre, código y categoría)
+- Detalle de producto: código, nombre, categoría, precio de catálogo y stock actual
 - Modificación del precio de catálogo: disponible solo para Administración
 - Alta de producto: expuesta a nivel de backend (usada por el script de migración inicial desde Tango y para pruebas); no forma parte de la interfaz de usuario en esta entrega, que se limita a consulta
 - Alcance de esta entrega: la baja de productos y la modificación de otros datos (distintos del precio) quedan fuera de alcance (posible extensión futura, dependiendo de si la carga de catálogo sigue centralizada en Tango o pasa a gestionarse desde Majito)
