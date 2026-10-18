@@ -64,6 +64,18 @@ Ocupado por un encargado o responsable autorizado por gerencia (no necesariament
 
 El sistema debe distinguir automáticamente cuál de las acciones ofrecer, según el estado en que se encuentre el pedido.
 
+### 3.1 Tickets de reemplazo
+
+- **Qué es:** un pedido nuevo que se crea a partir de uno Rechazado, para entregar al cliente lo que sí se puede cumplir (por ejemplo, un desglose en varios pedidos).
+- **Quién lo crea:** Vendedor o Administración. Depósito no puede crearlo.
+- **Cuándo:** solo a partir de un pedido en estado Rechazado.
+- **Cómo se crea:** el actor carga los ítems del reemplazo (producto y cantidad) y notas opcionales. El sistema toma el cliente del pedido original y copia el nombre y el código de cada producto desde el catálogo.
+- **Estado inicial:** Creado. A partir de ahí sigue el flujo normal de estados, como cualquier otro pedido.
+- **Relación con el original:** queda vinculado en ambos sentidos: el reemplazo registra su pedido de origen y el rechazado registra la lista de sus reemplazos.
+- **Cantidad:** un mismo pedido Rechazado puede tener varios reemplazos.
+- **Efecto sobre el original:** el pedido Rechazado no cambia de estado. Mientras tenga reemplazos no puede anularse.
+- **Stock:** crear el reemplazo no descuenta stock; se descuenta cuando ese reemplazo se factura.
+
 ## 4. Validaciones generales
 
 - Cliente, material y cantidad son obligatorios para crear un pedido.
