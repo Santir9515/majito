@@ -10,7 +10,7 @@ Nota general: las colecciones `usuarios`, `productos` y `tickets` incluyen autom
 | Colección | Propósito |
 |---|---|
 | `usuarios` | Personas que operan el sistema, con su rol asignado |
-| `productos` | Catálogo de materiales con su stock, migrado desde Tango Gestión |
+| `productos` | Catálogo de productos con su stock, migrado desde Tango Gestión |
 | `tickets` | Pedidos del circuito completo, con su estado, historial y vínculos |
 | `movimientos_stock` | Auditoría de cada cambio de stock: qué se movió, cuánto, por qué y quién |
 
@@ -29,7 +29,7 @@ Nota general: las colecciones `usuarios`, `productos` y `tickets` incluyen autom
 | Campo | Tipo | Descripción |
 |---|---|---|
 | `codigo` | String (único) | Identificador del producto en Tango Gestión; clave de la migración |
-| `nombre` | String | Nombre del material |
+| `nombre` | String | Nombre del producto |
 | `categoria` | String (opcional) | Agrupación del producto |
 | `precio` | Number (mínimo 0) | Precio de catálogo del producto. Es fijo y único por producto (no varía por ticket); solo Administración puede definirlo o modificarlo |
 | `stockActual` | Number (mínimo 0) | Cantidad disponible; Majito es la fuente de verdad a partir de la migración inicial. El esquema valida explícitamente que no pueda quedar en negativo |
