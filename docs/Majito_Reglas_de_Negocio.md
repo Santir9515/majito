@@ -116,5 +116,5 @@ Notas:
 - El stock se descuenta automáticamente al pasar un pedido a Facturado.
 - Al anular un pedido Facturado, el stock se reintegra automáticamente, de forma equivalente a una nota de crédito en Tango. Queda registrado como movimiento de tipo `reintegro_anulacion`.
 - Anular o rechazar un pedido que todavía no fue facturado no modifica el stock.
-- El precio de cada ítem es siempre el de catálogo al momento de crear el pedido. Solo Administración puede modificar el precio de catálogo.
+- El pedido no guarda precios por ítem: el precio de referencia es siempre el de catálogo, y solo Administración puede modificarlo.
 - Los descuentos y las modificaciones de precio por operación se aplican en el módulo de facturación, que está fuera del alcance de Majito.
