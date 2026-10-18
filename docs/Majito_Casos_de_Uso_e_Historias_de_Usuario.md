@@ -58,7 +58,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 - **Flujo principal:** el actor modifica cliente, ítems, cantidades o notas → el sistema valida y guarda.
 - **Alternativo:** un Vendedor intenta editar un pedido que ya no está en Creado → el sistema lo impide.
 - **Alternativo:** Administración intenta editar un pedido que ya pasó de Listo para facturar → el sistema lo impide; la corrección se hace anulando el pedido (que reintegra el stock si estaba Facturado) y creando uno nuevo.
-- **Regla:** Depósito nunca modifica cliente, material ni cantidad.
+- **Regla:** Depósito nunca modifica cliente, producto ni cantidad.
 
 ### CU-04 – Revisar pedido (Creado → En Revisión)
 - **Actor:** Administración.
@@ -179,7 +179,7 @@ Como **administración** quiero confirmar stock, precio y cantidades antes de ma
 Como **depósito** quiero ver los pedidos a preparar y actualizar su estado para que Administración sepa en qué punto está cada uno.
 - Puedo pasar de En Revisión a En preparación, y de ahí a Listo para facturar.
 - Puedo agregar comentarios de avance.
-- No puedo modificar cliente, material ni cantidad.
+- No puedo modificar cliente, producto ni cantidad.
 
 **HU-05 – Avisar una diferencia física** (CU-11)
 Como **depósito** quiero rechazar un pedido cuando lo que hay no coincide con lo cargado para evitar facturar algo incorrecto.

@@ -17,7 +17,7 @@ Desarrollar un sistema interno de gestión de pedidos basado en tickets, que dig
 Sistema de uso interno (vendedores, administración y depósito), sin portal para el cliente final en esta primera instancia:
 
 - Carga de pedidos por administración (originados por vendedor viajante o consulta directa del cliente).
-- Gestión de tickets con historial de cambios. Flujo principal de estados: creado → en revisión → en preparación → listo para facturar → facturado → entregado → cerrado. Además, un ticket puede terminar en **rechazado** (el pedido no se puede cumplir) o en **anulado** (solo antes de facturar, y solo por Administración).
+- Gestión de tickets con historial de cambios. Flujo principal de estados: creado → en revisión → en preparación → listo para facturar → facturado → entregado → cerrado. Además, un ticket puede terminar en **rechazado** (el pedido no se puede cumplir) o en **anulado** (hasta facturado inclusive, o un rechazado sin reemplazos; solo por Administración).
 - Consulta de stock, precios y cantidades al acordar el pedido.
 - Panel de depósito para actualizar el estado de los pedidos en preparación.
 - Gestión de usuarios por tres roles: **Vendedor**, **Administración** y **Depósito**. Administración puede hacer todo lo de los otros roles y es la única que anula tickets y gestiona stock, usuarios y precios de catálogo.
