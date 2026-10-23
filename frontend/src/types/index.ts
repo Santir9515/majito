@@ -3,3 +3,4 @@ export * from './estadoPedido';
 export * from './itemPedido';
 export * from './cambioEstado';
 export * from './pedido';
+export * from './producto';
