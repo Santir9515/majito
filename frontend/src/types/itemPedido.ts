@@ -3,5 +3,4 @@ export interface ItemPedido {
   productoNombre: string;
   productoCodigo: string;
   cantidad: number;
-  precioUnitario?: number; // todavía no está en el backend
 }
