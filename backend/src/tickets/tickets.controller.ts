@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
 import { AnularTicketDto } from './dto/anular-ticket.dto';
 import { RechazarTicketDto } from './dto/rechazar-ticket.dto';
 import { CrearReemplazoDto } from './dto/crear-reemplazo.dto';
+import { Body, Controller, Get, Param, Post, Patch, Query } from '@nestjs/common';
+import { ListarTicketsDto } from './dto/listar-tickets.dto';
 
 @Controller('tickets')
 export class TicketsController {
@@ -16,8 +17,8 @@ export class TicketsController {
   }
 
   @Get()
-  findAll() {
-    return this.ticketsService.findAll();
+  findAll(@Query() dto: ListarTicketsDto) {
+    return this.ticketsService.findAll(dto);
   }
 
   @Get(':id')
