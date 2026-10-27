@@ -29,6 +29,7 @@ import { CrearReemplazoDto } from './dto/crear-reemplazo.dto';
 import { ROLES_CREAR_REEMPLAZO } from './transiciones-estado';
 import { MovimientosStockService } from '../movimientos-stock/movimientos-stock.service';
 import { TipoMovimiento } from '../movimientos-stock/enums/tipo-movimiento.enum';
+import { ListarTicketsDto } from './dto/listar-tickets.dto';
 
 @Injectable()
 export class TicketsService {
@@ -83,8 +84,26 @@ export class TicketsService {
     return ticket.save();
   }
 
-  findAll() {
-    return this.ticketModel.find().exec();
+  findAll(dto: ListarTicketsDto) {
+    const filtro: { estado?: { $in: EstadoTicket[] } } = {};
+
+    if (dto.estado) {
+      const estados = dto.estado
+        .split(',')
+        .map((e) => e.trim())
+        .filter(Boolean);
+      const validos = Object.values(EstadoTicket) as string[];
+      const invalidos = estados.filter((e) => !validos.includes(e));
+
+      if (invalidos.length > 0) {
+        throw new BadRequestException(
+          `Estado inválido: ${invalidos.join(', ')}`,
+        );
+      }
+      filtro.estado = { $in: estados as EstadoTicket[] };
+    }
+
+    return this.ticketModel.find(filtro).exec();
   }
 
   findOne(id: string) {
