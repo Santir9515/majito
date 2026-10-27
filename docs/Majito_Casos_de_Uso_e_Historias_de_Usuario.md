@@ -81,7 +81,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 ### CU-07 – Facturar pedido
 - **Actor:** Administración.
 - **Precondición:** pedido en Listo para facturar.
-- **Flujo principal:** Administración genera la factura y el remito (en el software externo de facturación) y marca el pedido como **Facturado** → el sistema **descuenta el stock automáticamente** y registra los movimientos de stock.
+- **Flujo principal:** Administración emite la factura y el remito en Tango (fuera de Majito) y marca el pedido como **Facturado**, que indica que esos comprobantes ya se emitieron legalmente → el sistema **descuenta el stock automáticamente** y registra los movimientos de stock.
 - **Alternativo:** el pedido no está en Listo para facturar, o ya está Facturado, Anulado o Rechazado → el sistema no permite facturar.
 - **Alternativo:** algún producto no tiene stock suficiente → el sistema no factura, informa cuál falta y el pedido queda en Listo para facturar.
 
@@ -118,6 +118,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 - **Precondición:** pedido entre Creado y Facturado inclusive, o pedido Rechazado **sin** reemplazos.
 - **Flujo principal:** Administración indica el **motivo** obligatorio → el sistema pasa el pedido a **Anulado**.
 - **Variante:** si el pedido estaba Facturado, el sistema **reintegra el stock automáticamente** y lo registra como movimiento `reintegro_anulacion`. En los demás casos el stock no cambia.
+- **Regla (pedido Facturado):** Majito anula el pedido, pero no la factura. La nota de crédito la emite Administración por separado, en Tango. Si la mercadería ya salió a reparto, se espera a que vuelva al depósito antes de emitir la nota de crédito y anular el pedido en Majito; como el sistema no tiene un estado de reparto, Administración verifica esta condición antes de anular.
 - **Alternativo:** pedido Entregado o Cerrado, o Rechazado con reemplazos → el sistema no permite anular.
 
 ### CU-14 – Consultar catálogo y stock
@@ -207,6 +208,8 @@ Como **administración** quiero anular un pedido por una excepción para que no 
 - Solo administración puede anular.
 - El motivo es obligatorio.
 - Si el pedido estaba Facturado, el stock se reintegra automáticamente.
+- Si estaba Facturado, la nota de crédito la emito aparte en Tango: Majito no anula la factura.
+- Si la mercadería ya salió a reparto, espero a que vuelva al depósito antes de emitir la nota de crédito y anular en Majito.
 - No puedo anular pedidos Entregados o Cerrados, ni Rechazados con reemplazos.
 
 **HU-10 – Ver la trazabilidad** (CU-19)

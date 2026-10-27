@@ -11,7 +11,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 | En Revisión | Administración | Se confirma stock, precio y cantidades. Si el stock no alcanza se rechaza. |
 | En preparación | Depósito | Depósito arma físicamente el pedido. |
 | Listo para facturar | Depósito | Pedido armado y listo para facturación. |
-| Facturado | Administración | Se generan factura y remito. |
+| Facturado | Administración | La factura y el remito ya se emitieron legalmente (en Tango). Majito registra el estado, pero no emite ni anula esos comprobantes. |
 | Entregado | Depósito | Pedido entregado al cliente. |
 | Cerrado | Administración | Ciclo del pedido finalizado. |
 | Anulado | Administración | Excepción — ver sección 3. |
@@ -58,7 +58,7 @@ Ocupado por un encargado o responsable autorizado por gerencia (no necesariament
 
 | Acción | Cuándo aplica | Qué dispara |
 |---|---|---|
-| Anular pedido | Desde Creado hasta Facturado inclusive, o un pedido Rechazado que no tiene reemplazos. | Requiere motivo obligatorio. Si el pedido estaba Facturado, el stock se reintegra automáticamente (ver sección 6). |
+| Anular pedido | Desde Creado hasta Facturado inclusive, o un pedido Rechazado que no tiene reemplazos. | Requiere motivo obligatorio. Si el pedido estaba Facturado, el stock se reintegra automáticamente (ver sección 6) y se aplica lo indicado en la sección 3.2. |
 | Rechazar pedido | Hasta Listo para facturar inclusive, por falta de stock o diferencia física. | Requiere motivo obligatorio. El pedido rechazado queda como registro; solo puede anularse si no tiene reemplazos. Los tickets de reemplazo (uno o varios) quedan vinculados a él en ambos sentidos. |
 | Manejo de Devoluciones (extensión a futuro) | Pedido ya facturado (posterior a la factura). | No anula el pedido original: registra la devolución como hecho separado, sin borrar el historial. |
 
@@ -75,6 +75,13 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 - **Cantidad:** un mismo pedido Rechazado puede tener varios reemplazos.
 - **Efecto sobre el original:** el pedido Rechazado no cambia de estado. Mientras tenga reemplazos no puede anularse.
 - **Stock:** crear el reemplazo no descuenta stock; se descuenta cuando ese reemplazo se factura.
+
+### 3.2 Anulación de un pedido Facturado
+
+- **Qué significa "Facturado":** la factura y el remito ya se emitieron legalmente (en Tango). Majito no emite ni anula esos comprobantes.
+- **Qué hace Majito al anular:** anula el pedido como registro del sistema y reintegra el stock. La factura no se anula desde Majito.
+- **Nota de crédito:** la emite Administración por separado, en Tango, fuera de Majito.
+- **Mercadería que ya salió a reparto:** hay que esperar a que vuelva al depósito. Recién entonces se hace la nota de crédito en Tango y la anulación en Majito. Como el sistema no tiene un estado de reparto, esta condición la verifica Administración antes de anular.
 
 ## 4. Validaciones generales
 
@@ -107,14 +114,14 @@ El sistema debe distinguir automáticamente cuál de las acciones ofrecer, segú
 Notas:
 - Administración puede realizar cualquier acción de los otros roles, ya que opera el día a día como cualquier rol. La anulación es exclusiva de este rol.
 - Depósito nunca modifica cliente, producto ni cantidad.
-- Un pedido ya facturado todavía puede anularse (hasta ese estado inclusive). Una vez entregado o cerrado, ya no se anula ni se rechaza: a partir de ahí, cualquier problema se maneja vía Manejo de Devoluciones (extensión a futuro).
+- Un pedido ya facturado todavía puede anularse (hasta ese estado inclusive), con las condiciones de la sección 3.2. Una vez entregado o cerrado, ya no se anula ni se rechaza: a partir de ahí, cualquier problema se maneja vía Manejo de Devoluciones (extensión a futuro).
 - Un pedido Rechazado puede dar origen a uno o más tickets de reemplazo (por ejemplo, si se desglosa el pedido). Si no se acuerda ningún reemplazo con el cliente, el pedido Rechazado puede anularse; si ya tiene reemplazos, no.
 
 ## 6. Stock y precios
 
 - Majito es la única fuente de verdad del stock una vez migrado desde Tango.
 - El stock se descuenta automáticamente al pasar un pedido a Facturado.
-- Al anular un pedido Facturado, el stock se reintegra automáticamente, de forma equivalente a una nota de crédito en Tango. Queda registrado como movimiento de tipo `reintegro_anulacion`.
+- Al anular un pedido Facturado, el stock se reintegra automáticamente en Majito y queda registrado como movimiento de tipo `reintegro_anulacion`. Majito no anula la factura ni emite la nota de crédito: eso lo hace Administración por separado en Tango (ver sección 3.2).
 - Anular o rechazar un pedido que todavía no fue facturado no modifica el stock.
 - El pedido no guarda precios por ítem: el precio de referencia es siempre el de catálogo, y solo Administración puede modificarlo.
 - Los descuentos y las modificaciones de precio por operación se aplican en el módulo de facturación, que está fuera del alcance de Majito.
