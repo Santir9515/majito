@@ -8,7 +8,7 @@ El pedido avanza en general en este orden, con historial de cambios (quién, cu�
 | Estado | Quién lo dispara | Descripción |
 |---|---|---|
 | Creado | Vendedor / Administración | Pedido cargado con cliente, producto y cantidad. |
-| En Revisión | Administración | Se confirma stock, precio y cantidades. Si el stock no alcanza se rechaza. |
+| En Revisión | Administración | Se consulta el stock disponible (informativo, sin reserva), el precio y las cantidades. Si el stock no alcanza se rechaza. |
 | En preparación | Depósito | Depósito arma físicamente el pedido. |
 | Listo para facturar | Depósito | Pedido armado y listo para facturación. |
 | Facturado | Administración | La factura y el remito ya se emitieron legalmente (en Tango). Majito registra el estado, pero no emite ni anula esos comprobantes. |
@@ -122,7 +122,20 @@ Notas:
 - Majito es la única fuente de verdad del stock una vez migrado desde Tango.
 - A partir de la migración, el módulo de stock de Tango deja de utilizarse: las facturas se emiten en Tango sin mover su inventario, y todos los movimientos de stock se registran en Majito.
 - El stock se descuenta automáticamente al pasar un pedido a Facturado.
+- Los estados anteriores a Facturado no modifican el stock ni reservan unidades. El stock que se consulta durante la revisión es informativo. Si al facturar no alcanza el stock de algún ítem, el sistema no factura ninguno y Administración resuelve el pedido (por ejemplo, rechazándolo por falta de stock y creando tickets de reemplazo por lo que sí se puede cumplir).
 - Al anular un pedido Facturado, el stock se reintegra automáticamente en Majito y queda registrado como movimiento de tipo `reintegro_anulacion`. Majito no anula la factura ni emite la nota de crédito: eso lo hace Administración por separado en Tango (ver sección 3.2).
 - Anular o rechazar un pedido que todavía no fue facturado no modifica el stock.
 - El pedido no guarda precios por ítem: el precio de referencia es siempre el de catálogo, y solo Administración puede modificarlo.
 - Los descuentos y las modificaciones de precio por operación se aplican en el módulo de facturación, que está fuera del alcance de Majito.
+
+### 6.1 Efecto de cada transición sobre el stock
+
+| Transición | Efecto sobre el stock |
+|---|---|
+| Creado → En Revisión → En preparación → Listo para facturar | Ninguno. El stock consultado es informativo; no hay reserva. |
+| Listo para facturar → Facturado | Descuento automático ítem por ítem (`descuento_facturacion`). Si algún ítem no alcanza, no se factura nada y se informa el producto. |
+| Facturado → Entregado → Cerrado | Ninguno. |
+| Rechazar (hasta Listo para facturar) | Ninguno. |
+| Anular antes de Facturado | Ninguno. |
+| Anular un pedido Facturado | Reintegro automático (`reintegro_anulacion`). |
+| Carga inicial y ajustes manuales | Movimiento manual (`migracion_inicial`, `ajuste_manual`), solo Administración. |
