@@ -120,6 +120,7 @@ Notas:
 ## 6. Stock y precios
 
 - Majito es la única fuente de verdad del stock una vez migrado desde Tango.
+- A partir de la migración, el módulo de stock de Tango deja de utilizarse: las facturas se emiten en Tango sin mover su inventario, y todos los movimientos de stock se registran en Majito.
 - El stock se descuenta automáticamente al pasar un pedido a Facturado.
 - Al anular un pedido Facturado, el stock se reintegra automáticamente en Majito y queda registrado como movimiento de tipo `reintegro_anulacion`. Majito no anula la factura ni emite la nota de crédito: eso lo hace Administración por separado en Tango (ver sección 3.2).
 - Anular o rechazar un pedido que todavía no fue facturado no modifica el stock.
