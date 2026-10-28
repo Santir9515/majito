@@ -43,12 +43,13 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
  
 - Alta de pedido, con canal de ingreso (vendedor viajante o consulta directa del cliente)
 - Consulta de stock contra el Módulo de Inventario al momento de crear/revisar el pedido
-- Transición por los 9 estados del pedido, incluyendo rechazo (por falta de stock o diferencia detectada en depósito, con uno o más tickets de reemplazo vinculados al original) y anulación (disponible hasta facturado inclusive, con motivo obligatorio y reintegro automático de stock si ya estaba facturado).
+- Transición por los 9 estados del pedido, incluyendo rechazo (por falta de stock o diferencia detectada en depósito, con uno o más tickets de reemplazo vinculados al original) y anulación (disponible hasta facturado inclusive, con motivo obligatorio y reintegro automático de stock si ya estaba facturado; la factura y su nota de crédito se gestionan por separado en Tango, fuera de Majito).
 - Notas libres asociadas al pedido (ej. "pago por adelantado", "embalar en pallet")
 - El seguimiento de cambios de estado del pedido se registra mediante la capacidad transversal de Historial (ver sección 4)
 ### 3.5 Módulo de Administración/Excepciones
  
 - Registro de motivo de anulación (mediante el Historial del pedido correspondiente)
+- Anulación de pedidos ya facturados: Majito anula el pedido y reintegra el stock, pero no anula la factura; la nota de crédito la emite Administración en Tango. Administración debe anular recién cuando la mercadería haya vuelto al depósito; el sistema no controla este punto
 - Gestión del rechazo de pedidos y su vínculo con el ticket de reemplazo
 - Base para la futura extensión "Manejo de Devoluciones" (pedidos ya entregados) — fuera de alcance de esta entrega
 ### 3.6 Módulo de Reportes/Consulta Histórica

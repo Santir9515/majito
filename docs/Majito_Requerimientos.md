@@ -13,7 +13,7 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 | RF-10 a RF-12 | RF-11 a RF-13 |
 | — | RF-14 (nuevo: auditoría de movimientos de stock) |
 
-Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración.
+Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango.
  
 ## 1. Requerimientos funcionales
  
@@ -32,7 +32,7 @@ Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechaz
   - facturado → entregado
   - entregado → cerrado
   Las transiciones hacia "anulado" (RF-07) y "rechazado" (RF-08) no forman parte de este flujo lineal y se rigen por las condiciones propias de cada una.
-- **RF-07:** El sistema debe permitir anular un ticket desde el estado "creado" hasta "facturado" inclusive, o un ticket "rechazado" que no tenga tickets de reemplazo, con motivo obligatorio. La anulación es exclusiva del rol Administración. Si el ticket anulado estaba "facturado", el sistema debe reintegrar automáticamente el stock descontado.
+- **RF-07:** El sistema debe permitir anular un ticket desde el estado "creado" hasta "facturado" inclusive, o un ticket "rechazado" que no tenga tickets de reemplazo, con motivo obligatorio. La anulación es exclusiva del rol Administración. Si el ticket anulado estaba "facturado", el sistema debe reintegrar automáticamente el stock descontado. El sistema anula el ticket pero no la factura: la nota de crédito la emite Administración por separado en Tango. Administración debe anular el ticket recién cuando la mercadería haya vuelto al depósito, ya que el reintegro de stock es automático; el sistema no controla este punto.
 - **RF-08:** El sistema debe permitir rechazar un ticket desde el estado "creado" hasta "listo_para_facturar" inclusive (por falta de stock o diferencia detectada en depósito), con motivo obligatorio. Un ticket rechazado puede tener uno o más tickets de reemplazo (por ejemplo, cuando el pedido se desglosa), creados por Vendedor o Administración y vinculados al original en ambos sentidos.
 - **RF-09:** El sistema debe registrar un historial de cada cambio de estado, indicando quién lo hizo y cuándo.
 - **RF-10:** El sistema no debe permitir facturar un ticket que no llegó al estado "listo para facturar".
