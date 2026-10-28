@@ -49,7 +49,7 @@ Este listado de módulos, junto con el esquema de base de datos, corresponde a l
 ### 3.5 Módulo de Administración/Excepciones
  
 - Registro de motivo de anulación (mediante el Historial del pedido correspondiente)
-- Anulación de pedidos ya facturados: Majito anula el pedido y reintegra el stock, pero no anula la factura; la nota de crédito la emite Administración en Tango. Si la mercadería ya salió a reparto, se espera a que vuelva al depósito antes de anular
+- Anulación de pedidos ya facturados: Majito anula el pedido y reintegra el stock, pero no anula la factura; la nota de crédito la emite Administración en Tango. Administración debe anular recién cuando la mercadería haya vuelto al depósito; el sistema no controla este punto
 - Gestión del rechazo de pedidos y su vínculo con el ticket de reemplazo
 - Base para la futura extensión "Manejo de Devoluciones" (pedidos ya entregados) — fuera de alcance de esta entrega
 ### 3.6 Módulo de Reportes/Consulta Histórica
