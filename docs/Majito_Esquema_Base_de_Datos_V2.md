@@ -158,6 +158,7 @@ erDiagram
         objectId usuarioId
         date fecha
         objectId ticketId
+        string motivo
     }
 ```
 
