@@ -124,7 +124,7 @@ erDiagram
     tickets ||--o{ tickets : "ticketOrigenId / ticketsReemplazoIds"
     productos ||--o{ movimientos_stock : "productoId"
     usuarios ||--o{ movimientos_stock : "usuarioId"
-    tickets ||--o| movimientos_stock : "ticketId"
+    tickets |o--o{ movimientos_stock : "ticketId"
 
     usuarios {
         string nombre
