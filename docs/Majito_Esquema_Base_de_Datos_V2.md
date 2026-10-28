@@ -75,12 +75,12 @@ Registra cada cambio en el stock de un producto, para poder auditar quién lo mo
 | Campo | Tipo | Descripción |
 |---|---|---|
 | `productoId` | ObjectId → `productos` | Producto afectado |
-| `cantidad` | Number | Cantidad del movimiento (positiva o negativa según el tipo) |
-| `tipoMovimiento` | Enum | `migracion_inicial` \| `descuento_facturacion` \| `ajuste_manual` |
+| `cantidad` | Number (con signo, distinto de 0) | Positiva suma stock, negativa resta |
+| `tipo` | Enum | `migracion_inicial` \| `ajuste_manual` \| `descuento_facturacion` \| `reintegro_anulacion` |
 | `usuarioId` | ObjectId → `usuarios` | Quién generó el movimiento |
 | `fecha` | Date | Cuándo ocurrió (automático) |
-| `ticketId` | ObjectId → `tickets` (opcional) | Solo se completa cuando `tipoMovimiento = descuento_facturacion`, vinculando el movimiento al ticket que lo originó |
-| `reintegro_anulacion` | `movimiento_stock` | Se completa en los movimientos generados por facturado (egreso) y por anulacion de un facturado (reintegro) |
+| `ticketId` | ObjectId → `tickets` (opcional) | Solo en `descuento_facturacion` y `reintegro_anulacion`: vincula el movimiento al ticket que lo originó |
+| `motivo` | String (opcional) | Obligatorio en `ajuste_manual` |
 
 ## 6. Flujo de estados
 
@@ -154,7 +154,7 @@ erDiagram
     movimientos_stock {
         objectId productoId
         number cantidad
-        string tipoMovimiento
+        string tipo
         objectId usuarioId
         date fecha
         objectId ticketId
