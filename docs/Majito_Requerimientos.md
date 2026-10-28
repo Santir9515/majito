@@ -13,7 +13,7 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 | RF-10 a RF-12 | RF-11 a RF-13 |
 | — | RF-14 (nuevo: auditoría de movimientos de stock) |
 
-Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango.
+Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango. Se agregó además RF-15 (descuento de stock al facturar) al final de la lista, sin renumerar.
  
 ## 1. Requerimientos funcionales
  
@@ -41,6 +41,8 @@ Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechaz
 - **RF-12:** El sistema debe cargar el stock inicial mediante una migración desde una planilla exportada de Tango Gestión.
 - **RF-13:** A partir de la migración, el stock debe gestionarse exclusivamente desde Majito.
 - **RF-14:** El sistema debe registrar cada movimiento de stock (producto, cantidad, tipo de movimiento — `migracion_inicial`, `descuento_facturacion`, `reintegro_anulacion` o `ajuste_manual` —, usuario que lo generó, ticket asociado cuando corresponda, y fecha), de forma que sea posible reconstruir la trazabilidad del stock de un producto.
+- **RF-15:** Al pasar un ticket a "facturado", el sistema debe descontar el stock de cada ítem y registrar un movimiento `descuento_facturacion` por cada uno. Si el stock de algún ítem no alcanza, el sistema no debe facturar el ticket ni descontar ninguno, y debe informar qué producto no tiene stock suficiente. Los estados previos a "facturado" no modifican el stock (no hay reserva).
+
 ## 2. Requerimientos no funcionales
  
 ### Usabilidad
