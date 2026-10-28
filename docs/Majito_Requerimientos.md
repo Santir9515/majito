@@ -13,7 +13,7 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 | RF-10 a RF-12 | RF-11 a RF-13 |
 | — | RF-14 (nuevo: auditoría de movimientos de stock) |
 
-Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango.
+Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango. Se agregó además RF-15 (descuento de stock al facturar) al final de la lista, sin renumerar.
  
 ## 1. Requerimientos funcionales
  
@@ -41,6 +41,8 @@ Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechaz
 - **RF-12:** El sistema debe cargar el stock inicial mediante una migración desde una planilla exportada de Tango Gestión.
 - **RF-13:** A partir de la migración, el stock debe gestionarse exclusivamente desde Majito.
 - **RF-14:** El sistema debe registrar cada movimiento de stock (producto, cantidad, tipo de movimiento — `migracion_inicial`, `descuento_facturacion`, `reintegro_anulacion` o `ajuste_manual` —, usuario que lo generó, ticket asociado cuando corresponda, y fecha), de forma que sea posible reconstruir la trazabilidad del stock de un producto.
+- **RF-15:** Al pasar un ticket a "facturado", el sistema debe descontar el stock de cada ítem y registrar un movimiento `descuento_facturacion` por cada uno. Si el stock de algún ítem no alcanza, el sistema no debe facturar el ticket ni descontar ninguno, y debe informar qué producto no tiene stock suficiente. Los estados previos a "facturado" no modifican el stock (no hay reserva).
+
 ## 2. Requerimientos no funcionales
  
 ### Usabilidad
@@ -55,4 +57,4 @@ Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechaz
 - **RNF-06:** El código debe organizarse en módulos independientes (usuarios, tickets, productos), cada uno con su propio esquema, servicio y controlador, para facilitar el mantenimiento y la incorporación de funcionalidades futuras (por ejemplo, manejo de devoluciones o reportes).
 - **RNF-07:** Todo el desarrollo debe versionarse en un repositorio único de GitHub, con ramas por funcionalidad y Pull Requests como mecanismo de integración a la rama principal.
 ### Integridad de datos
-- **RNF-08:** El sistema debe garantizar la consistencia del stock ante operaciones concurrentes (por ejemplo, dos tickets afectando el mismo producto al mismo tiempo). La solución técnica elegida para cumplir este requerimiento (transacciones explícitas a nivel de aplicación, dado que la base de datos no es relacional) se detalla en el diseño técnico del sistema.
+- **RNF-08:** El sistema debe garantizar la consistencia del stock ante operaciones concurrentes (por ejemplo, dos tickets afectando el mismo producto al mismo tiempo). El stock de un producto nunca puede quedar negativo y, si dos tickets compiten por la última unidad disponible, solo uno puede facturarse. Criterio de aceptación: con stock = 1 y dos tickets en "listo_para_facturar" que requieren esa unidad, al facturarlos en simultáneo exactamente uno pasa a "facturado", el otro es rechazado por stock insuficiente y el stock final es 0 (verificado en la prueba del 27/10/2026). La solución técnica (descuento mediante una operación atómica condicionada a que el stock alcance, con reversión de los descuentos ya aplicados si la facturación falla) se detalla en el diseño técnico del sistema.
