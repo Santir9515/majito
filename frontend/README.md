@@ -1,32 +1,40 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# Majito — Frontend
+ 
+Aplicación web de Majito, desarrollada con React, TypeScript y Vite. Es responsiva,
+para usarse desde PC (Administración), tablet (Vendedor) y tablet o celular (Depósito).
+ 
+## Requisitos
+ 
+- Node.js 22 (LTS)
+## Puesta en marcha
+ 
+```bash
+npm install
+npm run dev
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+ 
+La aplicación queda disponible en la dirección que muestra Vite en la consola
+(por defecto, `http://localhost:5173`).
+ 
+## Estructura
+ 
+```
+src/
+├── assets/     # Imágenes y recursos estáticos
+├── context/    # Usuario actual (rol) disponible para toda la aplicación
+├── layouts/    # Layout y navegación, con opciones visibles según el rol
+├── pages/      # Pantallas
+├── routes/     # Definición de rutas
+├── services/   # Acceso a datos (pedidos y productos)
+│   └── mock/   # Datos de ejemplo
+├── types/      # Tipos del dominio, alineados con la API del backend
+├── hooks/      # Hooks propios
+└── utils/      # Utilidades
+```
+ 
+## Estado actual
+ 
+Los servicios de pedidos y productos funcionan hoy con datos de ejemplo (`services/mock`).
+La conexión con la API del backend está en curso: las pantallas no cambian, solo el interior
+de los servicios. Las rutas del backend están descriptas en `backend/README.md`.
+ 
