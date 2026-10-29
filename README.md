@@ -71,12 +71,17 @@ majito/
 
 ## Instalación
 
+Requisitos: Node.js 22 (LTS) y una base MongoDB (por ejemplo, MongoDB Atlas).
+
 ### Backend
 ```bash
 cd backend
+cp .env.example .env   # completar MONGODB_URI con la conexión a MongoDB
 npm install
 npm run start:dev
 ```
+
+La API queda disponible en `http://localhost:3000`.
 
 ### Frontend
 ```bash
