@@ -12,6 +12,8 @@ Este circuito se sostiene hoy por canales no estructurados —papel, WhatsApp y 
 
 Desarrollar un sistema interno de gestión de pedidos basado en tickets, que digitalice y ordene el circuito actual (recepción del pedido → revisión de stock y precio en administración → preparación en depósito → facturación), garantizando trazabilidad y reduciendo la dependencia de canales informales.
 
+> En toda la documentación, *pedido* y *ticket* se usan como sinónimos: el ticket es la representación del pedido en el sistema.
+
 ## 3. Alcance (MVP)
 
 Sistema de uso interno (vendedores, administración y depósito), sin portal para el cliente final en esta primera instancia:
@@ -21,7 +23,7 @@ Sistema de uso interno (vendedores, administración y depósito), sin portal par
 - Consulta de stock, precios y cantidades al acordar el pedido.
 - Panel de depósito para actualizar el estado de los pedidos en preparación.
 - Gestión de usuarios por tres roles: **Vendedor**, **Administración** y **Depósito**. Administración puede hacer todo lo de los otros roles y es la única que anula tickets y gestiona stock, usuarios y precios de catálogo.
-- Migración del control de stock desde Tango Gestión hacia la base de datos propia, pasando a ser esta última la fuente de verdad a partir de la migración.
+- Migración del control de stock desde Tango Gestión hacia la base de datos propia, pasando a ser esta última la fuente de verdad a partir de la migración. Desde entonces, el módulo de stock de Tango deja de utilizarse.
 
 ## 4. Modalidad de implementación
 
