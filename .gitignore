@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 
 # Metadatos de descargas de Windows (WSL)
 *:Zone.Identifier
+
+# Metadatos de descargas de Windows (WSL)
+*:Zone.Identifier
