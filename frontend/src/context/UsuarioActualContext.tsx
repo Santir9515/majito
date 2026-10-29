@@ -7,28 +7,51 @@ export interface UsuarioActual {
   rol: Rol;
 }
 
-// PROVISORIO: hasta que exista el login con JWT.
-// Completar los ids con los usuarios de prueba (sección 8 de la doc de la API).
-const USUARIOS_PRUEBA: Record<Rol, UsuarioActual> = {
-  vendedor: { id: '', nombre: 'Vendedor de prueba', rol: 'vendedor' },
-  deposito: { id: '', nombre: 'Depósito de prueba', rol: 'deposito' },
-  administracion: { id: '', nombre: 'Administración de prueba', rol: 'administracion' },
-};
-
-export interface UsuarioActualValor {
-  usuario: UsuarioActual;
-  cambiarRol: (rol: Rol) => void; // solo para desarrollo
+export interface SesionValor {
+  usuario: UsuarioActual | null; // null = no hay sesión iniciada
+  iniciarSesion: (usuario: UsuarioActual) => void;
+  cerrarSesion: () => void;
 }
 
-export const UsuarioActualContext = createContext<UsuarioActualValor | null>(null);
+export const UsuarioActualContext = createContext<SesionValor | null>(null);
+
+// PROVISORIO: la sesión se guarda en sessionStorage (se pierde al cerrar la pestaña)
+// para que recargar la página no obligue a loguearse de nuevo.
+// Con el login real (JWT) acá se guardaría el token.
+const CLAVE_SESION = 'majito.usuario';
+
+function leerUsuarioGuardado(): UsuarioActual | null {
+  try {
+    const crudo = sessionStorage.getItem(CLAVE_SESION);
+    return crudo ? (JSON.parse(crudo) as UsuarioActual) : null;
+  } catch {
+    return null;
+  }
+}
 
 export function UsuarioActualProvider({ children }: { children: ReactNode }) {
-  const [rol, setRol] = useState<Rol>('administracion');
+  const [usuario, setUsuario] = useState<UsuarioActual | null>(leerUsuarioGuardado);
+
+  const iniciarSesion = (nuevo: UsuarioActual) => {
+    setUsuario(nuevo);
+    try {
+      sessionStorage.setItem(CLAVE_SESION, JSON.stringify(nuevo));
+    } catch {
+      // Si el navegador no deja guardar, la sesión dura hasta recargar y nada más.
+    }
+  };
+
+  const cerrarSesion = () => {
+    setUsuario(null);
+    try {
+      sessionStorage.removeItem(CLAVE_SESION);
+    } catch {
+      // Nada que hacer: no había nada guardado que borrar.
+    }
+  };
 
   return (
-    <UsuarioActualContext.Provider
-      value={{ usuario: USUARIOS_PRUEBA[rol], cambiarRol: setRol }}
-    >
+    <UsuarioActualContext.Provider value={{ usuario, iniciarSesion, cerrarSesion }}>
       {children}
     </UsuarioActualContext.Provider>
   );

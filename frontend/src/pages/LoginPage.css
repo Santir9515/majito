@@ -1,0 +1,71 @@
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.login__tarjeta {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login__marca {
+  margin: 0;
+  text-align: center;
+}
+
+.login__formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.login__campo input,
+.login__boton {
+  padding: 8px 10px;
+  font: inherit;
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 6px;
+}
+
+.login__boton {
+  cursor: pointer;
+}
+
+.login__boton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.login__error {
+  margin: 0;
+  color: #d33;
+}
+
+.login__ayuda {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  border-top: 1px solid rgba(128, 128, 128, 0.4);
+  padding-top: 12px;
+  text-align: left;
+}
+
+.login__ayuda p {
+  margin: 0 0 4px;
+}
+
+.login__ayuda ul {
+  margin: 0;
+  padding-left: 18px;
+}
