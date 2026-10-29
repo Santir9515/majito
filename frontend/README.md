@@ -20,6 +20,7 @@ La aplicación queda disponible en la dirección que muestra Vite en la consola
  
 ```
 src/
+├── assets/     # Imágenes y recursos estáticos
 ├── context/    # Usuario actual (rol) disponible para toda la aplicación
 ├── layouts/    # Layout y navegación, con opciones visibles según el rol
 ├── pages/      # Pantallas
