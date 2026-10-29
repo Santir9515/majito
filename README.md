@@ -12,6 +12,8 @@ Este circuito se sostiene hoy por canales no estructurados —papel, WhatsApp y 
 
 Desarrollar un sistema interno de gestión de pedidos basado en tickets, que digitalice y ordene el circuito actual (recepción del pedido → revisión de stock y precio en administración → preparación en depósito → facturación), garantizando trazabilidad y reduciendo la dependencia de canales informales.
 
+> En toda la documentación, *pedido* y *ticket* se usan como sinónimos: el ticket es la representación del pedido en el sistema.
+
 ## 3. Alcance (MVP)
 
 Sistema de uso interno (vendedores, administración y depósito), sin portal para el cliente final en esta primera instancia:
@@ -21,7 +23,7 @@ Sistema de uso interno (vendedores, administración y depósito), sin portal par
 - Consulta de stock, precios y cantidades al acordar el pedido.
 - Panel de depósito para actualizar el estado de los pedidos en preparación.
 - Gestión de usuarios por tres roles: **Vendedor**, **Administración** y **Depósito**. Administración puede hacer todo lo de los otros roles y es la única que anula tickets y gestiona stock, usuarios y precios de catálogo.
-- Migración del control de stock desde Tango Gestión hacia la base de datos propia, pasando a ser esta última la fuente de verdad a partir de la migración.
+- Migración del control de stock desde Tango Gestión hacia la base de datos propia, pasando a ser esta última la fuente de verdad a partir de la migración. Desde entonces, el módulo de stock de Tango deja de utilizarse.
 
 ## 4. Modalidad de implementación
 
@@ -37,7 +39,7 @@ Se optó por una única aplicación web adaptable (responsive) en lugar de aplic
 
 La implementación de Majito se justifica por el impacto directo en la eficiencia operativa de Cerámica Maja SRL, transformando un circuito informal en un proceso auditable y trazable. Al centralizar la operación, se identifican cuellos de botella y se asignan responsabilidades claras en cada etapa del ticket.
 
-Desde el punto de vista técnico, el proyecto adopta un stack moderno que equilibra flexibilidad y robustez. La combinación de React y NestJS permite un desarrollo modular, facilitando el mantenimiento y futuras extensiones (como un eventual portal de clientes). La elección de MongoDB es estratégica: permite representar el historial dinámico y variable de los tickets sin las rigideces de un esquema relacional. Los riesgos de consistencia en operaciones críticas (como el descuento de stock) se resuelven mediante transacciones explícitas a nivel de aplicación.
+Desde el punto de vista técnico, el proyecto adopta un stack moderno que equilibra flexibilidad y robustez. La combinación de React y NestJS permite un desarrollo modular, facilitando el mantenimiento y futuras extensiones (como un eventual portal de clientes). La elección de MongoDB es estratégica: permite representar el historial dinámico y variable de los tickets sin las rigideces de un esquema relacional. Los riesgos de consistencia en operaciones críticas (como el descuento de stock) se resuelven con operaciones atómicas condicionadas en la base de datos (el stock solo se descuenta si alcanza) y la reversión de lo ya aplicado si la operación falla.
 
 ## 6. Stack tecnológico
 
@@ -69,12 +71,17 @@ majito/
 
 ## Instalación
 
+Requisitos: Node.js 22 (LTS) y una base MongoDB (por ejemplo, MongoDB Atlas).
+
 ### Backend
 ```bash
 cd backend
+cp .env.example .env   # completar MONGODB_URI con la conexión a MongoDB
 npm install
 npm run start:dev
 ```
+
+La API queda disponible en `http://localhost:3000`.
 
 ### Frontend
 ```bash
