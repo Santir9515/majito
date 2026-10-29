@@ -37,7 +37,7 @@ Se optó por una única aplicación web adaptable (responsive) en lugar de aplic
 
 La implementación de Majito se justifica por el impacto directo en la eficiencia operativa de Cerámica Maja SRL, transformando un circuito informal en un proceso auditable y trazable. Al centralizar la operación, se identifican cuellos de botella y se asignan responsabilidades claras en cada etapa del ticket.
 
-Desde el punto de vista técnico, el proyecto adopta un stack moderno que equilibra flexibilidad y robustez. La combinación de React y NestJS permite un desarrollo modular, facilitando el mantenimiento y futuras extensiones (como un eventual portal de clientes). La elección de MongoDB es estratégica: permite representar el historial dinámico y variable de los tickets sin las rigideces de un esquema relacional. Los riesgos de consistencia en operaciones críticas (como el descuento de stock) se resuelven mediante transacciones explícitas a nivel de aplicación.
+Desde el punto de vista técnico, el proyecto adopta un stack moderno que equilibra flexibilidad y robustez. La combinación de React y NestJS permite un desarrollo modular, facilitando el mantenimiento y futuras extensiones (como un eventual portal de clientes). La elección de MongoDB es estratégica: permite representar el historial dinámico y variable de los tickets sin las rigideces de un esquema relacional. Los riesgos de consistencia en operaciones críticas (como el descuento de stock) se resuelven con operaciones atómicas condicionadas en la base de datos (el stock solo se descuenta si alcanza) y la reversión de lo ya aplicado si la operación falla.
 
 ## 6. Stack tecnológico
 
