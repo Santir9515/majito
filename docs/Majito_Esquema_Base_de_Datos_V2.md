@@ -121,7 +121,7 @@ erDiagram
     usuarios ||--o{ tickets : "creadoPor"
     usuarios ||--o{ tickets : "historial.usuario"
     productos ||--o{ tickets : "items.productoId"
-    tickets ||--o{ tickets : "ticketOrigenId / ticketsReemplazoIds"
+    tickets |o--o{ tickets : "ticketOrigenId / ticketsReemplazoIds"
     productos ||--o{ movimientos_stock : "productoId"
     usuarios ||--o{ movimientos_stock : "usuarioId"
     tickets |o--o{ movimientos_stock : "ticketId"
