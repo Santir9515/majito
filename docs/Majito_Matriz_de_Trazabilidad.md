@@ -19,7 +19,7 @@ estado se refiere al backend.
 | RF-01 Login con email y contraseña | CU-01 | — | Pendiente | Sin autenticación: hoy el usuario se identifica con `usuarioId` en el body o la query. Está previsto login con JWT. |
 | RF-02 Tres roles con permisos y vistas diferenciadas | CU-01, CU-17 | `users`, validación de rol en `tickets` | Parcial | Las transiciones validan el rol del usuario indicado. Faltan las vistas por rol conectadas y la validación al crear un ticket. |
 | RF-03 Contraseñas hasheadas, no expuestas | CU-01, CU-17 | `POST /users`, `PATCH /users/:id` | Hecho | Hash con bcrypt; `passwordHash` se excluye de todas las respuestas. |
-| RF-04 Inactivar usuarios en lugar de eliminarlos | CU-17 | `DELETE /users/:id` | Pendiente | El campo `activo` existe, pero `DELETE` hoy elimina el documento. Debe pasar a `activo = false`, y el login debe rechazar a los inactivos. |
+| RF-04 Inactivar usuarios en lugar de eliminarlos | CU-17 | `DELETE /users/:id`, `PATCH /users/:id` | Hecho | `DELETE` marca `activo = false` y `PATCH` permite reactivar. Los servicios de tickets y de movimientos rechazan a los usuarios inactivos (403). El login los rechazará cuando exista (RF-01). |
 | RF-05 Crear ticket con cliente, ítems y notas | CU-02 | `POST /tickets` | Hecho | |
 | RF-06 Transiciones válidas por rol | CU-04, CU-05, CU-06, CU-07, CU-08, CU-09 | `PATCH /tickets/:id/avanzar` | Hecho | |
 | RF-07 Anular (de creado a facturado, o rechazado sin reemplazos) | CU-13 | `PATCH /tickets/:id/anular` | Hecho | Motivo obligatorio. Al anular un facturado se reintegra el stock. |
@@ -51,6 +51,6 @@ estado se refiere al backend.
 ## 3. Verificación cruzada
  
 - Todos los RF tienen al menos un caso de uso, y todos los casos de uso (CU-01 a CU-20) están cubiertos por al menos un RF.
-- Los pendientes de código (autenticación, inactivación de usuarios, edición de tickets (RF-16), comentarios (RF-17),
+- Los pendientes de código (autenticación, edición de tickets (RF-16), comentarios (RF-17),
   precios (RF-18), importación masiva y listado general de movimientos) son el trabajo que sigue después de cerrar la documentación.
  
