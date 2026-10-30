@@ -14,6 +14,8 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 | — | RF-14 (nuevo: auditoría de movimientos de stock) |
 
 Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango. Se agregó además RF-15 (descuento de stock al facturar) al final de la lista, sin renumerar.
+
+30/10/2026: Se agregaron RF-16 (edición de tickets), RF-17 (comentarios de avance) y RF-18 (precios de catálogo) para cubrir los casos de uso CU-03, CU-10 y CU-18, sin renumerar.
  
 ## 1. Requerimientos funcionales
  
@@ -36,12 +38,17 @@ Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechaz
 - **RF-08:** El sistema debe permitir rechazar un ticket desde el estado "creado" hasta "listo_para_facturar" inclusive (por falta de stock o diferencia detectada en depósito), con motivo obligatorio. Un ticket rechazado puede tener uno o más tickets de reemplazo (por ejemplo, cuando el pedido se desglosa), creados por Vendedor o Administración y vinculados al original en ambos sentidos.
 - **RF-09:** El sistema debe registrar un historial de cada cambio de estado, indicando quién lo hizo y cuándo.
 - **RF-10:** El sistema no debe permitir facturar un ticket que no llegó al estado "listo para facturar".
+- **RF-16:** El sistema debe permitir modificar el cliente, los ítems, las cantidades y las notas de un ticket: el vendedor, solo mientras el ticket esté en "creado"; administración, hasta "listo_para_facturar" inclusive. Superado ese estado, el sistema debe impedir la edición; la corrección se realiza anulando el ticket (RF-07) y creando uno nuevo. El rol depósito no puede modificar cliente, producto ni cantidad.
+- **RF-17:** El sistema debe permitir a depósito y a administración agregar comentarios de avance a un ticket en curso, sin modificar su estado. Cada comentario debe quedar asociado al ticket con su autor y su fecha.
+### Catálogo
+- **RF-18:** El sistema debe permitir a administración cargar y modificar el precio de catálogo de un producto, y a ningún otro rol. El precio final de cada operación (con descuentos o promociones) lo define la facturación, fuera de Majito.
 ### Stock
 - **RF-11:** El sistema debe permitir consultar el stock disponible de un producto al momento de crear o revisar un ticket.
 - **RF-12:** El sistema debe cargar el stock inicial mediante una migración desde una planilla exportada de Tango Gestión.
 - **RF-13:** A partir de la migración, el stock debe gestionarse exclusivamente desde Majito.
 - **RF-14:** El sistema debe registrar cada movimiento de stock (producto, cantidad, tipo de movimiento — `migracion_inicial`, `descuento_facturacion`, `reintegro_anulacion` o `ajuste_manual` —, usuario que lo generó, ticket asociado cuando corresponda, y fecha), de forma que sea posible reconstruir la trazabilidad del stock de un producto.
 - **RF-15:** Al pasar un ticket a "facturado", el sistema debe descontar el stock de cada ítem y registrar un movimiento `descuento_facturacion` por cada uno. Si el stock de algún ítem no alcanza, el sistema no debe facturar el ticket ni descontar ninguno, y debe informar qué producto no tiene stock suficiente. Los estados previos a "facturado" no modifican el stock (no hay reserva).
+
 
 ## 2. Requerimientos no funcionales
  
