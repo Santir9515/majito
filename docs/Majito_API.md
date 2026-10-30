@@ -100,8 +100,8 @@ Campos de un movimiento: `productoId`, `tipo`, `cantidad`, `usuarioId`, `fecha`,
 | `POST /users` | Crea un usuario (CU-17) | Body: `nombre`, `email`, `password` (mínimo 6 caracteres), `rol` |
 | `GET /users` | Lista los usuarios | — |
 | `GET /users/:id` | Devuelve un usuario | — |
-| `PATCH /users/:id` | Modifica los datos de un usuario | Body: cualquiera de los campos del alta |
-| `DELETE /users/:id` | Elimina un usuario | — |
+| `PATCH /users/:id` | Modifica los datos de un usuario o lo reactiva | Body: cualquiera de los campos del alta, o `activo` |
+| `DELETE /users/:id` | Inactiva un usuario (`activo = false`); no lo elimina (RF-04) | — |
  
 La contraseña se guarda con hash (bcrypt) y nunca se devuelve en las respuestas (RF-03).
 `rol` toma uno de los valores del enum `Role` (vendedor, administración o depósito).
@@ -111,7 +111,6 @@ La contraseña se guarda con hash (bcrypt) y nunca se devuelve en las respuestas
 | Funcionalidad | Requerimiento | Ruta prevista |
 |---|---|---|
 | Login con email y contraseña, con JWT y roles | RF-01, RF-02, RNF-03 | `POST /auth/login` |
-| Inactivar usuarios en lugar de eliminarlos | RF-04 | `DELETE /users/:id` pasará a poner `activo = false` |
 | Editar un ticket | RF-16 | `PATCH /tickets/:id` |
 | Comentarios de avance | RF-17 | Ruta a definir |
 | Modificar el precio de un producto | RF-18 | `PATCH /productos/:id` |

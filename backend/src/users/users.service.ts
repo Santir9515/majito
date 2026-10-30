@@ -42,6 +42,9 @@ async create(createUserDto: CreateUserDto) {
   }
 
   remove(id: string) {
-    return this.userModel.findByIdAndDelete(id).exec();
+    return this.userModel
+      .findByIdAndUpdate(id, { activo: false }, { new: true })
+      .select('-passwordHash')
+      .exec();
   }
 }
