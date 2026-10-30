@@ -60,6 +60,21 @@ Desde el punto de vista técnico, el proyecto adopta un stack moderno que equili
 
 Ambos integrantes participan en la definición conjunta del modelo de datos y las decisiones de arquitectura antes de la 2.ª entrega.
 
+## Documentación
+
+Toda la documentación del proyecto está en la carpeta `docs/`.
+
+| Documento | Contenido |
+|---|---|
+| [Requerimientos](docs/Majito_Requerimientos.md) | Requerimientos funcionales (RF) y no funcionales (RNF) |
+| [Casos de uso e historias de usuario](docs/Majito_Casos_de_Uso_e_Historias_de_Usuario.md) | CU-01 a CU-20, con actores y flujos |
+| [Reglas de negocio](docs/Majito_Reglas_de_Negocio.md) | Estados del ticket, permisos por rol y política de stock |
+| [Esquema de base de datos](docs/Majito_Esquema_Base_de_Datos_V2.md) | Colecciones, campos y relaciones |
+| [Diagramas](docs/Majito_Diagramas.md) | Estados, DER, actividades, secuencia, componentes, arquitectura, despliegue y casos de uso |
+| [Matriz de trazabilidad](docs/Majito_Matriz_de_Trazabilidad.md) | Requerimiento, caso de uso, backend y estado de implementación |
+| [API del backend](docs/Majito_API.md) | Rutas, datos de entrada y convenciones (versión provisional) |
+| [Listado de módulos](docs/Majito_Listado_de_Modulos_2da_entrega.md) | Módulos del sistema de la 2.ª entrega |
+
 ## Estructura del repositorio
 
 ```
