@@ -1,10 +1,9 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { useUsuarioActual } from '../hooks/useUsuarioActual';
 import { ETIQUETA_ROL, seccionesPara } from '../utils/permisos';
-import type { Rol } from '../types';
 
 export default function MainLayout() {
-  const { usuario, cambiarRol } = useUsuarioActual();
+  const { usuario, cerrarSesion } = useUsuarioActual();
   const secciones = seccionesPara(usuario.rol);
 
   return (
@@ -27,18 +26,11 @@ export default function MainLayout() {
         </nav>
 
         <div className="layout__usuario">
-          <label htmlFor="rol-prueba">Rol (solo desarrollo)</label>
-          <select
-            id="rol-prueba"
-            value={usuario.rol}
-            onChange={(e) => cambiarRol(e.target.value as Rol)}
-          >
-            {(Object.keys(ETIQUETA_ROL) as Rol[]).map((rol) => (
-              <option key={rol} value={rol}>
-                {ETIQUETA_ROL[rol]}
-              </option>
-            ))}
-          </select>
+          <p>{usuario.nombre}</p>
+          <p>{ETIQUETA_ROL[usuario.rol]}</p>
+          <button type="button" onClick={cerrarSesion}>
+            Cerrar sesión
+          </button>
         </div>
       </aside>
 
