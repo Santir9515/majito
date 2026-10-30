@@ -68,7 +68,7 @@ curl -X PATCH http://localhost:3000/tickets/<id>/avanzar \
  
 | Método y ruta | Descripción | Datos |
 |---|---|---|
-| `POST /productos` | Da de alta un producto | Body: `codigo`, `nombre`, `categoria` (opcional), `precio` (≥ 0), `stockActual` (≥ 0) |
+| `POST /productos` | Da de alta un producto | Body: `codigo`, `nombre`, `categoria` (opcional), `precio` (≥ 0). El producto nace con stock 0: el stock se carga con un movimiento (sección 4) |
 | `GET /productos` | Lista los productos y su stock (CU-14) | — |
 | `GET /productos/:id` | Devuelve un producto | — |
  
@@ -116,8 +116,4 @@ La contraseña se guarda con hash (bcrypt) y nunca se devuelve en las respuestas
 | Modificar el precio de un producto | RF-18 | `PATCH /productos/:id` |
 | Importación masiva del stock inicial desde planilla | RF-12 | Ruta a definir |
 | Listado general de movimientos de stock | RF-14 | `GET /movimientos-stock` |
- 
-Ajuste pendiente: el alta de un producto admite `stockActual`, lo que deja stock sin un movimiento
-asociado. Para cumplir RF-13 y RF-14, el producto debería nacer con stock 0 y recibirlo mediante
-un movimiento `migracion_inicial`.
  

@@ -17,7 +17,4 @@ export class CreateProductoDto {
   @Min(0)
   precio: number;
 
-  @IsNumber()
-  @Min(0)
-  stockActual: number;
 }
