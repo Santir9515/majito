@@ -31,6 +31,9 @@ estado se refiere al backend.
 | RF-13 Stock gestionado solo desde Majito | CU-16, CU-20 | `POST /movimientos-stock` | Hecho | |
 | RF-14 Registro de cada movimiento de stock | CU-15, CU-16, CU-20 | `POST /movimientos-stock`, `GET /movimientos-stock/producto/:productoId` | Parcial | Los movimientos se registran siempre. Falta un listado general (hoy se consulta por producto). |
 | RF-15 Descontar stock al facturar, sin reserva | CU-07, CU-13 | `PATCH /tickets/:id/avanzar` | Hecho | Si un ítem no alcanza, no se factura nada. |
+| RF-16 Editar cliente, ítems, cantidades y notas según rol y estado | CU-03 | — | Pendiente | Falta un endpoint de edición de tickets (por ejemplo `PATCH /tickets/:id`). |
+| RF-17 Comentarios de avance con autor y fecha | CU-10 | — | Pendiente | Falta el endpoint y el campo para guardar los comentarios en el ticket. |
+| RF-18 Cargar y modificar el precio de catálogo (solo Administración) | CU-18 | — | Pendiente | `productos` tiene alta y consulta, pero no `PATCH`. |
  
 ## 2. Requerimientos no funcionales
  
@@ -45,19 +48,9 @@ estado se refiere al backend.
 | RNF-07 Repositorio único con ramas y Pull Requests | GitHub | Hecho | |
 | RNF-08 Consistencia del stock ante concurrencia | Operación atómica condicionada, sin transacciones | Hecho | Verificado el 27/10/2026: con stock 1 y dos tickets, se factura exactamente uno y el stock final es 0. |
  
-## 3. Casos de uso sin requerimiento asociado
+## 3. Verificación cruzada
  
-Estos casos de uso no están cubiertos por ningún RF de la lista actual. Hay que decidir si se
-agrega un requerimiento para cada uno o si se quitan del alcance.
+- Todos los RF tienen al menos un caso de uso, y todos los casos de uso (CU-01 a CU-20) están cubiertos por al menos un RF.
+- Los pendientes de código (autenticación, inactivación de usuarios, edición de tickets (RF-16), comentarios (RF-17),
+  precios (RF-18), importación masiva y listado general de movimientos) son el trabajo que sigue después de cerrar la documentación.
  
-| Caso de uso | Situación | Estado |
-|---|---|---|
-| CU-03 Editar pedido | No hay RF que describa la edición de un ticket. | Pendiente |
-| CU-10 Agregar comentario de avance | No hay RF que describa los comentarios. | Pendiente |
-| CU-18 Gestionar precios de catálogo | No hay RF; además `productos` no tiene `PATCH`. | Pendiente |
- 
-## 4. Verificación cruzada
- 
-- Todos los RF tienen al menos un caso de uso, y todos los CU de las secciones 1 a 3 aparecen en la matriz.
-- Los pendientes de código (autenticación, inactivación de usuarios, edición de tickets, comentarios,
-  precios, importación masiva y listado general de movimientos) son el trabajo que sigue después de cerrar la documentación.
