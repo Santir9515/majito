@@ -11,6 +11,7 @@ Reglas de Negocio.
 5. [Componentes](#5-componentes)
 6. [Arquitectura](#6-arquitectura)
 7. [Despliegue](#7-despliegue)
+8. [Casos de uso](#8-casos-de-uso)
 ## 1. Estados del ticket
  
 Cada transición indica el rol que la ejecuta. La anulación es exclusiva de Administración;
@@ -295,3 +296,84 @@ flowchart LR
     GH -. "despliegue desde el repositorio" .-> BE
 ```
  
+## 8. Casos de uso
+ 
+Actores y casos de uso según el documento de Casos de Uso e Historias de Usuario. Los tres
+roles heredan los casos de uso del actor general Usuario (iniciar sesión, consultar catálogo y
+stock, consultar pedido e historial). Mermaid no tiene diagrama de casos de uso nativo, por lo
+que se dibuja con un diagrama de flujo.
+ 
+```mermaid
+flowchart LR
+    US(["Usuario"])
+    VE(["Vendedor"])
+    AD(["Administración"])
+    DE(["Depósito"])
+ 
+    VE -->|hereda| US
+    AD -->|hereda| US
+    DE -->|hereda| US
+ 
+    subgraph SIS["Majito"]
+        subgraph GEN["Acceso y consultas"]
+            CU01(["CU-01 Iniciar sesión"])
+            CU14(["CU-14 Consultar catálogo y stock"])
+            CU19(["CU-19 Consultar pedido e historial"])
+        end
+        subgraph PED["Gestión del pedido"]
+            CU02(["CU-02 Crear pedido"])
+            CU03(["CU-03 Editar pedido"])
+            CU04(["CU-04 Revisar pedido"])
+            CU05(["CU-05 Iniciar preparación"])
+            CU06(["CU-06 Marcar listo para facturar"])
+            CU07(["CU-07 Facturar pedido"])
+            CU08(["CU-08 Registrar entrega"])
+            CU09(["CU-09 Cerrar pedido"])
+            CU10(["CU-10 Agregar comentario de avance"])
+        end
+        subgraph EXC["Excepciones"]
+            CU11(["CU-11 Rechazar pedido"])
+            CU12(["CU-12 Crear ticket de reemplazo"])
+            CU13(["CU-13 Anular pedido"])
+        end
+        subgraph ADMN["Administración del sistema"]
+            CU15(["CU-15 Ver movimientos de stock"])
+            CU16(["CU-16 Ajustar stock manualmente"])
+            CU17(["CU-17 Gestionar usuarios"])
+            CU18(["CU-18 Gestionar precios de catálogo"])
+            CU20(["CU-20 Cargar stock inicial"])
+        end
+    end
+ 
+    US --- CU01
+    US --- CU14
+    US --- CU19
+ 
+    VE --- CU02
+    VE --- CU03
+    VE --- CU12
+ 
+    DE --- CU05
+    DE --- CU06
+    DE --- CU08
+    DE --- CU10
+    DE --- CU11
+ 
+    AD --- CU02
+    AD --- CU03
+    AD --- CU04
+    AD --- CU05
+    AD --- CU06
+    AD --- CU07
+    AD --- CU08
+    AD --- CU09
+    AD --- CU10
+    AD --- CU11
+    AD --- CU12
+    AD --- CU13
+    AD --- CU15
+    AD --- CU16
+    AD --- CU17
+    AD --- CU18
+    AD --- CU20
+```
