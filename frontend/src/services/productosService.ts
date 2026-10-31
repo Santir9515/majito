@@ -1,20 +1,13 @@
 import type { Producto } from '../types';
-import { PRODUCTOS, simularLatencia } from './mock/datos';
+import { pedirJSON } from './api';
 
-// SERVICIO MOCK: devuelve datos de ejemplo.
-// Cuando se conecte al backend, solo cambia el interior de estas funciones
-// (GET /api/productos y GET /api/productos/:id); las pantallas no se tocan.
+// Conectado al backend: GET /productos y GET /productos/:id
+// (en desarrollo, a través del proxy /api de Vite).
 
-export async function listarProductos(): Promise<Producto[]> {
-  await simularLatencia();
-  return structuredClone(PRODUCTOS);
+export function listarProductos(): Promise<Producto[]> {
+  return pedirJSON<Producto[]>('/productos');
 }
 
-export async function obtenerProducto(id: string): Promise<Producto> {
-  await simularLatencia();
-  const producto = PRODUCTOS.find((p) => p._id === id);
-  if (!producto) {
-    throw new Error('Producto no encontrado');
-  }
-  return structuredClone(producto);
+export function obtenerProducto(id: string): Promise<Producto> {
+  return pedirJSON<Producto>(`/productos/${id}`);
 }
