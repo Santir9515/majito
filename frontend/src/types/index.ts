@@ -4,3 +4,4 @@ export * from './itemPedido';
 export * from './cambioEstado';
 export * from './pedido';
 export * from './producto';
+export * from './usuario';

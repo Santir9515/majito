@@ -3,7 +3,7 @@ export interface Producto {
   codigo: string;
   nombre: string;
   categoria?: string;
-  precio: number; // precio de lista
+  precio?: number; // precio de lista
   stockActual: number;
   activo: boolean;
 }
