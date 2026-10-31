@@ -1,3 +1,4 @@
+import { ParseObjectIdPipe } from '../common/pipes/parse-object-id.pipe';
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { MovimientosStockService } from './movimientos-stock.service';
 import { CrearMovimientoDto } from './dto/crear-movimiento.dto';
@@ -14,7 +15,7 @@ export class MovimientosStockController {
 
   @Get('producto/:productoId')
   listarPorProducto(
-    @Param('productoId') productoId: string,
+    @Param('productoId', ParseObjectIdPipe) productoId: string,
     @Query() query: ListarMovimientosDto,
   ) {
     return this.movimientosService.listarPorProducto(

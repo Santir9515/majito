@@ -1,3 +1,4 @@
+import { ParseObjectIdPipe } from '../common/pipes/parse-object-id.pipe';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { AvanzarTicketDto } from './dto/avanzar-ticket-dto';
@@ -22,27 +23,27 @@ export class TicketsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseObjectIdPipe) id: string) {
     return this.ticketsService.findOne(id);
   }
 
   @Patch(':id/avanzar')
-  avanzar(@Param('id') id: string, @Body() dto: AvanzarTicketDto) {
+  avanzar(@Param('id', ParseObjectIdPipe) id: string, @Body() dto: AvanzarTicketDto) {
     return this.ticketsService.avanzar(id, dto);
   }
 
   @Patch(':id/anular')
-  anular(@Param('id') id: string, @Body() dto: AnularTicketDto) {
+  anular(@Param('id', ParseObjectIdPipe) id: string, @Body() dto: AnularTicketDto) {
     return this.ticketsService.anular(id, dto);
   }
 
   @Patch(':id/rechazar')
-  rechazar(@Param('id') id: string, @Body() dto: RechazarTicketDto) {
+  rechazar(@Param('id', ParseObjectIdPipe) id: string, @Body() dto: RechazarTicketDto) {
     return this.ticketsService.rechazar(id, dto);
   }
 
   @Post(':id/reemplazo')
-  crearReemplazo(@Param('id') id: string, @Body() dto: CrearReemplazoDto) {
+  crearReemplazo(@Param('id', ParseObjectIdPipe) id: string, @Body() dto: CrearReemplazoDto) {
     return this.ticketsService.crearReemplazo(id, dto);
   }
 }

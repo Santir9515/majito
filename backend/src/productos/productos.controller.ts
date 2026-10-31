@@ -1,3 +1,4 @@
+import { ParseObjectIdPipe } from '../common/pipes/parse-object-id.pipe';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
@@ -17,7 +18,7 @@ export class ProductosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseObjectIdPipe) id: string) {
     return this.productosService.findOne(id);
   }
 }
