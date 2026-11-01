@@ -117,4 +117,5 @@ La contraseña se guarda con hash (bcrypt) y nunca se devuelve en las respuestas
 | Modificar el precio de un producto | RF-18 | `PATCH /productos/:id` |
 | Importación masiva del stock inicial desde planilla | RF-12 | Ruta a definir |
 | Listado general de movimientos de stock | RF-14 | `GET /movimientos-stock` |
+| Precio de costo: carga y edición, paneles de inventario y catálogo, y ocultar el costo a otros roles | RF-18, RF-19, RNF-09 | `PATCH /productos/:id` y consultas de productos que incluyan `precioCosto` solo para Administración |
  

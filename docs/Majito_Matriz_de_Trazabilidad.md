@@ -33,7 +33,8 @@ estado se refiere al backend.
 | RF-15 Descontar stock al facturar, sin reserva | CU-07, CU-13 | `PATCH /tickets/:id/avanzar` | Hecho | Si un ítem no alcanza, no se factura nada. |
 | RF-16 Editar cliente, ítems, cantidades y notas según rol y estado | CU-03 | — | Pendiente | Falta un endpoint de edición de tickets (por ejemplo `PATCH /tickets/:id`). |
 | RF-17 Comentarios de avance con autor y fecha | CU-10 | — | Pendiente | Falta el endpoint y el campo para guardar los comentarios en el ticket. |
-| RF-18 Cargar y modificar el precio de catálogo (solo Administración) | CU-18 | — | Pendiente | `productos` tiene alta y consulta, pero no `PATCH`. |
+| RF-18 Cargar y modificar el precio de venta y de costo (solo Administración) | CU-18 | — | Pendiente | `productos` tiene alta y consulta, pero no `PATCH`. Falta el campo `precioCosto`. |
+| RF-19 Paneles de inventario y de catálogo con precio de costo (Administración) | CU-21 | — | Pendiente | Requiere el frontend y consultas de productos que devuelvan el costo según el rol. |
  
 ## 2. Requerimientos no funcionales
  
@@ -47,10 +48,11 @@ estado se refiere al backend.
 | RNF-06 Código en módulos independientes | Módulos `users`, `tickets`, `productos`, `movimientos-stock` | Hecho | |
 | RNF-07 Repositorio único con ramas y Pull Requests | GitHub | Hecho | |
 | RNF-08 Consistencia del stock ante concurrencia | Operación atómica condicionada, sin transacciones | Hecho | Verificado el 27/10/2026: con stock 1 y dos tickets, se factura exactamente uno y el stock final es 0. |
+| RNF-09 Precio de costo visible solo para Administración | El backend quita `precioCosto` de las respuestas a otros roles | Pendiente | Depende de RF-18 y, para identificar el rol, del login (RF-01). |
  
 ## 3. Verificación cruzada
  
-- Todos los RF tienen al menos un caso de uso, y todos los casos de uso (CU-01 a CU-20) están cubiertos por al menos un RF.
+- Todos los RF tienen al menos un caso de uso, y todos los casos de uso (CU-01 a CU-21) están cubiertos por al menos un RF.
 - Los pendientes de código (autenticación, edición de tickets (RF-16), comentarios (RF-17),
   precios (RF-18), importación masiva y listado general de movimientos) son el trabajo que sigue después de cerrar la documentación.
  

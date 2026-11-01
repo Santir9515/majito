@@ -31,7 +31,8 @@ Nota general: las colecciones `usuarios`, `productos` y `tickets` incluyen autom
 | `codigo` | String (único) | Identificador del producto en Tango Gestión; clave de la migración |
 | `nombre` | String | Nombre del producto |
 | `categoria` | String (opcional) | Agrupación del producto |
-| `precio` | Number (mínimo 0) | Precio de catálogo del producto. Es fijo y único por producto (no varía por ticket); solo Administración puede definirlo o modificarlo |
+| `precio` | Number (mínimo 0) | Precio de venta (de catálogo) del producto. Es fijo y único por producto (no varía por ticket); solo Administración puede definirlo o modificarlo |
+| `precioCosto` | Number (mínimo 0), opcional | Precio de costo del producto. Solo Administración puede verlo, definirlo o modificarlo: el backend no lo incluye en las respuestas para otros roles. |
 | `stockActual` | Number (mínimo 0) | Cantidad disponible; Majito es la fuente de verdad a partir de la migración inicial. El esquema valida explícitamente que no pueda quedar en negativo |
 | `activo` | Boolean | Permite dar de baja un producto sin borrarlo |
 
@@ -138,6 +139,7 @@ erDiagram
         string nombre
         string categoria
         number precio
+        number precioCosto
         number stockActual
         boolean activo
     }

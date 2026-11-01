@@ -13,7 +13,7 @@ A partir de la revisión del tutor de la cátedra se incorporaron 4 ajustes: se 
 | RF-10 a RF-12 | RF-11 a RF-13 |
 | — | RF-14 (nuevo: auditoría de movimientos de stock) |
 
-Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango. Se agregó además RF-15 (descuento de stock al facturar) al final de la lista, sin renumerar.
+Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechazo, reemplazos múltiples) y RF-14 (nuevo tipo de movimiento `reintegro_anulacion`), sin cambios en la numeración. Además, en RF-07 se aclaró que la anulación de un ticket facturado no anula la factura, cuya nota de crédito se emite por separado en Tango. Se agregó además RF-15 (descuento de stock al facturar) al final de la lista, sin renumerar. Se amplió RF-18 (precio de costo) y se agregaron RF-19 y RNF-09 (paneles de inventario y catálogo con costo, visibles solo para administración), sin renumerar.
 
 30/10/2026: Se agregaron RF-16 (edición de tickets), RF-17 (comentarios de avance) y RF-18 (precios de catálogo) para cubrir los casos de uso CU-03, CU-10 y CU-18, sin renumerar.
  
@@ -41,7 +41,8 @@ Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechaz
 - **RF-16:** El sistema debe permitir modificar el cliente, los ítems, las cantidades y las notas de un ticket: el vendedor, solo mientras el ticket esté en "creado"; administración, hasta "listo_para_facturar" inclusive. Superado ese estado, el sistema debe impedir la edición; la corrección se realiza anulando el ticket (RF-07) y creando uno nuevo. El rol depósito no puede modificar cliente, producto ni cantidad.
 - **RF-17:** El sistema debe permitir a depósito y a administración agregar comentarios de avance a un ticket en curso, sin modificar su estado. Cada comentario debe quedar asociado al ticket con su autor y su fecha.
 ### Catálogo
-- **RF-18:** El sistema debe permitir a administración cargar y modificar el precio de catálogo de un producto, y a ningún otro rol. El precio final de cada operación (con descuentos o promociones) lo define la facturación, fuera de Majito.
+- **RF-18:** El sistema debe permitir a administración cargar y modificar el precio de venta y el precio de costo (opcional) de un producto, y a ningún otro rol. El precio final de cada operación (con descuentos o promociones) lo define la facturación, fuera de Majito.
+- **RF-19:** El sistema debe ofrecer a administración dos paneles de consulta de productos: uno de inventario, con el stock y el precio de costo de cada producto, y uno de catálogo, con el precio de venta junto al precio de costo, para que conozca el piso de precio al facturar u ofrecer un descuento. Si un producto no tiene precio cargado, el panel debe indicarlo.
 ### Stock
 - **RF-11:** El sistema debe permitir consultar el stock disponible de un producto al momento de crear o revisar un ticket.
 - **RF-12:** El sistema debe cargar el stock inicial mediante una migración desde una planilla exportada de Tango Gestión.
@@ -58,6 +59,7 @@ Revisión posterior: se precisaron RF-07 y RF-08 (alcance de anulación y rechaz
 ### Seguridad
 - **RNF-03:** El acceso a cada funcionalidad debe estar restringido según el rol del usuario autenticado.
 - **RNF-04:** Las contraseñas deben protegerse con hash (bcrypt) y las comunicaciones con el backend deben viajar sobre HTTPS en producción.
+- **RNF-09:** El precio de costo de los productos solo debe ser accesible para administración: el sistema no debe incluirlo en las respuestas ni en las pantallas destinadas a vendedor y depósito.
 ### Disponibilidad y despliegue
 - **RNF-05:** El sistema debe estar desplegado en servicios en la nube (frontend en Vercel, backend en Render, base de datos en MongoDB Atlas), cumpliendo el requisito de la cátedra de tener al menos un componente accesible online.
 ### Mantenibilidad
