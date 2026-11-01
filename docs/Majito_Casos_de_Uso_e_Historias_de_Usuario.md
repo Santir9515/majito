@@ -37,6 +37,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 | CU-18 | Gestionar precios de catálogo | Administración |
 | CU-19 | Consultar pedido e historial | Todos (ver nota en sección 5) |
 | CU-20 | Cargar stock inicial | Administración |
+| CU-21 | Consultar paneles de inventario y catálogo | Administración |
 
 ## 3. Detalle de casos de uso
 
@@ -124,6 +125,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 ### CU-14 – Consultar catálogo y stock
 - **Actor:** todos los roles.
 - **Flujo principal:** el actor busca o lista productos y ve su información y stock disponible.
+- **Regla:** el precio de costo no se muestra en esta consulta; solo Administración lo ve, en los paneles de CU-21.
 
 ### CU-15 – Ver movimientos de stock
 - **Actor:** Administración.
@@ -141,7 +143,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 
 ### CU-18 – Gestionar precios de catálogo
 - **Actor:** Administración.
-- **Flujo principal:** Administración carga o edita el precio de catálogo de un producto.
+- **Flujo principal:** Administración carga o edita el precio de venta y el precio de costo de un producto.
 - **Regla:** solo Administración puede modificar precios de catálogo. El precio final de cada operación, con descuentos o promociones, lo define la facturación, fuera de Majito.
 
 ### CU-19 – Consultar pedido e historial
@@ -153,6 +155,12 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 - **Precondición:** el producto existe en el catálogo y no tiene una carga inicial previa.
 - **Flujo principal:** Administración ingresa la cantidad inicial de un producto, tomada de la planilla exportada de Tango → el sistema suma esa cantidad al stock y registra un movimiento de tipo `migracion_inicial`.
 - **Alternativo:** la cantidad no es positiva, o el producto ya tiene una carga inicial → el sistema no lo permite.
+
+### CU-21 – Consultar paneles de inventario y catálogo
+- **Actor:** Administración.
+- **Flujo principal:** Administración abre el panel de inventario (stock y precio de costo) o el de catálogo (precio de venta junto al precio de costo) → el sistema muestra los productos con esos datos.
+- **Alternativo:** un producto sin precio cargado → el panel muestra "sin dato" en ese campo.
+- **Regla:** el precio de costo es visible solo para Administración. Vendedor y Depósito consultan el catálogo y el stock con CU-14, sin ese dato. Los paneles son informativos: los descuentos se aplican en Tango al facturar.
 
 ## 4. Historias de usuario
 

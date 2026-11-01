@@ -71,6 +71,7 @@ erDiagram
         string nombre
         string categoria
         number precio
+        number precioCosto
         number stockActual
         boolean activo
     }
@@ -342,6 +343,7 @@ flowchart LR
             CU17(["CU-17 Gestionar usuarios"])
             CU18(["CU-18 Gestionar precios de catálogo"])
             CU20(["CU-20 Cargar stock inicial"])
+            CU21(["CU-21 Consultar paneles de inventario y catálogo"])
         end
     end
  
@@ -376,4 +378,5 @@ flowchart LR
     AD --- CU17
     AD --- CU18
     AD --- CU20
+    AD --- CU21
 ```
