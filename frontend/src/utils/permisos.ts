@@ -29,3 +29,7 @@ export function seccionesPara(rol: Rol): Seccion[] {
 export function puedeVer(rol: Rol, ruta: string): boolean {
   return SECCIONES.some((s) => s.ruta === ruta && s.roles.includes(rol));
 }
+// Solo Administración y Vendedor pueden ver el precio de lista; Depósito no.
+export function puedeVerPrecios(rol: Rol): boolean {
+  return rol === 'administracion' || rol === 'vendedor';
+}

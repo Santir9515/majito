@@ -7,9 +7,9 @@ import type { CambioEstado, EstadoPedido, ItemPedido, Pedido, Producto } from '.
 const oid = (n: number): string => n.toString(16).padStart(24, '0');
 
 // Usuarios de prueba (uno por rol)
-export const VENDEDOR = oid(101);
-export const DEPOSITO = oid(102);
-export const ADMIN = oid(103);
+export const VENDEDOR = '6aa3676392da91dc3aed5690';
+export const DEPOSITO = '6aa33eaee8a8e2d48a3ee40e';
+export const ADMIN = '6acd9957dd00d429a80c6055';
 
 // Simula la demora de la red.
 export function simularLatencia(ms = 250): Promise<void> {
