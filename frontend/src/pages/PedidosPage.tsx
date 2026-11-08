@@ -71,7 +71,7 @@ export default function PedidosPage() {
                   <th>Estado</th>
                   <th>Ítems</th>
                   <th>Creado</th>
-                  <th>Creado por</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -81,7 +81,6 @@ export default function PedidosPage() {
                     <td>{NOMBRE_ESTADO[p.estado]}</td>
                     <td>{p.items.length}</td>
                     <td>{formatoFecha.format(new Date(p.createdAt))}</td>
-                    <td>{p.creadoPor}</td>
                   </tr>
                 ))}
               </tbody>
