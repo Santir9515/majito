@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -37,8 +37,12 @@ export class UsersService {
     return this.userModel.find().select('-passwordHash').exec();
   }
 
-  findOne(id: string) {
-    return this.userModel.findById(id).select('-passwordHash').exec();
+  async findOne(id: string) {
+    const user = await this.userModel.findById(id).select('-passwordHash').exec();
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -47,23 +51,32 @@ export class UsersService {
     if (password) {
       updateData.passwordHash = await bcrypt.hash(password, 10);
     }
-    try {
-      return await this.userModel
-        .findByIdAndUpdate(id, updateData, { new: true })
-        .select('-passwordHash')
-        .exec();
-    } catch (error) {
-      if (esErrorDeDuplicado(error)) {
-        throw new ConflictException('Ya existe un usuario con ese email');
+    let actualizado;
+      try {
+        actualizado = await this.userModel
+          .findByIdAndUpdate(id, updateData, { new: true })
+          .select('-passwordHash')
+          .exec();
+      } catch (error) {
+        if (esErrorDeDuplicado(error)) {
+          throw new ConflictException('Ya existe un usuario con ese email');
+        }
+        throw error;
       }
-      throw error;
-    }
+      if (!actualizado) {
+        throw new NotFoundException('Usuario no encontrado');
+      }
+      return actualizado;
   }
 
-  remove(id: string) {
-    return this.userModel
-      .findByIdAndUpdate(id, { activo: false }, { new: true })
+  async remove(id: string) {
+    const user = await this.userModel
+      .findByIdAndUpdate(id, { activo: false}, { new: true})
       .select('-passwordHash')
       .exec();
+      if (!user){
+        throw new NotFoundException('Usuario no encontrado');
+      }
+      return user
   }
 }

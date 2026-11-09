@@ -106,8 +106,12 @@ export class TicketsService {
     return this.ticketModel.find(filtro).exec();
   }
 
-  findOne(id: string) {
-    return this.ticketModel.findById(id).exec();
+  async findOne(id: string) {
+    const ticket = await this.ticketModel.findById(id).exec();
+    if (!ticket) {
+      throw new NotFoundException(`Ticket ${id} no encontrado`);
+    }
+    return ticket;
   }
 
   async avanzar(id: string, dto: AvanzarTicketDto) {

@@ -15,6 +15,7 @@ provisional: la API cambiará cuando se incorpore el login con JWT (ver sección
   inválidos o faltantes devuelven `400` con el detalle en `message`.
 - **Identificadores:** los `id` son los `_id` de MongoDB (24 caracteres hexadecimales). Un id con otro formato devuelve `400`.
 - **Email duplicado:** crear o modificar un usuario con un email que ya existe devuelve `409`.
+- **Recurso inexistente:** consultar, modificar o inactivar con un `id` válido que no existe devuelve `404`.
 - **Errores de reglas de negocio:** una transición inválida, un usuario sin permiso o un ticket
   que no existe devuelven un error con un mensaje descriptivo en `message`. La falta de stock al
   facturar devuelve `400` con el mensaje `Stock insuficiente para "<producto>" (se necesitan N)`.
