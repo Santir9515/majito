@@ -71,7 +71,6 @@ export default function PedidosPage() {
                   <th>Estado</th>
                   <th>Ítems</th>
                   <th>Creado</th>
-
                 </tr>
               </thead>
               <tbody>

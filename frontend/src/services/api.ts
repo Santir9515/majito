@@ -3,7 +3,7 @@
 const BASE_URL = '/api';
 
 export async function pedirJSON<T>(ruta: string, opciones?: RequestInit): Promise<T> {
-   let respuesta: Response;
+  let respuesta: Response;
   try {
     respuesta = await fetch(`${BASE_URL}${ruta}`, {
       headers: { 'Content-Type': 'application/json' },
