@@ -3,12 +3,22 @@
 const BASE_URL = '/api';
 
 export async function pedirJSON<T>(ruta: string, opciones?: RequestInit): Promise<T> {
-  const respuesta = await fetch(`${BASE_URL}${ruta}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...opciones,
-  });
-
+  let respuesta: Response;
+  try {
+    respuesta = await fetch(`${BASE_URL}${ruta}`, {
+      headers: { 'Content-Type': 'application/json' },
+      ...opciones,
+    });
+  } catch {
+    // fetch solo falla así cuando no hay conexión con el servidor (por ejemplo, backend apagado).
+    throw new Error('No se pudo conectar con el servidor');
+  }
+  
   if (!respuesta.ok) {
+    // Con el proxy de Vite, si el backend está apagado responde 502/503/504 en vez de fallar el fetch.
+    if ([502, 503, 504].includes(respuesta.status)) {
+      throw new Error('No se pudo conectar con el servidor');
+    }
     // El backend devuelve el detalle del error en `message` (texto o lista de textos).
     let mensaje = `Error ${respuesta.status}`;
     try {
