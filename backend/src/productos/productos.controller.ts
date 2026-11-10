@@ -1,7 +1,9 @@
 import { ParseObjectIdPipe } from '../common/pipes/parse-object-id.pipe';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
+import { UpdateProductoDto } from './dto/update-producto.dto';
+import { ConsultarProductoDto } from './dto/consultar-producto.dto';
 
 @Controller('productos')
 export class ProductosController {
@@ -13,12 +15,23 @@ export class ProductosController {
   }
 
   @Get()
-  findAll() {
-    return this.productosService.findAll();
+  findAll(@Query() consulta: ConsultarProductoDto) {
+    return this.productosService.findAll(consulta.usuarioId);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseObjectIdPipe) id: string) {
-    return this.productosService.findOne(id);
+  findOne(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Query() consulta: ConsultarProductoDto,
+  ) {
+    return this.productosService.findOne(id, consulta.usuarioId);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Body() updateProductoDto: UpdateProductoDto,
+  ) {
+    return this.productosService.update(id, updateProductoDto);
   }
 }
