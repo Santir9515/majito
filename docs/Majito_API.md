@@ -70,11 +70,12 @@ curl -X PATCH http://localhost:3000/tickets/<id>/avanzar \
  
 | Método y ruta | Descripción | Datos |
 |---|---|---|
-| `POST /productos` | Da de alta un producto | Body: `codigo`, `nombre`, `categoria` (opcional), `precio` (≥ 0). El producto nace con stock 0: el stock se carga con un movimiento (sección 4) |
-| `GET /productos` | Lista los productos y su stock (CU-14) | — |
-| `GET /productos/:id` | Devuelve un producto | — |
+| `POST /productos` | Da de alta un producto (RF-18) | Body: `usuarioId` (debe ser Administración), `codigo`, `nombre`, `categoria` (opcional), `precio` (≥ 0), `precioCosto` (opcional, ≥ 0). El producto nace con stock 0: el stock se carga con un movimiento (sección 4) |
+| `GET /productos` | Lista los productos y su stock (CU-14, CU-21) | Query opcional: `usuarioId`. Con un usuario de Administración activo la respuesta incluye `precioCosto`; en cualquier otro caso, no |
+| `GET /productos/:id` | Devuelve un producto | Query opcional: `usuarioId` (igual que el listado) |
+| `PATCH /productos/:id` | Modifica un producto, incluidos los precios de venta y de costo (RF-18) | Body: `usuarioId` (debe ser Administración) y cualquiera de los campos del alta |
  
-Campos de un producto: `_id`, `codigo`, `nombre`, `categoria`, `precio`, `stockActual`, `activo`.
+Campos de un producto: `_id`, `codigo`, `nombre`, `categoria`, `precio` (precio de venta), `precioCosto` (solo para Administración), `stockActual`, `activo`.
  
 ## 4. Movimientos de stock
  
@@ -115,8 +116,6 @@ La contraseña se guarda con hash (bcrypt) y nunca se devuelve en las respuestas
 | Login con email y contraseña, con JWT y roles | RF-01, RF-02, RNF-03 | `POST /auth/login` |
 | Editar un ticket | RF-16 | `PATCH /tickets/:id` |
 | Comentarios de avance | RF-17 | Ruta a definir |
-| Modificar el precio de un producto | RF-18 | `PATCH /productos/:id` |
 | Importación masiva del stock inicial desde planilla | RF-12 | Ruta a definir |
 | Listado general de movimientos de stock | RF-14 | `GET /movimientos-stock` |
-| Precio de costo: carga y edición, paneles de inventario y catálogo, y ocultar el costo a otros roles | RF-18, RF-19, RNF-09 | `PATCH /productos/:id` y consultas de productos que incluyan `precioCosto` solo para Administración |
  
