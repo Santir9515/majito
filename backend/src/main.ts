@@ -4,6 +4,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // En producción, CORS_ORIGIN lista los dominios permitidos (separados por coma).
+  // Sin la variable, se aceptan todos los orígenes (desarrollo local).
   const origenes = (process.env.CORS_ORIGIN ?? '')
     .split(',')
     .map((o) => o.trim())
