@@ -1,6 +1,6 @@
 // Cliente HTTP mínimo para hablar con el backend.
-// En desarrollo, Vite reenvía /api/* a http://localhost:3000 (ver vite.config.ts).
-const BASE_URL = '/api';
+// En producción se define VITE_API_URL; en desarrollo, Vite reenvía /api/* al backend local.
+const BASE_URL = import.meta.env.VITE_API_URL ?? '/api';
 
 export async function pedirJSON<T>(ruta: string, opciones?: RequestInit): Promise<T> {
   let respuesta: Response;
