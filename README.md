@@ -75,6 +75,37 @@ Toda la documentación del proyecto está en la carpeta `docs/`.
 | [API del backend](docs/Majito_API.md) | Rutas, datos de entrada y convenciones (versión provisional) |
 | [Listado de módulos](docs/Majito_Listado_de_Modulos_2da_entrega.md) | Módulos del sistema de la 2.ª entrega |
 
+## Estado de implementación
+
+El detalle requerimiento por requerimiento está en la [Matriz de Trazabilidad](docs/Majito_Matriz_de_Trazabilidad.md). Resumen:
+
+- **Backend (NestJS + MongoDB): implementado.** Tickets con su ciclo de estados, productos con stock y precio de costo, movimientos de stock (append-only), usuarios con roles e inicio de sesión.
+- **Frontend (React + TypeScript): implementado en lo principal.** Login, listado y alta de pedidos, catálogo conectado a la API real.
+- **Pendiente / parcial:** edición de tickets (RF-16) y comentarios (RF-17) no están implementados; el panel de Inventario y la visualización del precio de costo en el Catálogo (RF-19) están en curso.
+
+### Limitaciones conocidas
+
+- El inicio de sesión valida email y contraseña, pero **no emite token (JWT)**: el backend identifica al usuario por `usuarioId` y valida su rol en cada operación. La autenticación con tokens y guards queda como trabajo futuro.
+- Los endpoints de alta y edición de usuarios no están protegidos.
+- El precio de costo solo se devuelve a usuarios de Administración, pero esa protección depende del `usuarioId` enviado por el cliente hasta que se incorpore JWT.
+
+## Despliegue
+
+| Componente | Plataforma | URL |
+|---|---|---|
+| Base de datos | MongoDB Atlas | — |
+| Backend (API) | Render (plan gratuito) | https://majito.onrender.com |
+| Frontend | Vercel | https://majito-theta.vercel.app |
+
+**Variables de entorno**
+
+- Backend: `MONGODB_URI` (conexión a Atlas), `CORS_ORIGIN` (origen del frontend, separados por coma si son varios), `NODE_VERSION`.
+- Frontend: `VITE_API_URL` (URL base de la API).
+
+> **Aviso:** el plan gratuito de Render duerme el servicio tras ~15 minutos sin uso. La primera petición posterior puede tardar alrededor de 1 minuto en responder.
+
+**Usuarios de demostración:** `admin@majito.com` (Administración), un vendedor y un depósito. Las contraseñas se entregan por fuera del repositorio.
+
 ## Estructura del repositorio
 
 ```
