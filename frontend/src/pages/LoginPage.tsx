@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSesion } from '../hooks/useSesion';
-import { CREDENCIALES_PRUEBA, iniciarSesion as validarCredenciales } from '../services/authService';
+import { iniciarSesion as validarCredenciales } from '../services/authService';
 import './LoginPage.css';
 
 export default function LoginPage() {
@@ -77,11 +77,9 @@ export default function LoginPage() {
           <section className="login__ayuda">
             <p>Usuarios de prueba (solo desarrollo):</p>
             <ul>
-              {CREDENCIALES_PRUEBA.map((c) => (
-                <li key={c.email}>
-                  {c.usuario.nombre}: {c.email} / {c.password}
-                </li>
-              ))}
+              <li>Vendedor de prueba: vendedor@majito.test / demo1234</li>
+              <li>Depósito de prueba: deposito@majito.test / demo1234</li>
+              <li>Administración de prueba: admin@majito.test / demo1234</li>
             </ul>
           </section>
         )}
