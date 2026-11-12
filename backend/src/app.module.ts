@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { ProductosModule } from './productos/productos.module';
 import { MovimientosStockModule } from './movimientos-stock/movimientos-stock.module';
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MovimientosStockModule } from './movimientos-stock/movimientos-stock.mo
     TicketsModule,
     ProductosModule,
     MovimientosStockModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

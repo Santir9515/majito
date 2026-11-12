@@ -109,11 +109,26 @@ Campos de un movimiento: `productoId`, `tipo`, `cantidad`, `usuarioId`, `fecha`,
 La contraseña se guarda con hash (bcrypt) y nunca se devuelve en las respuestas (RF-03).
 `rol` toma uno de los valores del enum `Role` (vendedor, administración o depósito).
  
+### 5.1 Inicio de sesión
+
+| Método y ruta | Descripción | Datos |
+|---|---|---|
+| `POST /auth/login` | Valida el email y la contraseña (RF-01) | Body: `email`, `password` |
+
+Respuestas:
+
+- `200`: devuelve el usuario (`_id`, `nombre`, `email`, `rol`, `activo`, fechas), sin la contraseña.
+- `401`: `Email o contraseña incorrectos`. Es el mismo mensaje para un email inexistente y para una contraseña incorrecta.
+- `403`: `Usuario inactivo` (RF-04).
+- `400`: faltan datos o el email no tiene formato válido.
+
+El login no emite token: valida las credenciales y devuelve el usuario. Las acciones siguen identificándose con `usuarioId` (ver Convenciones).
+
 ## 6. Previsto, todavía no implementado
  
 | Funcionalidad | Requerimiento | Ruta prevista |
 |---|---|---|
-| Login con email y contraseña, con JWT y roles | RF-01, RF-02, RNF-03 | `POST /auth/login` |
+| Tokens JWT y validación de roles en el servidor, en lugar de `usuarioId` | RF-01, RF-02, RNF-03, RNF-09 | Header `Authorization` en cada pedido |
 | Editar un ticket | RF-16 | `PATCH /tickets/:id` |
 | Comentarios de avance | RF-17 | Ruta a definir |
 | Importación masiva del stock inicial desde planilla | RF-12 | Ruta a definir |

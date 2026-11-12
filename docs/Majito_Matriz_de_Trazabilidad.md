@@ -16,10 +16,10 @@ estado se refiere al backend.
  
 | Requerimiento | Casos de uso | Backend | Estado | Notas |
 |---|---|---|---|---|
-| RF-01 Login con email y contraseña | CU-01 | — | Pendiente | Sin autenticación: hoy el usuario se identifica con `usuarioId` en el body o la query. Está previsto login con JWT. |
+| RF-01 Login con email y contraseña | CU-01 | `POST /auth/login` | Parcial | Valida email y contraseña y rechaza a los usuarios inactivos. No emite token: las acciones siguen identificándose con `usuarioId`. |
 | RF-02 Tres roles con permisos y vistas diferenciadas | CU-01, CU-17 | `users`, validación de rol en `tickets` | Parcial | Las transiciones validan el rol del usuario indicado. Faltan las vistas por rol conectadas y la validación al crear un ticket. |
 | RF-03 Contraseñas hasheadas, no expuestas | CU-01, CU-17 | `POST /users`, `PATCH /users/:id` | Hecho | Hash con bcrypt; `passwordHash` se excluye de todas las respuestas. |
-| RF-04 Inactivar usuarios en lugar de eliminarlos | CU-17 | `DELETE /users/:id`, `PATCH /users/:id` | Hecho | `DELETE` marca `activo = false` y `PATCH` permite reactivar. Los servicios de tickets y de movimientos rechazan a los usuarios inactivos (403). El login los rechazará cuando exista (RF-01). |
+| RF-04 Inactivar usuarios en lugar de eliminarlos | CU-17 | `DELETE /users/:id`, `PATCH /users/:id` | Hecho | `DELETE` marca `activo = false` y `PATCH` permite reactivar. Los servicios de tickets y de movimientos rechazan a los usuarios inactivos (403). El login los rechaza (403). |
 | RF-05 Crear ticket con cliente, ítems y notas | CU-02 | `POST /tickets` | Hecho | |
 | RF-06 Transiciones válidas por rol | CU-04, CU-05, CU-06, CU-07, CU-08, CU-09 | `PATCH /tickets/:id/avanzar` | Hecho | |
 | RF-07 Anular (de creado a facturado, o rechazado sin reemplazos) | CU-13 | `PATCH /tickets/:id/anular` | Hecho | Motivo obligatorio. Al anular un facturado se reintegra el stock. |
