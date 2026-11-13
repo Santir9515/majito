@@ -72,17 +72,6 @@ export default function LoginPage() {
             {cargando ? 'Ingresando...' : 'Ingresar'}
           </button>
         </form>
-
-        {import.meta.env.DEV && (
-          <section className="login__ayuda">
-            <p>Usuarios de prueba (solo desarrollo):</p>
-            <ul>
-              <li>Vendedor de prueba: vendedor@majito.test / demo1234</li>
-              <li>Depósito de prueba: deposito@majito.test / demo1234</li>
-              <li>Administración de prueba: admin@majito.test / demo1234</li>
-            </ul>
-          </section>
-        )}
       </div>
     </main>
   );
