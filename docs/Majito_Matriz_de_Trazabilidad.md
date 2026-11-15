@@ -34,7 +34,7 @@ estado se refiere al backend.
 | RF-16 Editar cliente, ítems, cantidades y notas según rol y estado | CU-03 | — | Pendiente | Falta un endpoint de edición de tickets (por ejemplo `PATCH /tickets/:id`). |
 | RF-17 Comentarios de avance con autor y fecha | CU-10 | — | Pendiente | Falta el endpoint y el campo para guardar los comentarios en el ticket. |
 | RF-18 Cargar y modificar el precio de venta y de costo (solo Administración) | CU-18 | `POST /productos`, `PATCH /productos/:id` | Hecho | Exige un usuario de Administración activo (`usuarioId`). |
-| RF-19 Paneles de inventario y de catálogo con precio de costo (Administración) | CU-21 | `GET /productos`, `GET /productos/:id` | Parcial | El backend ya devuelve el costo a Administración. Falta el frontend de los dos paneles. |
+| RF-19 Paneles de inventario y de catálogo con precio de costo (Administración) | CU-21 | `GET /productos`, `GET /productos/:id` | Hecho | El backend devuelve el costo solo a Administración. El Catálogo muestra precio de lista y de costo; el Inventario, stock actual y precio de costo. Ambos son de solo consulta. |
  
 ## 2. Requerimientos no funcionales
  

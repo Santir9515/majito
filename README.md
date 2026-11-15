@@ -80,8 +80,8 @@ Toda la documentación del proyecto está en la carpeta `docs/`.
 El detalle requerimiento por requerimiento está en la [Matriz de Trazabilidad](docs/Majito_Matriz_de_Trazabilidad.md). Resumen:
 
 - **Backend (NestJS + MongoDB): implementado.** Tickets con su ciclo de estados, productos con stock y precio de costo, movimientos de stock (append-only), usuarios con roles e inicio de sesión.
-- **Frontend (React + TypeScript): implementado en lo principal.** Login, listado y alta de pedidos, catálogo conectado a la API real.
-- **Pendiente / parcial:** edición de tickets (RF-16) y comentarios (RF-17) no están implementados; el panel de Inventario y la visualización del precio de costo en el Catálogo (RF-19) están en curso.
+- **Frontend (React + TypeScript): implementado en consulta.** Login contra la API, listado de pedidos con filtro por estado, Catálogo e Inventario con precio de costo para Administración.
+- **Pendiente:** la edición de tickets (RF-16) y los comentarios (RF-17) no están implementados. En el frontend todavía no se pueden cargar pedidos ni cambiar su estado: esas operaciones están disponibles solo en la API.
 
 ### Limitaciones conocidas
 
