@@ -7,6 +7,7 @@ import InventarioPage from '../pages/InventarioPage';
 import UsuariosPage from '../pages/UsuariosPage';
 import RutaPorRol from './RutaPorRol';
 import RutaProtegida from './RutaProtegida';
+import PedidoDetallePage from '../pages/PedidoDetallePage';
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           { index: true, element: <Navigate to="/pedidos" replace /> },
+          { path: 'pedidos/:id', element: <PedidoDetallePage /> },
           { path: 'pedidos', element: <PedidosPage /> },
           { path: 'catalogo', element: <CatalogoPage /> },
           {
