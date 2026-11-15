@@ -13,11 +13,12 @@ export default function CatalogoPage() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const verCosto = usuario.rol === 'administracion';
 
   useEffect(() => {
     // `activo` evita actualizar el estado si la pantalla se cerró antes de que llegue la respuesta.
     let activo = true;
-    listarProductos()
+    listarProductos(verCosto ? usuario.id : undefined)
       .then((datos) => {
         if (activo) setProductos(datos);
       })
@@ -30,7 +31,7 @@ export default function CatalogoPage() {
     return () => {
       activo = false;
     };
-  }, []);
+  }, [verCosto, usuario.id]);
 
   if (cargando) return <p>Cargando productos…</p>;
   if (error) return <p>No se pudieron cargar los productos: {error}</p>;
@@ -48,6 +49,7 @@ export default function CatalogoPage() {
               <th>Nombre</th>
               <th>Categoría</th>
               {verPrecios && <th>Precio de lista</th>}
+              {verCosto && <th>Precio de costo</th>}
               <th>Estado</th>
             </tr>
           </thead>
@@ -59,6 +61,9 @@ export default function CatalogoPage() {
                 <td>{p.categoria ?? '—'}</td>
                 {verPrecios && (
                   <td>{p.precio !== undefined ? formatoPesos.format(p.precio) : '—'}</td>
+                )}
+                {verCosto && (
+                  <td>{p.precioCosto !== undefined ? formatoPesos.format(p.precioCosto) : '—'}</td>
                 )}
                 <td>{p.activo ? 'Activo' : 'Inactivo'}</td>
               </tr>

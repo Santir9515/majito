@@ -4,6 +4,7 @@ export interface Producto {
   nombre: string;
   categoria?: string;
   precio?: number; // precio de lista
+  precioCosto?: number; // precio de costo: el backend solo lo envía a Administración
   stockActual: number;
   activo: boolean;
 }
