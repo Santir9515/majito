@@ -63,8 +63,8 @@ export default function PedidoDetallePage() {
               </tr>
             </thead>
             <tbody>
-              {pedido.items.map((item) => (
-                <tr key={item.productoId}>
+              {pedido.items.map((item, i) => (
+                <tr key={i}>
                   <td>{item.productoCodigo}</td>
                   <td>{item.productoNombre}</td>
                   <td>{item.cantidad}</td>
@@ -79,7 +79,6 @@ export default function PedidoDetallePage() {
               <tr>
                 <th>Fecha</th>
                 <th>Estado</th>
-                <th>Usuario</th>
                 <th>Motivo</th>
               </tr>
             </thead>
@@ -88,7 +87,6 @@ export default function PedidoDetallePage() {
                 <tr key={i}>
                   <td>{formatoFecha.format(new Date(c.fecha))}</td>
                   <td>{NOMBRE_ESTADO[c.estado]}</td>
-                  <td>{c.usuario}</td>
                   <td>{c.motivo ?? '-'}</td>
                 </tr>
               ))}
