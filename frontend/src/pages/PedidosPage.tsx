@@ -4,6 +4,7 @@ import { listarPedidos } from '../services/pedidosService';
 import { ESTADOS_PEDIDO, NOMBRE_ESTADO } from '../utils/estadosPedido';
 import { useUsuarioActual } from '../hooks/useUsuarioActual';
 import NuevoPedidoForm from '../components/NuevoPedidoForm';
+import { Link } from 'react-router-dom';
 
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
@@ -98,7 +99,9 @@ export default function PedidosPage() {
               <tbody>
                 {pedidos.map((p) => (
                   <tr key={p._id}>
-                    <td>{p.cliente}</td>
+                    <td>
+                       <Link to={`/pedidos/${p._id}`}>{p.cliente}</Link>
+                    </td>
                     <td>{NOMBRE_ESTADO[p.estado]}</td>
                     <td>{p.items.length}</td>
                     <td>{formatoFecha.format(new Date(p.createdAt))}</td>
