@@ -12,3 +12,15 @@ export function listarPedidos(estados?: EstadoPedido[]): Promise<Pedido[]> {
 export function obtenerPedido(id: string): Promise<Pedido> {
   return pedirJSON<Pedido>(`/tickets/${id}`);
 }
+
+export interface NuevoPedido {
+  cliente: string;
+  items: { productoId: string; cantidad: number }[];
+  notas?: string;
+  creadoPor: string; // id del usuario que crea el pedido
+}
+
+// POST /tickets: crea el pedido en estado "creado".
+export function crearPedido(datos: NuevoPedido): Promise<Pedido> {
+  return pedirJSON<Pedido>('/tickets', { method: 'POST', body: JSON.stringify(datos) });
+}

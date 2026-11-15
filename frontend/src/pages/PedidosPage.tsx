@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import type { EstadoPedido, Pedido } from '../types';
 import { listarPedidos } from '../services/pedidosService';
 import { ESTADOS_PEDIDO, NOMBRE_ESTADO } from '../utils/estadosPedido';
+import { useUsuarioActual } from '../hooks/useUsuarioActual';
+import NuevoPedidoForm from '../components/NuevoPedidoForm';
 
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
@@ -13,6 +15,10 @@ export default function PedidosPage() {
   const [filtro, setFiltro] = useState<EstadoPedido | ''>('');
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { usuario } = useUsuarioActual();
+  const puedeCrear = usuario.rol === 'vendedor';
+  const [mostrarForm, setMostrarForm] = useState(false);
+  const [recarga, setRecarga] = useState(0); // al cambiar, vuelve a pedir el listado
 
   useEffect(() => {
     let activo = true;
@@ -29,7 +35,7 @@ export default function PedidosPage() {
     return () => {
       activo = false;
     };
-  }, [filtro]);
+  }, [filtro, recarga]);
 
   function cambiarFiltro(valor: EstadoPedido | '') {
     setFiltro(valor);
@@ -37,10 +43,26 @@ export default function PedidosPage() {
     setError(null);
   }
 
+  function alCrear() {
+    setMostrarForm(false);
+    setCargando(true);
+    setError(null);
+    setRecarga((n) => n + 1);
+  }
+
   return (
     <div>
       <h2>Pedidos</h2>
-
+            {puedeCrear && !mostrarForm && (
+        <p>
+          <button type="button" onClick={() => setMostrarForm(true)}>
+            Nuevo pedido
+          </button>
+        </p>
+      )}
+      {mostrarForm && (
+        <NuevoPedidoForm onCreado={alCrear} onCancelar={() => setMostrarForm(false)} />
+      )}
       <label>
         Estado:{' '}
         <select
