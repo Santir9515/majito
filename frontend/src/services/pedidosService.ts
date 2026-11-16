@@ -24,3 +24,23 @@ export interface NuevoPedido {
 export function crearPedido(datos: NuevoPedido): Promise<Pedido> {
   return pedirJSON<Pedido>('/tickets', { method: 'POST', body: JSON.stringify(datos) });
 }
+
+// Cambios de estado: el backend valida el rol del usuario y devuelve el pedido actualizado.
+function cambiarEstado(id: string, accion: string, cuerpo: object): Promise<Pedido> {
+  return pedirJSON<Pedido>(`/tickets/${id}/${accion}`, {
+    method: 'PATCH',
+    body: JSON.stringify(cuerpo),
+  });
+}
+
+export function avanzarPedido(id: string, usuarioId: string): Promise<Pedido> {
+  return cambiarEstado(id, 'avanzar', { usuarioId });
+}
+
+export function rechazarPedido(id: string, usuarioId: string, motivo: string): Promise<Pedido> {
+  return cambiarEstado(id, 'rechazar', { usuarioId, motivo });
+}
+
+export function anularPedido(id: string, usuarioId: string, motivo: string): Promise<Pedido> {
+  return cambiarEstado(id, 'anular', { usuarioId, motivo });
+}
