@@ -4,6 +4,7 @@ import type { Pedido } from '../types';
 import { obtenerPedido } from '../services/pedidosService';
 import { NOMBRE_ESTADO } from '../utils/estadosPedido';
 import AccionesPedido from '../components/AccionesPedido';
+import ReemplazoPedido from '../components/ReemplazoPedido';
 
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
@@ -54,6 +55,25 @@ export default function PedidoDetallePage() {
           {pedido.motivoRechazo && <p><strong>Motivo de rechazo:</strong> {pedido.motivoRechazo}</p>}
           {pedido.motivoAnulacion && <p><strong>Motivo de anulación:</strong> {pedido.motivoAnulacion}</p>}
           <AccionesPedido pedido={pedido} onActualizado={setPedido} />
+                    <ReemplazoPedido pedido={pedido} />
+          {pedido.ticketOrigenId && (
+            <p>
+              <strong>Reemplaza al pedido:</strong>{' '}
+              <Link to={`/pedidos/${pedido.ticketOrigenId}`}>ver original</Link>
+            </p>
+          )}
+          {pedido.ticketsReemplazoIds.length > 0 && (
+            <p>
+              <strong>Pedidos de reemplazo:</strong>{' '}
+              {pedido.ticketsReemplazoIds.map((rid, i) => (
+                <span key={rid}>
+                  {i > 0 && ', '}
+                  <Link to={`/pedidos/${rid}`}>Reemplazo {i + 1}</Link>
+                </span>
+              ))}
+            </p>
+          )}
+
           <h3>Ítems</h3>
           <table>
             <thead>
