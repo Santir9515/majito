@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import type { Pedido } from '../types';
 import { obtenerPedido } from '../services/pedidosService';
 import { NOMBRE_ESTADO } from '../utils/estadosPedido';
+import AccionesPedido from '../components/AccionesPedido';
 
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
@@ -52,7 +53,7 @@ export default function PedidoDetallePage() {
           {pedido.notas && <p><strong>Notas:</strong> {pedido.notas}</p>}
           {pedido.motivoRechazo && <p><strong>Motivo de rechazo:</strong> {pedido.motivoRechazo}</p>}
           {pedido.motivoAnulacion && <p><strong>Motivo de anulación:</strong> {pedido.motivoAnulacion}</p>}
-
+          <AccionesPedido pedido={pedido} onActualizado={setPedido} />
           <h3>Ítems</h3>
           <table>
             <thead>
