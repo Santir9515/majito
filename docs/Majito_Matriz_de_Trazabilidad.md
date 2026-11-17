@@ -17,13 +17,13 @@ estado se refiere al backend.
 | Requerimiento | Casos de uso | Backend | Estado | Notas |
 |---|---|---|---|---|
 | RF-01 Login con email y contraseña | CU-01 | `POST /auth/login` | Parcial | Valida email y contraseña y rechaza a los usuarios inactivos. No emite token: las acciones siguen identificándose con `usuarioId`. |
-| RF-02 Tres roles con permisos y vistas diferenciadas | CU-01, CU-17 | `users`, validación de rol en `tickets` | Parcial | Las transiciones validan el rol del usuario indicado. Faltan las vistas por rol conectadas y la validación al crear un ticket. |
+| RF-02 Tres roles con permisos y vistas diferenciadas | CU-01, CU-17 | `users`, validación de rol en `tickets` | Parcial | Las transiciones validan el rol del usuario indicado y el frontend muestra a cada rol solo sus secciones y acciones. Falta la validación de rol al crear un ticket. |
 | RF-03 Contraseñas hasheadas, no expuestas | CU-01, CU-17 | `POST /users`, `PATCH /users/:id` | Hecho | Hash con bcrypt; `passwordHash` se excluye de todas las respuestas. |
 | RF-04 Inactivar usuarios en lugar de eliminarlos | CU-17 | `DELETE /users/:id`, `PATCH /users/:id` | Hecho | `DELETE` marca `activo = false` y `PATCH` permite reactivar. Los servicios de tickets y de movimientos rechazan a los usuarios inactivos (403). El login los rechaza (403). |
 | RF-05 Crear ticket con cliente, ítems y notas | CU-02 | `POST /tickets` | Hecho | |
 | RF-06 Transiciones válidas por rol | CU-04, CU-05, CU-06, CU-07, CU-08, CU-09 | `PATCH /tickets/:id/avanzar` | Hecho | |
 | RF-07 Anular (de creado a facturado, o rechazado sin reemplazos) | CU-13 | `PATCH /tickets/:id/anular` | Hecho | Motivo obligatorio. Al anular un facturado se reintegra el stock. |
-| RF-08 Rechazar y crear reemplazos | CU-11, CU-12 | `PATCH /tickets/:id/rechazar`, `POST /tickets/:id/reemplazo` | Hecho | Reemplazos múltiples (`ticketsReemplazoIds`). |
+| RF-08 Rechazar y crear reemplazos | CU-11, CU-12 | `PATCH /tickets/:id/rechazar`, `POST /tickets/:id/reemplazo` | Hecho | Reemplazos múltiples (`ticketsReemplazoIds`). Disponible también desde el detalle del pedido en el frontend. |
 | RF-09 Historial de cambios de estado | CU-19 | campo `historial` de `GET /tickets/:id` | Hecho | Muestra el ID del usuario; falta mostrar su nombre. |
 | RF-10 No facturar un ticket que no está listo | CU-07 | `PATCH /tickets/:id/avanzar` | Hecho | |
 | RF-11 Consultar stock al crear o revisar un ticket | CU-14, CU-04 | `GET /productos`, `GET /productos/:id` | Hecho | El stock es informativo, sin reserva. |
@@ -40,11 +40,11 @@ estado se refiere al backend.
  
 | Requerimiento | Cómo se cumple | Estado | Notas |
 |---|---|---|---|
-| RNF-01 Aplicación web responsiva | Frontend React + Vite | Parcial | Frontend en desarrollo. |
-| RNF-02 Pantallas simples para depósito y vendedor | Frontend, vistas por rol | Parcial | Frontend en desarrollo. |
+| RNF-01 Aplicación web responsiva | Frontend React + Vite | Parcial | Frontend desplegado y operativo. No se adaptó ni se probó el diseño para pantallas chicas. |
+| RNF-02 Pantallas simples para depósito y vendedor | Frontend, vistas por rol | Hecho | El vendedor crea pedidos y reemplazos; depósito avanza y rechaza desde el detalle del pedido. |
 | RNF-03 Acceso restringido por rol | Validación de rol en el backend | Parcial | Depende de la autenticación (RF-01). |
-| RNF-04 Hash de contraseñas y HTTPS | bcrypt en el backend; HTTPS en el despliegue | Parcial | El hash está hecho. HTTPS queda cubierto por Render y Vercel al desplegar. |
-| RNF-05 Despliegue en la nube | Vercel, Render y MongoDB Atlas | Parcial | La base ya está en Atlas. Faltan el backend y el frontend. |
+| RNF-04 Hash de contraseñas y HTTPS | bcrypt en el backend; HTTPS en el despliegue | Hecho | Contraseñas con hash bcrypt. HTTPS provisto por Render y Vercel. |
+| RNF-05 Despliegue en la nube | Vercel, Render y MongoDB Atlas | Hecho | Base en Atlas, backend en Render y frontend en Vercel. Ver la sección "Despliegue" del README. |
 | RNF-06 Código en módulos independientes | Módulos `users`, `tickets`, `productos`, `movimientos-stock` | Hecho | |
 | RNF-07 Repositorio único con ramas y Pull Requests | GitHub | Hecho | |
 | RNF-08 Consistencia del stock ante concurrencia | Operación atómica condicionada, sin transacciones | Hecho | Verificado el 27/10/2026: con stock 1 y dos tickets, se factura exactamente uno y el stock final es 0. |
