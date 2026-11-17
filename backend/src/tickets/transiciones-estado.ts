@@ -19,7 +19,7 @@ export const TRANSICIONES: Partial<Record<EstadoTicket, Transicion>> = {
   },
   [EstadoTicket.EN_PREPARACION]: {
     siguiente: EstadoTicket.LISTO_PARA_FACTURAR,
-    roles: [Role.DEPOSITO, Role.ADMINISTRACION],
+    roles: [Role.DEPOSITO],
   },
   [EstadoTicket.LISTO_PARA_FACTURAR]: {
     siguiente: EstadoTicket.FACTURADO,

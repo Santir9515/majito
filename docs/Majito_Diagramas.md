@@ -22,7 +22,7 @@ stateDiagram-v2
     [*] --> creado
     creado --> en_revision: Administración
     en_revision --> en_preparacion: Depósito o Administración
-    en_preparacion --> listo_para_facturar: Depósito o Administración
+    en_preparacion --> listo_para_facturar: Depósito
     listo_para_facturar --> facturado: Administración
     facturado --> entregado: Depósito o Administración
     entregado --> cerrado
@@ -365,7 +365,6 @@ flowchart LR
     AD --- CU03
     AD --- CU04
     AD --- CU05
-    AD --- CU06
     AD --- CU07
     AD --- CU08
     AD --- CU09

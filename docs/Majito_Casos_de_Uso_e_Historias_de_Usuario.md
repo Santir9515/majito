@@ -11,7 +11,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 | Depósito | Prepara físicamente los pedidos y registra su avance (tablet o celular). |
 | Administración | Encargado autorizado por gerencia. Opera el día a día como cualquier rol y es el único que anula pedidos, maneja stock, usuarios y precios de catálogo. |
 
-> Administración puede realizar cualquier acción de los otros roles. En cada caso de uso se indica el actor principal; donde figura "Administración" como alternativa, es porque la matriz de permisos se lo permite.
+> Administración puede realizar las acciones de los otros roles, con una excepción: el paso de En preparación a Listo para facturar es exclusivo de Depósito, porque confirma que el pedido está físicamente armado. En cada caso de uso se indica el actor principal; donde figura "Administración" como alternativa, es porque la matriz de permisos se lo permite.
 
 ## 2. Listado de casos de uso
 
@@ -22,7 +22,7 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 | CU-03 | Editar pedido | Vendedor (solo en Creado), Administración (hasta Listo para facturar) |
 | CU-04 | Revisar pedido (Creado → En Revisión) | Administración |
 | CU-05 | Iniciar preparación (En Revisión → En preparación) | Depósito, Administración |
-| CU-06 | Marcar pedido listo para facturar | Depósito, Administración |
+| CU-06 | Marcar pedido listo para facturar | Depósito |
 | CU-07 | Facturar pedido | Administración |
 | CU-08 | Registrar entrega | Depósito, Administración |
 | CU-09 | Cerrar pedido | Administración |
@@ -74,10 +74,11 @@ Este documento se basa en las *Reglas de Negocio* vigentes (estados, roles, matr
 - **Regla:** desde que el pedido sale de Creado, el Vendedor ya no puede modificarlo.
 
 ### CU-06 – Marcar pedido listo para facturar
-- **Actor:** Depósito, Administración.
+- **Actor:** Depósito.
 - **Precondición:** pedido En preparación.
 - **Flujo principal:** el actor confirma que el pedido está armado → el sistema lo pasa a **Listo para facturar**.
 - **Alternativo:** el depósito detecta una diferencia física respecto de lo cargado → rechaza el pedido (CU-11).
+- **Regla:** esta transición es exclusiva de Depósito. Administración no puede marcar un pedido como listo para facturar, aunque sí rechazarlo o anularlo.
 
 ### CU-07 – Facturar pedido
 - **Actor:** Administración.
