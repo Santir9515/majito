@@ -5,6 +5,7 @@ import { ESTADOS_PEDIDO, NOMBRE_ESTADO } from '../utils/estadosPedido';
 import { useUsuarioActual } from '../hooks/useUsuarioActual';
 import NuevoPedidoForm from '../components/NuevoPedidoForm';
 import { Link } from 'react-router-dom';
+import { useActualizacionPeriodica } from '../hooks/useActualizacionPeriodica';
 
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
@@ -17,15 +18,20 @@ export default function PedidosPage() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { usuario } = useUsuarioActual();
-    const puedeCrear = usuario.rol === 'vendedor' || usuario.rol === 'administracion';
+  const puedeCrear = usuario.rol === 'vendedor' || usuario.rol === 'administracion';
   const [mostrarForm, setMostrarForm] = useState(false);
   const [recarga, setRecarga] = useState(0); // al cambiar, vuelve a pedir el listado
+
+  useActualizacionPeriodica(() => setRecarga((n) => n + 1));
 
   useEffect(() => {
     let activo = true;
     listarPedidos(filtro ? [filtro] : undefined)
       .then((datos) => {
-        if (activo) setPedidos(datos);
+        if (activo) {
+          setPedidos(datos);
+          setError(null);
+        }
       })
       .catch((e: Error) => {
         if (activo) setError(e.message);
