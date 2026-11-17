@@ -54,8 +54,8 @@ export default function PedidoDetallePage() {
           {pedido.notas && <p><strong>Notas:</strong> {pedido.notas}</p>}
           {pedido.motivoRechazo && <p><strong>Motivo de rechazo:</strong> {pedido.motivoRechazo}</p>}
           {pedido.motivoAnulacion && <p><strong>Motivo de anulación:</strong> {pedido.motivoAnulacion}</p>}
-          <AccionesPedido pedido={pedido} onActualizado={setPedido} />
-                    <ReemplazoPedido pedido={pedido} />
+          <AccionesPedido key={pedido._id} pedido={pedido} onActualizado={setPedido} />
+          <ReemplazoPedido key={pedido._id} pedido={pedido} />
           {pedido.ticketOrigenId && (
             <p>
               <strong>Reemplaza al pedido:</strong>{' '}
