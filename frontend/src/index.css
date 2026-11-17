@@ -73,3 +73,131 @@ body {
   flex: 1;
   padding: 24px;
 }
+
+/* ===== Estilos generales de contenido ===== */
+:root {
+  --color-primario: #e8590c;
+  --color-primario-oscuro: #c84a09;
+  --color-peligro: #c92a2a;
+  --color-peligro-oscuro: #a61e1e;
+  --color-borde: #cbd2d9;
+}
+
+.layout__contenido h2 {
+  margin-top: 0;
+}
+
+.layout__contenido h3 {
+  margin: 24px 0 8px;
+}
+
+.layout__contenido a {
+  color: var(--color-primario-oscuro);
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  margin: 8px 0 24px;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--color-borde);
+}
+
+th,
+td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e4e7eb;
+}
+
+th {
+  background: #e4e7eb;
+  color: #3e4c59;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+tbody tr:hover {
+  background: #f5f6f8;
+}
+
+/* Formularios y campos */
+input,
+select {
+  font: inherit;
+  padding: 7px 10px;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  background: #fff;
+}
+
+input:focus,
+select:focus,
+button:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 1px;
+}
+
+.layout__contenido form {
+  max-width: 560px;
+  margin: 16px 0;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+}
+
+/* Botones */
+button {
+  font: inherit;
+  padding: 8px 14px;
+  color: #1f2933;
+  background: #fff;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: #f0f2f5;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botón de acción principal (naranja) */
+.boton--primario {
+  color: #fff;
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+}
+
+.boton--primario:hover:not(:disabled) {
+  background: var(--color-primario-oscuro);
+}
+
+/* Botón de acción destructiva (rojo) */
+.boton--peligro {
+  color: #fff;
+  background: var(--color-peligro);
+  border-color: var(--color-peligro);
+}
+
+.boton--peligro:hover:not(:disabled) {
+  background: var(--color-peligro-oscuro);
+}
+
+/* "Cerrar sesión" en el menú lateral */
+.layout__usuario button {
+  color: #fff;
+  background: #323f4b;
+  border-color: #3e4c59;
+}
+
+.layout__usuario button:hover:not(:disabled) {
+  background: #3e4c59;
+}

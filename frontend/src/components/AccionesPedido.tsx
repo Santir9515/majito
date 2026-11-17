@@ -69,6 +69,7 @@ export default function AccionesPedido({ pedido, onActualizado }: Props) {
           {siguiente && (
             <button
               type="button"
+              className="boton--primario"
               disabled={enviando}
               onClick={() => void ejecutar(() => avanzarPedido(pedido._id, usuario.id))}
             >
@@ -76,12 +77,16 @@ export default function AccionesPedido({ pedido, onActualizado }: Props) {
             </button>
           )}{' '}
           {rechazable && (
-            <button type="button" disabled={enviando} onClick={() => abrir('rechazar')}>
+            <button type="button" 
+              className="boton--peligro"
+              disabled={enviando} onClick={() => abrir('rechazar')}>
               Rechazar
             </button>
           )}{' '}
           {anulable && (
-            <button type="button" disabled={enviando} onClick={() => abrir('anular')}>
+            <button type="button" 
+              className="boton--peligro"
+              disabled={enviando} onClick={() => abrir('anular')}>
               Anular
             </button>
           )}
@@ -92,7 +97,9 @@ export default function AccionesPedido({ pedido, onActualizado }: Props) {
             Motivo para {accion}:{' '}
             <input value={motivo} onChange={(e) => setMotivo(e.target.value)} />
           </label>{' '}
-          <button type="button" disabled={enviando} onClick={confirmarConMotivo}>
+          <button type="button" 
+            className="boton--peligro"
+            disabled={enviando} onClick={confirmarConMotivo}>
             {enviando ? 'Guardando…' : 'Confirmar'}
           </button>{' '}
           <button type="button" disabled={enviando} onClick={() => setAccion(null)}>

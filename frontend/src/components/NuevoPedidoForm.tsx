@@ -82,7 +82,6 @@ export default function NuevoPedidoForm({ onCreado, onCancelar }: Props) {
   return (
     <form onSubmit={enviar}>
       <h3>Nuevo pedido</h3>
-
       <p>
         <label>
           Cliente: <input value={cliente} onChange={(e) => setCliente(e.target.value)} />
@@ -131,7 +130,9 @@ export default function NuevoPedidoForm({ onCreado, onCancelar }: Props) {
 
       {error && <p>{error}</p>}
 
-      <button type="submit" disabled={guardando}>
+      <button type="submit" 
+        className="boton--primario" 
+        disabled={guardando}>
         {guardando ? 'Guardando…' : 'Crear pedido'}
       </button>{' '}
       <button type="button" onClick={onCancelar} disabled={guardando}>

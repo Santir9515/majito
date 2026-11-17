@@ -56,7 +56,9 @@ export default function PedidosPage() {
       <h2>Pedidos</h2>
             {puedeCrear && !mostrarForm && (
         <p>
-          <button type="button" onClick={() => setMostrarForm(true)}>
+          <button type="button" 
+            className="boton--primario"
+            onClick={() => setMostrarForm(true)}>
             Nuevo pedido
           </button>
         </p>
