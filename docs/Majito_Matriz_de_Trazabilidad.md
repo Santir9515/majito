@@ -17,7 +17,7 @@ estado se refiere al backend.
 | Requerimiento | Casos de uso | Backend | Estado | Notas |
 |---|---|---|---|---|
 | RF-01 Login con email y contraseña | CU-01 | `POST /auth/login` | Parcial | Valida email y contraseña y rechaza a los usuarios inactivos. No emite token: las acciones siguen identificándose con `usuarioId`. |
-| RF-02 Tres roles con permisos y vistas diferenciadas | CU-01, CU-17 | `users`, validación de rol en `tickets` | Parcial | Las transiciones validan el rol del usuario indicado y el frontend muestra a cada rol solo sus secciones y acciones. Falta la validación de rol al crear un ticket. |
+| RF-02 Tres roles con permisos y vistas diferenciadas | CU-01, CU-17 | `users`, validación de rol en `tickets` | Hecho | El backend valida el rol en el alta, las transiciones, el rechazo, la anulación y los reemplazos. El frontend muestra a cada rol solo sus secciones y acciones. La identidad se basa en `usuarioId`, sin token (ver RF-01). |
 | RF-03 Contraseñas hasheadas, no expuestas | CU-01, CU-17 | `POST /users`, `PATCH /users/:id` | Hecho | Hash con bcrypt; `passwordHash` se excluye de todas las respuestas. |
 | RF-04 Inactivar usuarios en lugar de eliminarlos | CU-17 | `DELETE /users/:id`, `PATCH /users/:id` | Hecho | `DELETE` marca `activo = false` y `PATCH` permite reactivar. Los servicios de tickets y de movimientos rechazan a los usuarios inactivos (403). El login los rechaza (403). |
 | RF-05 Crear ticket con cliente, ítems y notas | CU-02 | `POST /tickets` | Hecho | |

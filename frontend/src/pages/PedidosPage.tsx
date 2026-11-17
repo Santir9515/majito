@@ -17,7 +17,7 @@ export default function PedidosPage() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { usuario } = useUsuarioActual();
-  const puedeCrear = usuario.rol === 'vendedor';
+    const puedeCrear = usuario.rol === 'vendedor' || usuario.rol === 'administracion';
   const [mostrarForm, setMostrarForm] = useState(false);
   const [recarga, setRecarga] = useState(0); // al cambiar, vuelve a pedir el listado
 

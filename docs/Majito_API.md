@@ -30,6 +30,7 @@ provisional: la API cambiará cuando se incorpore el login con JWT (ver sección
 | `PATCH /tickets/:id/anular` | Anula el ticket (CU-13) | Body: `usuarioId`, `motivo` (obligatorio) |
 | `PATCH /tickets/:id/rechazar` | Rechaza el ticket (CU-11) | Body: `usuarioId`, `motivo` (obligatorio) |
 | `POST /tickets/:id/reemplazo` | Crea un ticket de reemplazo de uno rechazado (CU-12) | Body: `creadoPor`, `items` (mínimo 1), `notas` (opcional) |
+| `POST /tickets` exige que `creadoPor` sea un usuario activo con rol Vendedor o Administración. Si no lo es, responde `403`. |
  
 Notas:
  
