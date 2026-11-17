@@ -50,3 +50,10 @@ export function puedeAnular(pedido: Pedido, rol: Rol): boolean {
     pedido.estado === 'rechazado' && pedido.ticketsReemplazoIds.length === 0;
   return ESTADOS_ANULABLES.includes(pedido.estado) || rechazadoSinReemplazo;
 }
+
+const ROLES_REEMPLAZO: Rol[] = ['vendedor', 'administracion'];
+
+// Solo un pedido rechazado admite pedidos de reemplazo.
+export function puedeCrearReemplazo(pedido: Pedido, rol: Rol): boolean {
+  return pedido.estado === 'rechazado' && ROLES_REEMPLAZO.includes(rol);
+}

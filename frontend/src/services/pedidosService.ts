@@ -44,3 +44,17 @@ export function rechazarPedido(id: string, usuarioId: string, motivo: string): P
 export function anularPedido(id: string, usuarioId: string, motivo: string): Promise<Pedido> {
   return cambiarEstado(id, 'anular', { usuarioId, motivo });
 }
+
+export interface NuevoReemplazo {
+  creadoPor: string; // id del usuario que crea el reemplazo
+  items: { productoId: string; cantidad: number }[];
+  notas?: string;
+}
+
+// POST /tickets/:id/reemplazo: crea un pedido nuevo a partir de uno rechazado.
+export function crearReemplazo(idRechazado: string, datos: NuevoReemplazo): Promise<Pedido> {
+  return pedirJSON<Pedido>(`/tickets/${idRechazado}/reemplazo`, {
+    method: 'POST',
+    body: JSON.stringify(datos),
+  });
+}
