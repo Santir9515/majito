@@ -59,3 +59,5 @@ export const ROLES_CREAR_REEMPLAZO: Role[] = [
   Role.VENDEDOR,
   Role.ADMINISTRACION,
 ];
+
+export const ROLES_CREAR: Role[] = [Role.VENDEDOR, Role.ADMINISTRACION];

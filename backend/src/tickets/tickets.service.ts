@@ -19,6 +19,7 @@ import {
   ROLES_ANULAR,
   ROLES_RECHAZAR,
   TRANSICIONES,
+  ROLES_CREAR,
 } from './transiciones-estado';
 import {
   Producto,
@@ -70,6 +71,12 @@ export class TicketsService {
 
   async create(createTicketDto: CreateTicketDto) {
     const { creadoPor, items, ...rest } = createTicketDto;
+    const usuario = await this.obtenerUsuarioActivo(creadoPor);
+      if (!ROLES_CREAR.includes(usuario.rol)) {
+        throw new ForbiddenException(
+          `El rol "${usuario.rol}" no puede crear tickets`,
+        );
+      }
     const itemsConSnapshot = await this.construirItemsConSnapshot(items);
 
     const ticket = new this.ticketModel({
