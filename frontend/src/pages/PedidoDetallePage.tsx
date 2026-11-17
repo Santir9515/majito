@@ -5,6 +5,7 @@ import { obtenerPedido } from '../services/pedidosService';
 import { NOMBRE_ESTADO } from '../utils/estadosPedido';
 import AccionesPedido from '../components/AccionesPedido';
 import ReemplazoPedido from '../components/ReemplazoPedido';
+import { useActualizacionPeriodica } from '../hooks/useActualizacionPeriodica';
 
 const formatoFecha = new Intl.DateTimeFormat('es-AR', {
   dateStyle: 'short',
@@ -16,13 +17,18 @@ export default function PedidoDetallePage() {
   const [pedido, setPedido] = useState<Pedido | null>(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [recarga, setRecarga] = useState(0); // al cambiar, vuelve a pedir el pedido
+  useActualizacionPeriodica(() => setRecarga((n) => n + 1));
 
   useEffect(() => {
     if (!id) return;
     let activo = true;
     obtenerPedido(id)
       .then((dato) => {
-        if (activo) setPedido(dato);
+        if (activo) {
+          setPedido(dato);
+          setError(null);
+        }
       })
       .catch((e: Error) => {
         if (activo) setError(e.message);
@@ -33,7 +39,7 @@ export default function PedidoDetallePage() {
     return () => {
       activo = false;
     };
-  }, [id]);
+  }, [id, recarga]);
 
   return (
     <div>
@@ -54,7 +60,14 @@ export default function PedidoDetallePage() {
           {pedido.notas && <p><strong>Notas:</strong> {pedido.notas}</p>}
           {pedido.motivoRechazo && <p><strong>Motivo de rechazo:</strong> {pedido.motivoRechazo}</p>}
           {pedido.motivoAnulacion && <p><strong>Motivo de anulación:</strong> {pedido.motivoAnulacion}</p>}
-          <AccionesPedido key={`acciones-${pedido._id}`} pedido={pedido} onActualizado={setPedido} />
+          <AccionesPedido
+            key={`acciones-${pedido._id}`}
+            pedido={pedido}
+            onActualizado={(actualizado) => {
+              setPedido(actualizado);
+              setRecarga((n) => n + 1);
+            }}
+          />
           <ReemplazoPedido key={`reemplazo-${pedido._id}`} pedido={pedido} />
           {pedido.ticketOrigenId && (
             <p>
