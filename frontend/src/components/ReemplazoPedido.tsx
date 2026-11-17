@@ -86,7 +86,7 @@ export default function ReemplazoPedido({ pedido }: Props) {
   if (!abierto) {
     return (
       <p>
-        <button type="button" onClick={() => setAbierto(true)}>
+        <button type="button" className="boton--primario" onClick={() => setAbierto(true)}>
           Crear pedido de reemplazo
         </button>
       </p>
@@ -140,7 +140,7 @@ export default function ReemplazoPedido({ pedido }: Props) {
 
       {error && <p>{error}</p>}
 
-      <button type="submit" disabled={guardando}>
+      <button type="submit" className="boton--primario" disabled={guardando}>
         {guardando ? 'Guardando…' : 'Crear reemplazo'}
       </button>{' '}
       <button type="button" onClick={() => setAbierto(false)} disabled={guardando}>

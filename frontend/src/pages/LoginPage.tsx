@@ -68,7 +68,7 @@ export default function LoginPage() {
             </p>
           )}
 
-          <button type="submit" className="login__boton" disabled={cargando}>
+          <button type="submit" className="login__boton boton--primario" disabled={cargando}>
             {cargando ? 'Ingresando...' : 'Ingresar'}
           </button>
         </form>
