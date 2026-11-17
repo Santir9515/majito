@@ -10,7 +10,7 @@ interface Transicion {
 const TRANSICIONES: Partial<Record<EstadoPedido, Transicion>> = {
   creado: { siguiente: 'en_revision', roles: ['administracion'] },
   en_revision: { siguiente: 'en_preparacion', roles: ['deposito', 'administracion'] },
-  en_preparacion: { siguiente: 'listo_para_facturar', roles: ['deposito', 'administracion'] },
+  en_preparacion: { siguiente: 'listo_para_facturar', roles: ['deposito'] },
   listo_para_facturar: { siguiente: 'facturado', roles: ['administracion'] },
   facturado: { siguiente: 'entregado', roles: ['deposito', 'administracion'] },
   entregado: { siguiente: 'cerrado', roles: ['administracion'] },
