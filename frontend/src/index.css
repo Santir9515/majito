@@ -76,8 +76,8 @@ body {
 
 /* ===== Estilos generales de contenido ===== */
 :root {
-  --color-primario: #e8590c;
-  --color-primario-oscuro: #c84a09;
+  --color-primario: #c84a09;
+  --color-primario-oscuro: #a63c07;
   --color-peligro: #c92a2a;
   --color-peligro-oscuro: #a61e1e;
   --color-borde: #cbd2d9;
@@ -200,4 +200,69 @@ button:disabled {
 
 .layout__usuario button:hover:not(:disabled) {
   background: #3e4c59;
+}
+
+/* ===== Vista en pantallas chicas (RNF-01) ===== */
+.layout__contenido {
+  min-width: 0; /* deja que el contenido se achique en vez de desbordar */
+}
+
+input,
+select {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  /* El menú lateral pasa a ser una barra arriba */
+  .layout {
+    flex-direction: column;
+  .layout__enlace {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+  }
+
+  .layout__lateral {
+    width: 100%;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .layout__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .layout__usuario {
+    margin-top: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+  }
+
+  .layout__usuario p {
+    margin: 0;
+  }
+
+  .layout__contenido {
+    padding: 16px;
+  }
+
+  /* Las tablas se desplazan de costado en vez de cortarse */
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+  }
+
+  /* Los campos de los formularios ocupan todo el ancho */
+  .layout__contenido form select,
+  .layout__contenido form input:not([type='number']) {
+    width: 100%;
+  }
 }
