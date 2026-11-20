@@ -216,10 +216,11 @@ select {
   /* El menú lateral pasa a ser una barra arriba */
   .layout {
     flex-direction: column;
+  }
+
   .layout__enlace {
     padding: 8px 10px;
     font-size: 0.9rem;
-  }
   }
 
   .layout__lateral {
