@@ -40,7 +40,7 @@ estado se refiere al backend.
  
 | Requerimiento | Cómo se cumple | Estado | Notas |
 |---|---|---|---|
-| RNF-01 Aplicación web responsiva | Frontend React + Vite | Parcial | Frontend desplegado y operativo. No se adaptó ni se probó el diseño para pantallas chicas. |
+| RNF-01 Aplicación web responsiva | Frontend React + Vite | Hecho | En pantallas angostas el menú pasa a una barra superior y las tablas se deslizan horizontalmente. Probado en celular. |
 | RNF-02 Pantallas simples para depósito y vendedor | Frontend, vistas por rol | Hecho | El vendedor crea pedidos y reemplazos; depósito avanza y rechaza desde el detalle del pedido. |
 | RNF-03 Acceso restringido por rol | Validación de rol en el backend | Parcial | Depende de la autenticación (RF-01). |
 | RNF-04 Hash de contraseñas y HTTPS | bcrypt en el backend; HTTPS en el despliegue | Hecho | Contraseñas con hash bcrypt. HTTPS provisto por Render y Vercel. |
