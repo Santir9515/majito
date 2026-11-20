@@ -29,7 +29,12 @@ export default function PedidosPage() {
     listarPedidos(filtro ? [filtro] : undefined)
       .then((datos) => {
         if (activo) {
-          setPedidos(datos);
+       // Los más nuevos primero.
+        setPedidos(
+            [...datos].sort(
+              (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            ),
+          );
           setError(null);
         }
       })
